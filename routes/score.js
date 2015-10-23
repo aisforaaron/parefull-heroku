@@ -45,6 +45,7 @@ router.route('/')
     // POST new score, then update bit scoreAvg
     .post(function (req, res) {
         console.log('+++ /api/score POST')
+        console.log('req.body: '+JSON.stringify(req.body))
         var scoreVal = req.body.score
         var ip       = ''
         var bitId    = req.body.bitId
