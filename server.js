@@ -26,7 +26,7 @@ mongoose.connect('mongodb://pareuser:FPOk9aA1QKts@ds039484.mongolab.com:39484/pa
 mongoose.set('debug', true);
 
 // set api to listen on port 4000
-var port             = process.env.PORT || 4000;        // set our port
+var port             = 4000; //process.env.PORT || 4000;        // set our port
 var listen           = '127.0.0.1';                     // 127.0.0.1 blocks external requests.
 // process.env.NODE_ENV = 'local';                         // set our env
 
