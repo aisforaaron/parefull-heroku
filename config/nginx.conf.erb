@@ -38,9 +38,9 @@ http {
 		listen <%= ENV["PORT"] %>;
 		server_name _;
 		keepalive_timeout 5;
+    root docroot
 
     location / {
-      root docroot
       index index.html;
       try_files $uri $uri/ /index.html;
     }
