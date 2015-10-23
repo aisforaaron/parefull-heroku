@@ -1,0 +1,9 @@
+.DS_store
+.vagrant
+_test
+node_modules
+<<<<<<< HEAD
+paredeploy
+=======
+deploy
+>>>>>>> 1879c6a8bfecf34c4228c097808519c06aeec1c4

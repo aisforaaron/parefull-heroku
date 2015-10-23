@@ -1,0 +1,73 @@
+body {
+  background-color: #eee;
+}
+hr {
+  border-color:#ccc;
+}
+.site-title {
+  color: #666;
+}
+.header-outer {
+  border-bottom:1px dashed #ccc;
+  margin-bottom:24px;
+  padding-bottom:12px;
+  color: #666;
+}
+.comparebox {
+  margin-bottom:24px;
+}
+.comparebox .bits-and-arrow {
+  margin: 48px 0;
+}
+.bit-name, .bit-avg {
+ font-size:2em;
+}
+.bit-name {
+ color:orange;
+   width:100%;
+}
+.bit-avg {
+ font-size:1em;
+  color:#666;
+}
+.arrow-text {
+  margin-top:12px;
+  font-size:2em;
+  font-family:verdana;
+  font-style:italic;
+}
+.btn-default {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: 1px 1px 1px #888888;
+}
+.btn {
+  padding: 6px;
+  
+}
+div.refresh-btn input {
+  width:100%;
+  color:#337ab7;
+  background-color:#eee;
+  border:1px solid #337ab7;
+  padding:4px
+}
+div.refresh-btn input:hover {
+  border:1px solid #666;
+  background-color: #fff;
+}
+.sliderbox-outer {
+ padding-top:12px;
+ margin-top:12px;
+}
+.bit-add-outer {
+  margin:44px 0;
+}
+.secondaryNav {
+  border-top:dashed 1px #ddd;
+  margin:24px 0;
+  padding-top:24px;
+  font-family:verdana;
+  font-size:.75em;
+  letter-spacing:.3em;
+}
