@@ -41,7 +41,7 @@ Updates
 
 Our Privacy Policy may change from time to time and all updates will be posted on this page.
 
-If you feel that we are not abiding by this privacy policy, you should contact us immediately via [email](mailto:aarond.com).
+If you feel that we are not abiding by this privacy policy, you should contact us immediately via [email](mailto:aarondllc@gmail.com).
 
 
 

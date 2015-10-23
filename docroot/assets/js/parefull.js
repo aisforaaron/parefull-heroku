@@ -347,7 +347,7 @@ var ScoreBitForm = React.createClass({
         return (
             <div>
             <form className="scoreBitForm" onSubmit={this.handleSubmit}>
-            <input type="hidden" name="bitId" ref="bitId" value={this.state.bitId} />
+            <input type="hidden" name="_bitId" ref="bitId" value={this.state.bitId} />
 
               <div className="row text-left">
                 <div className="result" ref="message">{this.state.message}</div>

@@ -48,7 +48,7 @@ router.route('/')
         console.log('req.body: '+JSON.stringify(req.body))
         var scoreVal = req.body.score
         var ip       = ''
-        var bitId    = req.body.bitId
+        var bitId    = req.body._bitId
         // get ip from post or headers
         // from add score form, comes here directly
         if(req.body.ip){

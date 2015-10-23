@@ -69,7 +69,7 @@ router.route('/bit')
                   superagent
                     .post('/api/score')
                     .set('Content-Type', 'application/json')
-                    .send({ "bitId": id, "ip": ip, "score": score })
+                    .send({ "_bitId": id, "ip": ip, "score": score })
                     .end(function (err, res) {
                       if(err) throw err;
                       console.log('bit upsert, send to score save. ip: '+ip)
