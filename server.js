@@ -11,6 +11,7 @@ var superagent   = require('superagent');       // api layer
 var mongoose     = require('mongoose');         // db layer
 var bit          = require('./models/bit');     // custom schema for parefull items (bits)
 // var browserify   = require('browserify');       // ???
+var fs           = require('fs');
 
 // App & DB setup
 // =============================================================================
@@ -28,6 +29,9 @@ mongoose.set('debug', true);
 var port             = process.env.PORT || 4000;        // set our port
 var listen           = '127.0.0.1';                     // 127.0.0.1 blocks external requests.
 process.env.NODE_ENV = 'local';                         // set our env
+
+// Heroku Config - tell nginx to start listening
+fs.openSync('/tmp/app-initialized', 'w');
 
 
 // Routes
