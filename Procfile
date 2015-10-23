@@ -1,1 +1,1 @@
-web: bin/start-nginx forever -m 5 server.js
+web: bin/start-nginx bin/forever -m 5 server.js
