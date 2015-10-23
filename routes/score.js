@@ -68,6 +68,7 @@ router.route('/')
               } else {
                 // Update Bit avg score
                 var bitIdObject = mongoose.Types.ObjectId(bitId)
+                cnosole.log('bitId: '+bitId+' bitIdObject: '+bitIdObject+' req.body._bitId: '+req.body._bitId)
                 superagent
                   .put('/api/bit/id/'+bitIdObject)
                   .set('Content-Type', 'application/json')
