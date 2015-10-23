@@ -21,14 +21,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.enable('trust proxy');  // so i can capture user IP when they add/rate bits
 
-// connect to mongo using mongoose
-mongoose.connect('mongodb://localhost/local');
+// connect to mongoLab using mongoose
+mongoose.connect('mongodb://pareuser:FPOk9aA1QKts@ds039484.mongolab.com:39484/parefull');
 mongoose.set('debug', true);
 
 // set api to listen on port 4000
 var port             = process.env.PORT || 4000;        // set our port
 var listen           = '127.0.0.1';                     // 127.0.0.1 blocks external requests.
-process.env.NODE_ENV = 'local';                         // set our env
+// process.env.NODE_ENV = 'local';                         // set our env
 
 // Heroku Config - tell nginx to start listening
 fs.openSync('/tmp/app-initialized', 'w');
