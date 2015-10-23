@@ -1,1 +1,1 @@
-web: bin/start-nginx bundle exec -c nginx.conf.erb ./node_modules/.bin/forever server.js
+web: bin/start-nginx node server.js
