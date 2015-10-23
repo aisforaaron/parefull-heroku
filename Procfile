@@ -1,1 +1,1 @@
-web: bin/start-nginx node server.js
+web: bin/start-nginx ./node_modules/.bin/forever -m 5 server.js
