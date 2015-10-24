@@ -213,28 +213,33 @@ router.route('/bit/id/:bit_id')
         // we have the bit id
         // need to calculate the updated scoreAvg and update bit
         if(req.params.bit_id.length>0) { // basic validation
+          console.log('req bit_id: '+req.params.bit_id)
           superagent
             .get('/api/score/avg/'+req.params.bit_id)
             .set('Accept', 'application/json')
             .end(function (err, score) {
-              console.log('4-scoreAvg new value: '+JSON.stringify(score.body))
-              var updateFields = new Object()
-              // Update score average if flag is passed
-              if(req.body.updateAvg) {
-                  updateFields.scoreAvg = score.body
-              }
-              // Update bit name
-              if(req.body.name) {
-                  updateFields.name = req.body.name
-              }
-              console.log('5-Bit fields set to update.')
-              // find the bit document and update it in the same call
-              var bitId = mongoose.Types.ObjectId(req.params.bit_id) // objectId type conversion for aggregation
-              Bit.findByIdAndUpdate(bitId, updateFields, function(err, res){
-                if (err) throw err;
-                console.log('6-bit fields were updated: '+JSON.stringify(updateFields));
-                return; // ??
-              });
+              if(err) {
+                throw err;
+              } else {
+                console.log('4-scoreAvg new value: '+JSON.stringify(score.body))
+                var updateFields = new Object()
+                // Update score average if flag is passed
+                if(req.body.updateAvg) {
+                    updateFields.scoreAvg = score.body
+                }
+                // Update bit name
+                if(req.body.name) {
+                    updateFields.name = req.body.name
+                }
+                console.log('5-Bit fields set to update.')
+                // find the bit document and update it in the same call
+                var bitId = mongoose.Types.ObjectId(req.params.bit_id) // objectId type conversion for aggregation
+                Bit.findByIdAndUpdate(bitId, updateFields, function(err, res){
+                  if (err) throw err;
+                  console.log('6-bit fields were updated: '+JSON.stringify(updateFields));
+                  return; // ??
+                });
+              } // end if err
             });
           res.json({message: 'Updated bit.'})
         } // end if bit_id
