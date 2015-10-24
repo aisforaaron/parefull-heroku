@@ -67,18 +67,9 @@ router.route('/')
                 throw err;
               } else {
                 // Update Bit avg score???
+                // post call moved for testing
               }
             });
-          superagent
-            .post('/api/bit/id/')
-            .send({"updateAvg": true, "bitId": bitId})
-            .end(function (err, res) {
-              if (err){
-                throw err;
-                console.log(res.error)
-              }
-            });
-
         } else {
           res.json({ message: "Please score bit properly - API error."});
         }

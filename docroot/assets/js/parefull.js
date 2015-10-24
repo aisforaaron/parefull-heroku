@@ -328,6 +328,18 @@ var ScoreBitForm = React.createClass({
           .end(function (err, res) {
             if(err) throw err;
             if(res) {
+
+              // now update bit avg
+              superagent
+                .post('/api/bit/id/')
+                .send({"updateAvg": true, "bitId": bitId})
+                .end(function (err, res) {
+                  if (err){
+                    throw err;
+                    console.log(res.error)
+                  }
+                });
+
               this.setState({ message: res.body.message + ' Score another right meow?' });
               // clear form
               // React.findDOMNode(this.refs.name).value = '';  
