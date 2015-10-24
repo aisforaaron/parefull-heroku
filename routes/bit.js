@@ -68,7 +68,6 @@ router.route('/bit')
                   console.log('upserted id: '+id)
                   superagent
                     .post('/api/score')
-                    .set('Content-Type', 'application/json')
                     .send({ "_bitId": id, "ip": ip, "score": score })
                     .end(function (err, res) {
                       if(err) throw err;
@@ -208,12 +207,12 @@ router.route('/bit/id/:bit_id')
 
     // UPDATE A BIT
     // if a PUT request is sent to /api/bit/id/:bit_id w/form vars, update the bit
-    .put(function(req, res) {
+    .post(function(req, res) {
         console.log('+++ /api/bit/id/# PUT')
         console.log('req.body: '+JSON.stringify(req.body))
         res.json({message: 'testing...left off at /api/bit/id/:bit_id'})
 
-        
+
         /*
         // we have the bit id
         // need to calculate the updated scoreAvg and update bit
