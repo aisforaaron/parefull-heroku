@@ -42,7 +42,7 @@ router.route('/')
         });
     })
 
-    // POST new score, then update bit scoreAvg
+    // POST new score
     .post(function (req, res) {
         console.log('+++ /api/score POST')
         console.log('req.body: '+JSON.stringify(req.body))
@@ -63,13 +63,8 @@ router.route('/')
         // basic validation
         if( (scoreVal > 0) && (scoreVal < 11) && (bitId.length > 0) ) {
           score.save(function(err, res) {
-              if (err) {
-                throw err;
-              } else {
-                // Update Bit avg score???
-                // post call moved for testing
-              }
-            });
+              if (err) throw err;
+          });
         } else {
           res.json({ message: "Please score bit properly - API error."});
         }
@@ -88,7 +83,7 @@ router.route('/id/:score_id')
     })
 
 /*
-    // update a score - not needed??
+    // update a score - not needed?? use post??
     .put(function(req, res) {
         Score.findById(req.params.bit_id, function(err, score) {
             if (err)
