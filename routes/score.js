@@ -76,7 +76,7 @@ router.route('/')
                       console.log(res.error)
                     }
                   });
-                res.json({ message: 'Score added and bit avg updated!' });
+                // res.json({ message: 'Score added and bit avg updated!' });
               }
             });
         } else {
