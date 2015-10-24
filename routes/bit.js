@@ -34,35 +34,22 @@ router.route('/')
     .post(function (req, res) {
         var ip    = req.headers['x-forwarded-for']  // pass raw ip to /api/score 
         var name  = req.body.name
-        // var score = req.body.score
         // setup object
         var bit   = new Bit()
         bit.name  = name
         bit.ip    = ip
-        // bit.score = score
         // basic validation
-        if((name.length > 2) && (score > 0) && (score < 11)) {
+        if(name.length > 2) {
           Bit.findOneAndUpdate(
               { "name" : { $regex : new RegExp(name, "i") } }, // case insensitive
               { $setOnInsert: bit },  // pass bit object, just passing field:value didn't work
               {
-                  new: true,   // return updated document if exists
-                  upsert: true   // insert the document if it does not exist 
+                  new: true,          // return updated document if exists
+                  upsert: true        // insert the document if it does not exist 
               },
               function(err, result) {
                   if (err) throw err;
                   res.json(result);
-                  // // Add new bit score to collection - move this call to front-end callback
-                  // // which will then update the new bit scoreAvg 
-                  // var id = mongoose.Types.ObjectId(result._id) // new or updated bit id
-                  // superagent
-                  //   .post('/api/score')
-                  //   .send({ "_bitId": id, "ip": ip, "score": score })
-                  //   .end(function (err, res) {
-                  //     if(err) throw err;
-                  //     console.log('bit upsert, send to score save. ip: '+ip)
-                  //   });
-                  // res.json({ message: 'Bit created!' });
               }
           );
         } else {

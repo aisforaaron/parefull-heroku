@@ -374,7 +374,10 @@ var AddBitForm = React.createClass({
           .post('/api/bit')
           .send({"name": name})
           .end(function (err, res) {
-            if(err) throw err;
+            if(err) {
+             throw err;
+             console.log('/api/bit end err: '+err)
+           }
             if(res) {
 
               // POST new score
