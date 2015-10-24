@@ -54,15 +54,18 @@ router.route('/')
         } else {
           ip = req.headers['x-forwarded-for']
         }
+        console.log('---POST /api/score scoreVal: '+scoreVal+' ip: '+ip+' bitId: '+bitId)
+
         var score    = new Score();            // create a new instance of the model
         score.ip     = ip                      // ip as a string
         score.score  = scoreVal                // set the name (comes from the request)
         score._bitId = bitId                   // id of related bit
         // basic validation
         if( (scoreVal > 0) && (scoreVal < 11) && (bitId.length > 0) ) {
-          score.save(function(err, res) {
+          console.log('/api/score vals passed validation')
+          score.save(function(err, result) {
               if (err) throw err;
-              res.json({ message: "Score saved." })
+              res.json(result)  // score saved
           });
         } else {
           res.json({ message: "Please score bit properly - API error."});

@@ -378,7 +378,7 @@ var AddBitForm = React.createClass({
 
               // POST new score
               var id = res.body._id
-              console.log('res from /api/bit: '+JSON.stringify(res))
+              // console.log('res from /api/bit: '+JSON.stringify(res))
               console.log('new bit id: '+id+' score: '+score)
 
               superagent
