@@ -387,8 +387,6 @@ var AddBitForm = React.createClass({
                   if(err) throw err;
                   console.log('new score posted')
               
-           /*     
-
                         // GET new bit score avg
                         superagent
                           .get('/api/score/avg/'+id)
@@ -406,11 +404,10 @@ var AddBitForm = React.createClass({
                                 }).bind(this);
 
                           });
-                */
 
                 }.bind(this));
 
-              // console.log('---api/bit/ POST res.body: '+JSON.stringify(res.body))
+              console.log('---api/bit/ POST res.body: '+JSON.stringify(res.body))
               this.setState({ message: 'Bit saved. Add another?' });
               // clear form
               React.findDOMNode(this.refs.name).value = ''; 
