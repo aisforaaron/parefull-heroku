@@ -368,45 +368,42 @@ var AddBitForm = React.createClass({
       var score = React.findDOMNode(document.forms[0].score).value.trim();
       // basic form validation, typeof score returns string
       if((name.length > 2) && (score > 0) && (score < 11)) {
-
         // POST new bit
+        // -------------------------------------------
         superagent
           .post('/api/bit')
           .send({"name": name})
           .end(function (err, res) {
             if(err) throw err;
-
               // POST new score
               var id = res.body._id
               // console.log('res from /api/bit: '+JSON.stringify(res))
               console.log('new bit id: '+id+' score: '+score)
-
+              // -------------------------------------------
               superagent
                 .post('/api/score')
                 .send({ "_bitId": id, "score": score })
                 .end(function (err, result) {
                   if(err) throw err;
                   console.log('new score posted')
-              
                         // GET new bit score avg
+                        // -------------------------------------------
                         superagent
                           .get('/api/score/avg/'+id)
                           .end(function (err, score) {
                             if(err) throw err;
                               console.log('new avg: '+score.body)
-
                               // PUT call to update bit scoreAvg
+                              // -------------------------------------------
                               superagent
                                 .put('/api/bit/id/'+id)
                                 .send({"scoreAvg": score.body})
-                                .end(function (err, score) {
+                                .end(function (err, result) {
                                   if(err) throw err;
-                                  this.setState({ message: 'Bit saved. Add another?' });
-                                }.bind(this));
-
-                          });
-
-                }.bind(this));
+                                  console.log('updated scoreAvg. score obj: '+JSON.stringify(result))
+                                }); // end id/id
+                          }); // end avg/id
+                }.bind(this)); // end api/score
 
               console.log('---api/bit/ POST res.body: '+JSON.stringify(res.body))
               this.setState({ message: 'Bit saved. Add another?' });
@@ -414,7 +411,7 @@ var AddBitForm = React.createClass({
               React.findDOMNode(this.refs.name).value = ''; 
               React.findDOMNode(document.getElementById('scoreDisplay')).textContent = sliderText(5) 
               React.findDOMNode(document.forms[0].score).value = 5; 
-          }.bind(this));
+          }.bind(this)); // end api/bit
         } else {
           this.setState({"message": "Please enter something (at least two characters) and give it a rating. Thx!"})
         }
