@@ -308,10 +308,12 @@ var ScoreBitForm = React.createClass({
                           .send({"scoreAvg": score.body})
                           .end(function (err, result) {
                             if(err) throw err;
-                            this.setState({ message: 'Score another right meow?' });
-                          }.bind(this)); // end id/id
+                            console.log('updated scoreAvg')
+                        }); // end id/id
                     }); // end avg/id
-          }.bind(this)); // end api/score
+          }); // end api/score
+          // updates successful
+          this.setState({ message: 'Score another right meow?' });
           // get new bit to score
           this.loadBitFromServer();
           React.findDOMNode(document.forms[0].score).value = 5; // set to center, default slider value
