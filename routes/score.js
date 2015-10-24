@@ -78,11 +78,12 @@ router.route('/')
                     if (err){
                       throw err;
                       console.log(res.error)
+                    } else {
+                      res.json({ message: 'Score added and bit avg updated!' });
                     }
                   });
               }
             });
-            res.json({ message: 'Score added and bit avg updated!' });
         } else {
           res.json({ message: "Please score bit properly - API error."});
         }
