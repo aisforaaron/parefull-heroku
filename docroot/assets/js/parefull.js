@@ -402,7 +402,7 @@ var AddBitForm = React.createClass({
                                 .end(function (err, score) {
                                   if(err) throw err;
                                   this.setState({ message: 'Bit saved. Add another?' });
-                                }).bind(this);
+                                }.bind(this));
 
                           });
 
