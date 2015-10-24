@@ -384,7 +384,7 @@ var AddBitForm = React.createClass({
               var id = res._id
               superagent
                 .post('/api/score')
-                .send({ "_bitId": , "score": score })
+                .send({ "_bitId": id, "score": score })
                 .end(function (err, result) {
                   if(err) throw err;
 
