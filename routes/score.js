@@ -44,7 +44,6 @@ router.route('/')
 
     // POST new score
     .post(function (req, res) {
-        console.log('+++ /api/score POST')
         var scoreVal = req.body.score
         var ip       = ''
         var bitId    = req.body._bitId
@@ -63,7 +62,7 @@ router.route('/')
         if( (scoreVal > 0) && (scoreVal < 11) && (bitId.length > 0) ) {
           score.save(function(err, res) {
               if (err) throw err;
-              console.log('---score saved.')
+              res.json({ message: "Score saved." })
           });
         } else {
           res.json({ message: "Please score bit properly - API error."});
@@ -116,7 +115,6 @@ router.route('/avg/:score_bitId')
 
     // GET average score for one bit by _bitId
     .get(function(req, res) {
-      console.log('+++ /api/score/avg/# GET')
       var bitId = mongoose.Types.ObjectId(req.params.score_bitId) // objectId type conversion for aggregation
       Score.aggregate([
           { $match: { "_bitId": bitId } },   // all docs that match passed bitId
@@ -127,7 +125,8 @@ router.route('/avg/:score_bitId')
           ],  
           function (err, result) {
           if (err) {
-              next(err);
+              // next(err);
+              throw err;
           } else if (result[0]) {
               // result is an object inside of an array
               var roundAvg = Math.round(result[0].avg)

@@ -20,11 +20,10 @@ Routes definition
 
 // =============================================================================
 
-router.route('/bit')
+router.route('/')
 
     // get all the bits (accessed at GET /api/bits)
     .get(function(req, res) {
-        // res.send('this will list all the bits');
         Bit.find(function(err, bits) {
             if (err) throw err;
             res.json(bits);
@@ -33,7 +32,6 @@ router.route('/bit')
 
     // add new bit (if doesn't exist already)
     .post(function (req, res) {
-        console.log('+++ /api/bit POST')
         var ip    = req.headers['x-forwarded-for']  // pass raw ip to /api/score 
         var name  = req.body.name
         var score = req.body.score
@@ -44,16 +42,8 @@ router.route('/bit')
         bit.score = score
         // basic validation
         if((name.length > 2) && (score > 0) && (score < 11)) {
-          // the main query will be findOneAndUpdate along with setOnInsert
-          // - setOnInsert to figure out what to add on insert only (if upsert is true), 
-          // - if $set { ... }   is used, anything in the braces will be added on insert & update
-          // - if you omit the $set then nothing will be updated
-          // https://docs.mongodb.org/manual/reference/operator/update/setOnInsert/
-          // http://mongoosejs.com/docs/api.html#query_Query-findOneAndUpdate
           Bit.findOneAndUpdate(
-              // {"name": name}, // regular search, case sensitive
               { "name" : { $regex : new RegExp(name, "i") } }, // case insensitive
-              // set: {}  // leave empty so no update action happens??? @todo test this with diff IP as client
               { $setOnInsert: bit },  // pass bit object, just passing field:value didn't work
               {
                   new: true,   // return updated document if exists
@@ -61,40 +51,20 @@ router.route('/bit')
               },
               function(err, result) {
                   if (err) throw err;
-                  console.log('bit upserted, result: '+JSON.stringify(result))
-                  // Add new bit score to collection
-                  // which will then update the new bit scoreAvg 
-                  var id = mongoose.Types.ObjectId(result._id) // new or updated bit id
-                  console.log('upserted id: '+id)
-                  superagent
-                    .post('/api/score')
-                    .send({ "_bitId": id, "ip": ip, "score": score })
-                    .end(function (err, res) {
-                      if(err) throw err;
-                      console.log('bit upsert, send to score save. ip: '+ip)
-                    });
-                  res.json({ message: 'Bit created!' });
+                  res.json(result);
+                  // // Add new bit score to collection - move this call to front-end callback
+                  // // which will then update the new bit scoreAvg 
+                  // var id = mongoose.Types.ObjectId(result._id) // new or updated bit id
+                  // superagent
+                  //   .post('/api/score')
+                  //   .send({ "_bitId": id, "ip": ip, "score": score })
+                  //   .end(function (err, res) {
+                  //     if(err) throw err;
+                  //     console.log('bit upsert, send to score save. ip: '+ip)
+                  //   });
+                  // res.json({ message: 'Bit created!' });
               }
           );
-          /*
-          // Original working Model.save, which adds new document
-          bit.save(function(err, result) {
-              if (err) throw err;
-              // console.log('bit saved, result: '+JSON.stringify(result))
-              // Add new bit score to collection
-              // which will then update the new bit scoreAvg 
-              var id = mongoose.Types.ObjectId(result._id) // new bit id
-              superagent
-                .post('/api/score')
-                .set('Content-Type', 'application/json')
-                .send({ "_bitId": id, "ip": ip, "score": score })
-                .end(function (err, res) {
-                  if(err) throw err;
-                  console.log('bit save, send to score save. ip: '+ip)
-                });
-              res.json({ message: 'Bit created!' });
-          });
-          */
         } else {
           res.json({ message: 'Validation error on name, ip or score' });
         } 
@@ -107,10 +77,9 @@ function randomNumber(min, max) {
   return Math.floor(Math.random()*(max-min+1)+min);
 }
 
-router.route('/bit/rand/?:skip_id?')
+router.route('/rand/?:skip_id?')
 
-    // get all the bits (accessed at GET /api/bits)
-    // except for skip_id if passed
+    // get one random bit 
     .get(function(req, res) {
         // random number strategy based on http://stackoverflow.com/a/28331323/4079771
         Bit.count().exec(function(err, count){
@@ -119,21 +88,18 @@ router.route('/bit/rand/?:skip_id?')
           // zero key moves count down another one
           // just need to be sure we don't subtract to a negative
           // var random = Math.floor(Math.random() * count);
-          var min = 0
-          var max = count-2
+          var min    = 0
+          var max    = count-2
           var random = randomNumber(min, max)
-          // console.log('rand: '+random+' min/max: '+min+'/'+max)
           var skipId = ''
           if(req.params.skip_id){
             skipId = { _id: { $ne: req.params.skip_id}}
-            console.log('skip query: '+skipId)
           }
           Bit.findOne(skipId).skip(random).exec(
             function(err, bits) {
             if (err) throw err;
                 getImage(bits.name, function(err, img){
                   if(err) throw err;
-                  // console.log('img in return: '+JSON.stringify(img))
                   var bitsObj      = {}
                   bitsObj.img      = img
                   bitsObj.name     = bits.name
@@ -194,7 +160,7 @@ router.route('/bit/rand/?:skip_id?')
 
 // =============================================================================
 
-router.route('/bit/id/?:bit_id?')
+router.route('/id/?:bit_id?')
 
     // search bit by id
     .get(function(req, res) {
@@ -206,47 +172,22 @@ router.route('/bit/id/?:bit_id?')
     })
 
     // UPDATE A BIT
-    // if a POST request is sent to /api/bit/id/ w/form vars, update the bit
-    // @todo change back to PUT now that call is moved to react layer?
-    .post(function(req, res) {
-        console.log('+++ /api/bit/id/# PUT')
-        // we have the bit id
-        // need to calculate the updated scoreAvg and update bit
-        if(req.params.bit_id) { // basic validation
-
-          // get bit score avg
-          superagent
-            .get('/api/score/avg/'+req.params.bit_id)
-            .set('Accept', 'application/json')
-            .end(function (err, score) {
-              if(err) {
-                throw err;
-              } else {
-
-                console.log('4-scoreAvg new value: '+JSON.stringify(score.body))
-                var updateFields = new Object()
-                // Update score average if flag is passed
-                if(req.body.updateAvg) {
-                    updateFields.scoreAvg = score.body
-                }
-                // Update bit name
-                if(req.body.name) {
-                    updateFields.name = req.body.name
-                }
-                console.log('5-Bit fields set to update.')
-                // find the bit document and update it in the same call
-                var bitId = mongoose.Types.ObjectId(req.params.bit_id) // objectId type conversion for aggregation
-                Bit.findByIdAndUpdate(bitId, updateFields, function(err, res){
-                  if (err) throw err;
-                  console.log('6-bit fields were updated: '+JSON.stringify(updateFields));
-                  return; // ??
-                });
-
-              } // end if err
-            });
-
-          res.json({message: 'Updated bit.'})
-        } // end if bit_id
+    // if a PUT request is sent to /api/bit/id/ w/form vars
+    .put(function(req, res) {
+        if(req.params.bit_id) { 
+          var updateFields = new Object()
+          if(req.body.scoreAvg) {
+              updateFields.scoreAvg = req.body.scoreAvg
+          }
+          if(req.body.name) {
+              updateFields.name = req.body.name
+          }
+          var bitId = mongoose.Types.ObjectId(req.params.bit_id)
+          Bit.findByIdAndUpdate(bitId, updateFields, function(err, res){
+            if (err) throw err;
+            res.json({message: 'Updated bit.'})
+          });
+        }
     })
 
     // delete the bit
@@ -261,7 +202,7 @@ router.route('/bit/id/?:bit_id?')
 
 // =============================================================================
 
-router.route('/bit/name/:bit_name')
+router.route('/name/:bit_name')
 
     // search bit by name
     .get(function(req, res) {

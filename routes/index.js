@@ -25,7 +25,7 @@ router.route('/')
 // =============================================================================
 
 // Load custom routes from files
-router.use('/api', require('./bit'))  // @todo change path to /api/bit here?
+router.use('/api/bit', require('./bit'))  // @todo change path to /api/bit here?
 router.use('/api/score', require('./score'))
 
 module.exports = router;

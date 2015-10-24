@@ -41,30 +41,6 @@ var TitleLogo = React.createClass({
 });
 
 var BitsNav = React.createClass({
-    // Trying nocache style hash link
-    // - just change home link below to 
-    //    href={this.state.homeLink} onClick={this.handleOnChange}
-    //
-    // getLinkString: function (flag) {
-    //   // var noCache = new Date().getTime();
-    //   // set to path #home0 or #home1
-    //   var noCache = flag ? 1 : 0
-    //   return '#home'+noCache
-    //   // return '#home'
-    // },
-    // componentDidMount: function () {
-    //   this.setState({"homeLink": this.getLinkString()})
-    // },
-    // handleOnChange: function () {
-    //   // change the link for each click to keep hash new
-    //   this.setState({"homeLink": this.getLinkString()})
-    // },
-    // getInitialState: function () {
-    //   return {
-    //     homeLink: '',
-    //     flag: 0
-    //   };
-    // },
     render: function () {
         return (
             <div className="row">
@@ -137,19 +113,18 @@ var PrivacyText = React.createClass({
 
 var CompareBox = React.createClass({
     loadBitFromServer: function () {
+       // get first random bit
        superagent
         .get('/api/bit/rand')
-        .set('Accept', 'application/json')
         .end(function (err, res) {
            this.setState({bitName: res.body.name})
            this.setState({bitImg: res.body.img})
            this.setState({bitAvg: sliderText(res.body.scoreAvg)}) // remove sliderText() for just number
            var A = res.body.scoreAvg
            var skipId = res.body._id
-          // call for second bit
+          // call for second unique bit
           superagent
             .get('/api/bit/rand/'+skipId)
-            .set('Accept', 'application/json')
             .end(function (err, res) {
                this.setState({bitName2: res.body.name})
                this.setState({bitImg2: res.body.img})
@@ -181,7 +156,6 @@ var CompareBox = React.createClass({
                     </div>
                     <div className="col-md-4"></div>
                 </div>
-
                 <div className="row bits-and-arrow">
                   <div className="col-md-4 text-center">
                     <BitBox bitName={this.state.bitName} bitAvg={this.state.bitAvg} bitImg={this.state.bitImg} bitKey="left" />
@@ -198,7 +172,7 @@ var CompareBox = React.createClass({
     }
 });
 
-// get a random or known bit by bitId?
+// format output for a bit
 var BitBox = React.createClass({
     getInitialState: function() {
       return {
@@ -254,18 +228,10 @@ var SliderBox = React.createClass({
 });
 
 // get data for one random bit
-// this passes the data to BitBox component for formatting
-// Example Render:
-// <div className="row randBit">
-//   <div className="col-md-12 text-center">
-//     <BitBoxRand />
-//   </div>
-// </div>
 var BitBoxRand = React.createClass({
     loadBitFromServer: function () {
       superagent
         .get('/api/bit/rand')
-        .set('Accept', 'application/json')
         .end(function (err, res) {
           if(err) throw err;
           this.setState({bitName: res.body.name});
@@ -298,7 +264,6 @@ var ScoreBitForm = React.createClass({
       // @todo - keep session list of ids to skip so user doesn't get them twice?
       superagent
         .get('/api/bit/rand')
-        .set('Accept', 'application/json')
         .end(function (err, res) {
           if(err) throw err;
           this.setState({bitName: res.body.name});
@@ -311,6 +276,7 @@ var ScoreBitForm = React.createClass({
     },
     getInitialState: function() {
       return {
+        bitId: '',
         bitNname: '',
         bitImg: '',
         message: ''
@@ -318,11 +284,10 @@ var ScoreBitForm = React.createClass({
     },
     handleSubmit: function(e) {
       e.preventDefault();
-      var score = React.findDOMNode(document.forms[0].score).value.trim(); // this the right way?
+      var score = React.findDOMNode(document.forms[0].score).value.trim();
       var id    = this.refs.bitId.getDOMNode().value
       // basic form validation
       if( (score > 0) && (score < 11) && (id.length > 0) ) {
-
         // post new score
         superagent
           .post('/api/score')
@@ -330,27 +295,24 @@ var ScoreBitForm = React.createClass({
           .end(function (err, res) {
             if(err) throw err;
 
-                 // get bit score avg and update bit
+                 // get new bit score avg
                   superagent
                     .get('/api/score/avg/'+id)
-                    .set('Accept', 'application/json')
                     .end(function (err, score) {
                       if(err) throw err;
-                        var updateFields = new Object()
-                        updateFields.scoreAvg = score.body
-                        // find the bit document and update it in the same call
-                        var bitId = mongoose.Types.ObjectId(id)
-                        Bit.findByIdAndUpdate(bitId, updateFields, function(err, res){
-                          if (err) throw err;
-                          this.setState({ message: res.body.message + ' Score another right meow?' });
-                          // clear form
-                          // React.findDOMNode(this.refs.name).value = '';  
-                        }).bind(this);
+
+                        // PUT call to update bit scoreAvg
+                        superagent
+                          .put('/api/bit/id/'+id)
+                          .send({"scoreAvg": score.body})
+                          .end(function (err, score) {
+                            if(err) throw err;
+                            this.setState({ message: res.body.message + ' Score another right meow?' });
+                          }).bind(this);
+
                     });
-
           }.bind(this));
-
-          // get new bit to score?
+          // get new bit to score
           this.loadBitFromServer();
           React.findDOMNode(document.forms[0].score).value = 5; // set to center, default slider value
           // set label back to text that relates to 5
@@ -365,33 +327,27 @@ var ScoreBitForm = React.createClass({
             <div>
             <form className="scoreBitForm" onSubmit={this.handleSubmit}>
             <input type="hidden" name="_bitId" ref="bitId" value={this.state.bitId} />
-
               <div className="row text-left">
                 <div className="result" ref="message">{this.state.message}</div>
               </div>
-
               <div className="col-md-12 text-center bit-img">
                 <img width="100" height="100" src={this.state.bitImg} />
               </div>
-
               <div className="row bitbox">
                 <div className="col-md-12 text-center bit-name">
                   {this.state.bitName}
                 </div>
               </div>
-
               <div className="row">
                 <div className="col-md-12 text-center sliderbox-outer">
                   <SliderBox />
                 </div>
               </div>
-
               <div className="row">
                 <div className="col-md-12 text-center sliderbox-outer">
                   <input type="submit" value="Send score >>" />
                 </div>
               </div>
-
             </form>
             </div>
         ); 
@@ -409,21 +365,20 @@ var AddBitForm = React.createClass({
     handleSubmit: function(e) {
       e.preventDefault();
       var name  = React.findDOMNode(this.refs.name).value.trim();
-      var score = React.findDOMNode(document.forms[0].score).value.trim(); // this the right way?
+      var score = React.findDOMNode(document.forms[0].score).value.trim();
       // basic form validation, typeof score returns string
       if((name.length > 2) && (score > 0) && (score < 11)) {
         superagent
           .post('/api/bit')
-          .set('Content-Type', 'application/json')
           .send({"name": name, "score": score})
           .end(function (err, res) {
             if(err) throw err;
             if(res) {
               this.setState({ message: res.body.message + ' - Add another?' });
               // clear form
-              React.findDOMNode(this.refs.name).value = ''; // clear input form value
-              React.findDOMNode(document.getElementById('scoreDisplay')).textContent = sliderText(5) // set slider text back to center
-              React.findDOMNode(document.forms[0].score).value = 5; // set to center, default slider value 
+              React.findDOMNode(this.refs.name).value = ''; 
+              React.findDOMNode(document.getElementById('scoreDisplay')).textContent = sliderText(5) 
+              React.findDOMNode(document.forms[0].score).value = 5; 
             }
           }.bind(this));
         } else {
@@ -436,11 +391,9 @@ var AddBitForm = React.createClass({
             <div className="col-md-2"></div>
             <div className="col-md-8 text-center">
               <form className="addBitForm" onSubmit={this.handleSubmit}>
-
               <div className="row col-md-12 text-left">
                 <div className="result" ref="message">{this.state.message}</div>
               </div>
-
               <div className="row col-md-12 bit-name-outer text-left">
                 <label>
                 <input 
@@ -452,7 +405,6 @@ var AddBitForm = React.createClass({
                   className="bit-name" />
                 </label>
               </div>
-
               <div className="row col-md-12 text-left slider-label">
                 <label>Give it a score!</label>
               </div>
@@ -462,7 +414,6 @@ var AddBitForm = React.createClass({
               <div className="row col-md-12 text-left">
                 <label><input type="submit" value="Add it >> " /></label>
               </div>
-
               </form>
             </div>
             <div className="col-md-2"></div>
