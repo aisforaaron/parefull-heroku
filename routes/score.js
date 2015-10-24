@@ -85,8 +85,6 @@ router.route('/')
                     }
                   });
                 */
-                res.json({ message: 'Score testing' })
-                
               }
             });
         } else {
