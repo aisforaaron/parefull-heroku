@@ -45,7 +45,6 @@ router.route('/')
     // POST new score
     .post(function (req, res) {
         console.log('+++ /api/score POST')
-        console.log('req.body: '+JSON.stringify(req.body))
         var scoreVal = req.body.score
         var ip       = ''
         var bitId    = req.body._bitId
@@ -64,6 +63,7 @@ router.route('/')
         if( (scoreVal > 0) && (scoreVal < 11) && (bitId.length > 0) ) {
           score.save(function(err, res) {
               if (err) throw err;
+              console.log('---score saved.')
           });
         } else {
           res.json({ message: "Please score bit properly - API error."});

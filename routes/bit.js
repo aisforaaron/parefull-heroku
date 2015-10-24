@@ -213,6 +213,8 @@ router.route('/bit/id/?:bit_id?')
         // we have the bit id
         // need to calculate the updated scoreAvg and update bit
         if(req.params.bit_id) { // basic validation
+
+          // get bit score avg
           superagent
             .get('/api/score/avg/'+req.params.bit_id)
             .set('Accept', 'application/json')
@@ -220,6 +222,7 @@ router.route('/bit/id/?:bit_id?')
               if(err) {
                 throw err;
               } else {
+
                 console.log('4-scoreAvg new value: '+JSON.stringify(score.body))
                 var updateFields = new Object()
                 // Update score average if flag is passed
@@ -238,8 +241,10 @@ router.route('/bit/id/?:bit_id?')
                   console.log('6-bit fields were updated: '+JSON.stringify(updateFields));
                   return; // ??
                 });
+
               } // end if err
             });
+
           res.json({message: 'Updated bit.'})
         } // end if bit_id
     })

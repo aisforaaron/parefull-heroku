@@ -322,33 +322,40 @@ var ScoreBitForm = React.createClass({
       var id    = this.refs.bitId.getDOMNode().value
       // basic form validation
       if( (score > 0) && (score < 11) && (id.length > 0) ) {
+
         // post new score
         superagent
           .post('/api/score')
           .send({ "_bitId": id, "score": score })
           .end(function (err, res) {
             if(err) throw err;
-            if(res) {
-              // now update bit avg
-              superagent
-                .post('/api/bit/id/')
-                .send({"updateAvg": true, "bitId": bitId})
-                .end(function (err, res) {
-                  if (err){
-                    throw err;
-                    console.log(res.error)
-                  }
-                });
-              this.setState({ message: res.body.message + ' Score another right meow?' });
-              // clear form
-              // React.findDOMNode(this.refs.name).value = '';  
-            }
+
+                 // get bit score avg and update bit
+                  superagent
+                    .get('/api/score/avg/'+id)
+                    .set('Accept', 'application/json')
+                    .end(function (err, score) {
+                      if(err) throw err;
+                        var updateFields = new Object()
+                        updateFields.scoreAvg = score.body
+                        // find the bit document and update it in the same call
+                        var bitId = mongoose.Types.ObjectId(id)
+                        Bit.findByIdAndUpdate(bitId, updateFields, function(err, res){
+                          if (err) throw err;
+                          this.setState({ message: res.body.message + ' Score another right meow?' });
+                          // clear form
+                          // React.findDOMNode(this.refs.name).value = '';  
+                        }).bind(this);
+                    });
+
           }.bind(this));
+
           // get new bit to score?
           this.loadBitFromServer();
           React.findDOMNode(document.forms[0].score).value = 5; // set to center, default slider value
           // set label back to text that relates to 5
           React.findDOMNode(document.getElementById('scoreDisplay')).textContent = sliderText(5)
+
       } else {
         this.setState({ message: "Please score bit properly"})
       }
