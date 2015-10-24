@@ -368,13 +368,43 @@ var AddBitForm = React.createClass({
       var score = React.findDOMNode(document.forms[0].score).value.trim();
       // basic form validation, typeof score returns string
       if((name.length > 2) && (score > 0) && (score < 11)) {
+
+        // POST new bit
         superagent
           .post('/api/bit')
-          .send({"name": name, "score": score})
+          .send({"name": name})
           .end(function (err, res) {
             if(err) throw err;
             if(res) {
-              this.setState({ message: res.body.message + ' - Add another?' });
+
+              // POST new score
+              var id = mongoose.Types.ObjectId(res._id)
+              superagent
+                .post('/api/score')
+                .send({ "_bitId": id, "score": score })
+                .end(function (err, result) {
+                  if(err) throw err;
+
+                        // GET new bit score avg
+                        superagent
+                          .get('/api/score/avg/'+id)
+                          .end(function (err, score) {
+                            if(err) throw err;
+
+                              // PUT call to update bit scoreAvg
+                              superagent
+                                .put('/api/bit/id/'+id)
+                                .send({"scoreAvg": score.body})
+                                .end(function (err, score) {
+                                  if(err) throw err;
+                                  this.setState({ message: 'Bit saved. Add another?' });
+                                }).bind(this);
+
+                          });
+                }.bind(this));
+
+              console.log('---api/bit/ POST res.body: '+JSON.stringify(res.body))
+              this.setState({ message: 'Bit saved. Add another?' });
               // clear form
               React.findDOMNode(this.refs.name).value = ''; 
               React.findDOMNode(document.getElementById('scoreDisplay')).textContent = sliderText(5) 

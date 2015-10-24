@@ -34,12 +34,12 @@ router.route('/')
     .post(function (req, res) {
         var ip    = req.headers['x-forwarded-for']  // pass raw ip to /api/score 
         var name  = req.body.name
-        var score = req.body.score
+        // var score = req.body.score
         // setup object
         var bit   = new Bit()
         bit.name  = name
         bit.ip    = ip
-        bit.score = score
+        // bit.score = score
         // basic validation
         if((name.length > 2) && (score > 0) && (score < 11)) {
           Bit.findOneAndUpdate(
