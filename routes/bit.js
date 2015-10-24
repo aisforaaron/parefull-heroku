@@ -213,7 +213,8 @@ router.route('/bit/id/:bit_id')
         // we have the bit id
         // need to calculate the updated scoreAvg and update bit
         if(req.params.bit_id.length>0) { // basic validation
-          console.log('req bit_id: '+req.params.bit_id)
+          var tp = typeof req.params.bit_id
+          console.log('req bit_id typeof: '+tp)
           superagent
             .get('/api/score/avg/'+req.params.bit_id)
             .set('Accept', 'application/json')
