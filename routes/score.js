@@ -68,8 +68,8 @@ router.route('/')
               } else {
                 // Update Bit avg score
                 superagent
-                  .post('/api/bit/id/'+bitId)
-                  .send({"updateAvg": true})
+                  .post('/api/bit/id/')
+                  .send({"updateAvg": true, "bitId": bitId})
                   .end(function (err, res) {
                     if (err){
                       throw err;

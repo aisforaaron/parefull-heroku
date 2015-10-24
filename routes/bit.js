@@ -194,7 +194,7 @@ router.route('/bit/rand/?:skip_id?')
 
 // =============================================================================
 
-router.route('/bit/id/:bit_id')
+router.route('/bit/id/?:bit_id?')
 
     // search bit by id
     .get(function(req, res) {
