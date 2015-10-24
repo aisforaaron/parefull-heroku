@@ -161,6 +161,7 @@ router.route('/id/?:bit_id?')
     // UPDATE A BIT
     // if a PUT request is sent to /api/bit/id/ w/form vars
     .put(function(req, res) {
+        console.log('inside put id/:id req.params: '+JSON.stringify(req.params))
         if(req.params.bit_id) { 
           var updateFields = new Object()
           if(req.body.scoreAvg) {
@@ -170,10 +171,13 @@ router.route('/id/?:bit_id?')
               updateFields.name = req.body.name
           }
           var bitId = mongoose.Types.ObjectId(req.params.bit_id)
-          Bit.findByIdAndUpdate(bitId, updateFields, function(err, res){
+          Bit.findByIdAndUpdate(bitId, updateFields, function(err, result){
             if (err) throw err;
-            res.json({message: 'Updated bit.'})
+            res.json(result)
+            // res.json({message: 'Updated bit.'})
           });
+        } else {
+          res.json({ message: 'No id sent to update bit.'})
         }
     })
 
