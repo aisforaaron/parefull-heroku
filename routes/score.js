@@ -70,7 +70,9 @@ router.route('/')
                 // var bitIdObject = mongoose.Types.ObjectId(bitId) // passing string over url
 
                 // console.log('bitId: '+bitId+' bitIdObject: '+bitIdObject+' req.body._bitId: '+req.body._bitId)
-                console.log('--- put path: /api/bit/id/'+bitId)
+                // console.log('--- put path: /api/bit/id/'+bitId)
+
+                /*
                 superagent
                   .post('/api/bit/id/'+bitId) // why put not post? why send bitId here? prob can't pass obj in put url
                   .send({"updateAvg": true})
@@ -82,6 +84,9 @@ router.route('/')
                       res.json({ message: 'Score added and bit avg updated!' });
                     }
                   });
+                */
+                res.json({ message: 'Score testing' })
+                
               }
             });
         } else {
