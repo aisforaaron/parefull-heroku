@@ -381,10 +381,10 @@ var AddBitForm = React.createClass({
             if(res) {
 
               // POST new score
-              var id = mongoose.Types.ObjectId(res._id)
+              var id = res._id
               superagent
                 .post('/api/score')
-                .send({ "_bitId": id, "score": score })
+                .send({ "_bitId": , "score": score })
                 .end(function (err, result) {
                   if(err) throw err;
 

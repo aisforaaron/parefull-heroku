@@ -46,7 +46,7 @@ router.route('/')
     .post(function (req, res) {
         var scoreVal = req.body.score
         var ip       = ''
-        var bitId    = req.body._bitId
+        var bitId    = req.body._bitId  // does this need? mongoose.Types.ObjectId(#)
         // get ip from post or headers
         // from add score form, comes here directly
         if(req.body.ip){
