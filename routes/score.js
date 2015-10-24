@@ -66,19 +66,19 @@ router.route('/')
               if (err) {
                 throw err;
               } else {
-                // Update Bit avg score
-                superagent
-                  .post('/api/bit/id/')
-                  .send({"updateAvg": true, "bitId": bitId})
-                  .end(function (err, res) {
-                    if (err){
-                      throw err;
-                      console.log(res.error)
-                    }
-                  });
-                // res.json({ message: 'Score added and bit avg updated!' });
+                // Update Bit avg score???
               }
             });
+          superagent
+            .post('/api/bit/id/')
+            .send({"updateAvg": true, "bitId": bitId})
+            .end(function (err, res) {
+              if (err){
+                throw err;
+                console.log(res.error)
+              }
+            });
+
         } else {
           res.json({ message: "Please score bit properly - API error."});
         }

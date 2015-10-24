@@ -210,7 +210,7 @@ router.route('/bit/id/?:bit_id?')
     .post(function(req, res) {
         console.log('+++ /api/bit/id/# PUT')
         console.log('req.body: '+JSON.stringify(req.body))
-        res.json({message: 'testing...left off at /api/bit/id/:bit_id'})
+        // res.json({message: 'testing...left off at /api/bit/id/:bit_id'})
 
 
         /*

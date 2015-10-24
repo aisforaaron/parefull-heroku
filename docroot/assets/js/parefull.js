@@ -324,7 +324,6 @@ var ScoreBitForm = React.createClass({
       if( (score > 0) && (score < 11) && (id.length > 0) ) {
         superagent
           .post('/api/score')
-          .set('Content-Type', 'application/json')
           .send({ "_bitId": id, "score": score })
           .end(function (err, res) {
             if(err) throw err;
