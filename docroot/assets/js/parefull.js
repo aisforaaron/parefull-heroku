@@ -288,36 +288,35 @@ var ScoreBitForm = React.createClass({
       var id    = this.refs.bitId.getDOMNode().value
       // basic form validation
       if( (score > 0) && (score < 11) && (id.length > 0) ) {
-        // post new score
+        // POST new score
+        // -------------------------------------------
         superagent
           .post('/api/score')
-          .send({ "_bitId": id, "score": score })
+          .send({ "_bitId": id, "score": score})
           .end(function (err, res) {
             if(err) throw err;
-
-                 // get new bit score avg
+                 // GET new bit score avg
+                 // -------------------------------------------
                   superagent
                     .get('/api/score/avg/'+id)
                     .end(function (err, score) {
                       if(err) throw err;
-
                         // PUT call to update bit scoreAvg
+                        // -------------------------------------------
                         superagent
                           .put('/api/bit/id/'+id)
                           .send({"scoreAvg": score.body})
-                          .end(function (err, score) {
+                          .end(function (err, result) {
                             if(err) throw err;
-                            this.setState({ message: res.body.message + ' Score another right meow?' });
-                          }).bind(this);
-
-                    });
-          }.bind(this));
+                            this.setState({ message: 'Score another right meow?' });
+                          }.bind(this)); // end id/id
+                    }); // end avg/id
+          }.bind(this)); // end api/score
           // get new bit to score
           this.loadBitFromServer();
           React.findDOMNode(document.forms[0].score).value = 5; // set to center, default slider value
           // set label back to text that relates to 5
           React.findDOMNode(document.getElementById('scoreDisplay')).textContent = sliderText(5)
-
       } else {
         this.setState({ message: "Please score bit properly"})
       }
