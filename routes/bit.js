@@ -210,6 +210,11 @@ router.route('/bit/id/:bit_id')
     // if a PUT request is sent to /api/bit/id/:bit_id w/form vars, update the bit
     .put(function(req, res) {
         console.log('+++ /api/bit/id/# PUT')
+        console.log('req.body: '+JSON.stringify(req.body))
+        res.json({message: 'testing...left off at /api/bit/id/:bit_id'})
+
+        
+        /*
         // we have the bit id
         // need to calculate the updated scoreAvg and update bit
         if(req.params.bit_id) { // basic validation
@@ -242,6 +247,9 @@ router.route('/bit/id/:bit_id')
             });
           res.json({message: 'Updated bit.'})
         } // end if bit_id
+        */
+
+
     })
 
     // delete the bit

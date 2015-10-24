@@ -67,7 +67,8 @@ router.route('/')
                 throw err;
               } else {
                 // Update Bit avg score
-                var bitIdObject = mongoose.Types.ObjectId(bitId)
+                // var bitIdObject = mongoose.Types.ObjectId(bitId) // passing string over url
+                
                 // console.log('bitId: '+bitId+' bitIdObject: '+bitIdObject+' req.body._bitId: '+req.body._bitId)
                 console.log('--- put path: /api/bit/id/'+bitId)
                 superagent
