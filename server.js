@@ -24,6 +24,7 @@ app.enable('trust proxy');  // so i can capture user IP when they add/rate bits
 
 console.log('process.env.APP_ENV: '+process.env.APP_ENV)
 console.log('process.env.PORT: '+process.env.PORT)
+console.log('config.address: '+config.address)
 
 // connect to mongoLab using mongoose
 mongoose.connect(config.db.url, function(err) {
