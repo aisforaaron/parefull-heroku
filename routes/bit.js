@@ -207,4 +207,17 @@ router.route('/name/:bit_name')
 
 // =============================================================================
 
+router.route('/count')
+
+    // return counter of total bits
+    .get(function(req, res) {
+        // case insensitive searches use regex
+        Bit.collection.count(function(err, bit) {
+            if (err) throw err;
+            res.json(bit);
+        });
+    });
+
+// =============================================================================
+
 module.exports = router;
