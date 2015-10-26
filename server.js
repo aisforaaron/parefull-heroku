@@ -10,8 +10,8 @@ var bodyParser   = require('body-parser');      // work with POST
 var superagent   = require('superagent');       // api layer
 var mongoose     = require('mongoose');         // db layer
 var bit          = require('./models/bit');     // custom schema for parefull items (bits)
-// var browserify   = require('browserify');       // ???
 var fs           = require('fs');
+var config       = require('./config');
 
 // App & DB setup
 // =============================================================================
@@ -21,17 +21,25 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.enable('trust proxy');  // so i can capture user IP when they add/rate bits
 
+
+console.log('process.env.APP_ENV: '+process.env.APP_ENV)
+console.log('process.env.PORT: '+process.env.PORT)
+
 // connect to mongoLab using mongoose
-mongoose.connect('mongodb://pareuser:FPOk9aA1QKts@ds039484.mongolab.com:39484/parefull');
+mongoose.connect(config.db.url, function(err) {
+    if (err) {
+        console.log('Could not connect to database', config.db.url, ' due to error', err);
+        process.exit(1);
+    }
+});
 mongoose.set('debug', true);
 
-// set api to listen on port 4000
-var port             = 4000; //process.env.PORT || 4000;        // set our port
-var listen           = '127.0.0.1';                     // 127.0.0.1 blocks external requests.
-// process.env.NODE_ENV = 'local';                         // set our env
+// set api to path http://listen:port
+var port   = process.env.PORT || config.port;
+var listen = config.address;
 
 // Heroku Config - tell nginx to start listening
-fs.openSync('/tmp/app-initialized', 'w');
+fs.openSync('/tmp/app-initialized', 'w'); // test without this line for heroku
 
 
 // Routes
@@ -51,10 +59,10 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
+  // app.use(express.errorHandler()); // another option?
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
@@ -62,17 +70,17 @@ if (app.get('env') === 'development') {
       error: err
     });
   });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
+} else {
+  // production error handler
+  // no stacktraces leaked to user
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: {}  // only diff from above?
+    });
   });
-});
+}
 
 module.exports = app;
 
@@ -81,4 +89,4 @@ module.exports = app;
 // =============================================================================
 
 app.listen(port, listen);
-console.log('Magic happens on port ' + port);
+console.log('Magic happens on '+listen+':'+port); // test line to remove
