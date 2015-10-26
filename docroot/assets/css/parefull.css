@@ -19,6 +19,21 @@ hr {
 .comparebox .bits-and-arrow {
   margin: 48px 0;
 }
+
+input[type=submit] {
+    padding: 12px;
+}
+
+/* bits ********* */
+
+.bitbox-outer, 
+.sliderbox-img-name {
+  /*border:solid 1px #ccc;*/
+  /*background-color:#fff;*/
+  padding:4px;
+  /*width:220px;*/
+}
+
 .bit-name, .bit-avg {
  font-size:2em;
 }
@@ -30,6 +45,58 @@ hr {
  font-size:1em;
   color:#666;
 }
+
+/* Score a Bit Box
+message
+bit-img
+bit-name
+sliderbox-parent
+submit
+************** */
+
+.scoreBitBox {
+  padding-bottom: 24px;
+}
+
+.scoreBitBox .bit-name {
+  padding: 12px;
+}
+
+.scoreBitBox input[type=submit] {
+    /*color: orange;*/
+    padding: 12px;
+}
+
+.scoreBitBox .refresh-btn {
+    padding-bottom: 24px;
+}
+
+/* Sliderbox ****** */
+
+.sliderbox-parent {
+}
+
+.sliderbox {
+  /*background-color: #fff;*/
+  margin: 14px;
+  padding: 12px;
+  /*border: 1px solid #ccc;*/
+}
+
+label#scoreDisplay {
+  padding: 12px;
+}
+
+.sliderbox .score {
+}
+
+input[type=range] {
+  margin-bottom: 12px;
+}
+
+
+/* misc ****** */
+
 .arrow-text {
   margin-top:12px;
   font-size:2em;
