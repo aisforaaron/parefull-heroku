@@ -63,13 +63,29 @@ var BitsNav = React.createClass({
 });
 
 var SecondaryNav = React.createClass({
+    loadCountFromServer: function () {
+       superagent
+        .get('/api/bit/count')
+        .end(function (err, res) {
+           if(err) throw err;
+           this.setState({bitCount: res.body})
+        }.bind(this));
+    },
+    componentDidMount: function() {
+      this.loadCountFromServer();
+    },
+    getInitialState: function() {
+      return {
+        bitCount: ''
+      };
+    },
     render: function () {
         return (
             <div className="row secondaryNav">
               <div className="col-md-12 text-center">
                 <a href="#about">About/Contact</a> | 
                 <a href="#privacy">Privacy/TOS</a> | 
-                <span className="copyright"> Copyright &copy; 2015 Aaron D LLC</span>
+                <span className="bitCount"> {this.state.bitCount} bits and counting! </span>
               </div>
            </div>
         );
@@ -182,7 +198,8 @@ var BitBox = React.createClass({
     },
     render: function () {
         return (
-            <div>
+            <div className="bitbox-outer">
+
               <div className="row bitbox">
                 <div className="col-md-12 text-center bit-img">
                   <img width="100" height="100" src={this.props.bitImg} />
@@ -191,16 +208,19 @@ var BitBox = React.createClass({
                   {this.props.bitName}
                 </div>
               </div>
+
               <div className="row">
                 <div className="col-md-12 text-center bit-avg">
                   {this.props.bitAvg}
                 </div>
               </div>
+
               <div className="row hidden">
                 <div className="col-md-12 text-center sliderbox-outer">
                   <SliderBox />
                 </div>
               </div>
+
             </div>
         ); 
     }
@@ -219,9 +239,9 @@ var SliderBox = React.createClass({
   },
   render:function(){
     return (
-      <div>
-      <input ref="inp" type="range" min="0" max="10" name="score" onChange={this.update} />
-         <label id="scoreDisplay">{this.state.scoreDisplay}</label>
+      <div className="sliderbox">
+        <label id="scoreDisplay">{this.state.scoreDisplay}</label>
+        <input ref="inp" type="range" min="0" max="10" name="score" onChange={this.update} />
       </div>
    );
   }
@@ -325,31 +345,44 @@ var ScoreBitForm = React.createClass({
     },
     render: function () {
         return (
-            <div>
-            <form className="scoreBitForm" onSubmit={this.handleSubmit}>
-            <input type="hidden" name="_bitId" ref="bitId" value={this.state.bitId} />
-              <div className="row text-left">
-                <div className="result" ref="message">{this.state.message}</div>
-              </div>
-              <div className="col-md-12 text-center bit-img">
-                <img width="100" height="100" src={this.state.bitImg} />
-              </div>
-              <div className="row bitbox">
-                <div className="col-md-12 text-center bit-name">
-                  {this.state.bitName}
+            <div className="scoreBitBox">
+                <form className="scoreBitForm" onSubmit={this.handleSubmit}>
+                <input type="hidden" name="_bitId" ref="bitId" value={this.state.bitId} />
+
+
+                <div className="row">
+                  <div className="col-md-4"></div>
+                  <div className="col-md-4">
+
+                      <div className="refresh-btn">
+                        <input type="button" value="Score a different bit" onClick={this.loadBitFromServer} />
+                      </div>
+
+                      <div className="row text-left message" ref="message">
+                          {this.state.message}
+                      </div>
+
+                      <div className="sliderbox-img-name">
+                        <div className="row text-center bit-img">
+                            <img width="100" height="100" src={this.state.bitImg} />
+                        </div>
+                        <div className="row text-center bit-name">
+                            {this.state.bitName}
+                        </div>
+                      </div>
+
+                  </div>
+                  <div className="col-md-4"></div>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col-md-12 text-center sliderbox-outer">
+
+
+                <div className="row text-center sliderbox-parent">
                   <SliderBox />
                 </div>
-              </div>
-              <div className="row">
-                <div className="col-md-12 text-center sliderbox-outer">
+                <div className="row text-center submit-btn">
                   <input type="submit" value="Send score >>" />
                 </div>
-              </div>
-            </form>
+                </form>
             </div>
         ); 
     }
@@ -443,7 +476,7 @@ var AddBitForm = React.createClass({
               <div className="row col-md-12">
                 <SliderBox />
               </div>
-              <div className="row col-md-12 text-left">
+              <div className="row col-md-12 text-center">
                 <label><input type="submit" value="Add it >> " /></label>
               </div>
               </form>
