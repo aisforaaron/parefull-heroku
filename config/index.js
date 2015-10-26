@@ -1,5 +1,6 @@
 var defaults  = require('./defaults');
 var env       = process.env.NODE_ENV || 'development';
+console.log('env: '+env)
 var overrides = require('./' + env);
 
 for (var key in overrides) {

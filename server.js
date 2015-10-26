@@ -21,11 +21,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.enable('trust proxy');  // so i can capture user IP when they add/rate bits
 
-
-console.log('process.env.APP_ENV: '+process.env.APP_ENV)
-console.log('process.env.PORT: '+process.env.PORT)
-console.log('config.address: '+config.address)
-
 // connect to mongoLab using mongoose
 mongoose.connect(config.db.url, function(err) {
     if (err) {
@@ -36,7 +31,7 @@ mongoose.connect(config.db.url, function(err) {
 mongoose.set('debug', true);
 
 // set api to path http://listen:port
-var port   = process.env.PORT || config.port;
+var port   = config.port;
 var listen = config.address;
 
 // Heroku Config - tell nginx to start listening
@@ -90,4 +85,4 @@ module.exports = app;
 // =============================================================================
 
 app.listen(port, listen);
-console.log('Magic happens on '+listen+':'+port); // test line to remove
+console.log('API listening on '+listen+':'+port); // test line to remove
