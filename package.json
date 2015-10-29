@@ -12,6 +12,8 @@
     "google-images": "^0.1.2",
     "mongoose": "^4.1.10",
     "react": "^0.14.0",
+    "request": "^2.65.0",
+    "rimraf": "^2.4.3",
     "superagent": "^1.4.0"
   },
   "description": "Parefull Nodejs Web App",
