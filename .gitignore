@@ -3,3 +3,6 @@
 _test
 node_modules
 paredeploy
+
+# skip cached bit images
+docroot/assets/images/bits/
