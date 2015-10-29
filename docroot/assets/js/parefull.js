@@ -134,8 +134,8 @@ var CompareBox = React.createClass({
         .get('/api/bit/rand')
         .end(function (err, res) {
            this.setState({bitName: res.body.name})
-           this.setState({bitImg: res.body.img})
-           this.setState({bitAvg: sliderText(res.body.scoreAvg)}) // remove sliderText() for just number
+           this.setState({bitImg: res.body.image})
+           this.setState({bitAvg: sliderText(res.body.scoreAvg)})
            var A = res.body.scoreAvg
            var skipId = res.body._id
           // call for second unique bit
@@ -143,10 +143,9 @@ var CompareBox = React.createClass({
             .get('/api/bit/rand/'+skipId)
             .end(function (err, res) {
                this.setState({bitName2: res.body.name})
-               this.setState({bitImg2: res.body.img})
+               this.setState({bitImg2: res.body.image})
                this.setState({bitAvg2: sliderText(res.body.scoreAvg)})
-               var msg = getArrow(A,res.body.scoreAvg)
-               this.setState({arrow: msg})
+               this.setState({arrow: getArrow(A,res.body.scoreAvg)})
            }.bind(this));
         }.bind(this));
     },
@@ -190,12 +189,6 @@ var CompareBox = React.createClass({
 
 // format output for a bit
 var BitBox = React.createClass({
-    getInitialState: function() {
-      return {
-        bitAvg: 'orig',
-        bitImg: ''
-      };
-    },
     render: function () {
         return (
             <div className="bitbox-outer">
@@ -247,6 +240,7 @@ var SliderBox = React.createClass({
   }
 });
 
+/* // not used anywhere yet
 // get data for one random bit
 var BitBoxRand = React.createClass({
     loadBitFromServer: function () {
@@ -276,11 +270,13 @@ var BitBoxRand = React.createClass({
         );
     }
 });
+*/
 
-// get a random bit and show score slider form
+// get a random bit, show score slider form, update db on form submit
 var ScoreBitForm = React.createClass({
     loadBitFromServer: function () {
       // get random bit to score
+      // if bit doesn't have a cached image, this will getSetCache one and update db
       // @todo - keep session list of ids to skip so user doesn't get them twice?
       superagent
         .get('/api/bit/rand')
@@ -288,7 +284,7 @@ var ScoreBitForm = React.createClass({
           if(err) throw err;
           this.setState({bitName: res.body.name});
           this.setState({bitId: res.body._id});
-          this.setState({bitImg: res.body.img});
+          this.setState({bitImg: res.body.image})
         }.bind(this));
     },
     componentDidMount: function() {
@@ -348,20 +344,15 @@ var ScoreBitForm = React.createClass({
             <div className="scoreBitBox">
                 <form className="scoreBitForm" onSubmit={this.handleSubmit}>
                 <input type="hidden" name="_bitId" ref="bitId" value={this.state.bitId} />
-
-
                 <div className="row">
                   <div className="col-md-4"></div>
                   <div className="col-md-4">
-
                       <div className="refresh-btn">
                         <input type="button" value="Score a different bit" onClick={this.loadBitFromServer} />
                       </div>
-
                       <div className="row text-left message" ref="message">
                           {this.state.message}
                       </div>
-
                       <div className="sliderbox-img-name">
                         <div className="row text-center bit-img">
                             <img width="100" height="100" src={this.state.bitImg} />
@@ -370,12 +361,9 @@ var ScoreBitForm = React.createClass({
                             {this.state.bitName}
                         </div>
                       </div>
-
                   </div>
                   <div className="col-md-4"></div>
                 </div>
-
-
                 <div className="row text-center sliderbox-parent">
                   <SliderBox />
                 </div>
@@ -410,23 +398,23 @@ var AddBitForm = React.createClass({
           .end(function (err, res) {
             if(err) throw err;
               // POST new score
-              var id = res.body._id
-              // console.log('res from /api/bit: '+JSON.stringify(res))
-              console.log('new bit id: '+id+' score: '+score)
               // -------------------------------------------
+              var id = res.body._id
+              console.log('res from /api/bit: '+JSON.stringify(res))
+              console.log('new bit id: '+id+' score: '+score)
               superagent
                 .post('/api/score')
                 .send({ "_bitId": id, "score": score })
                 .end(function (err, result) {
                   if(err) throw err;
-                  console.log('new score posted')
+                  console.log('new score posted '+JSON.stringify(result))
                         // GET new bit score avg
                         // -------------------------------------------
                         superagent
                           .get('/api/score/avg/'+id)
                           .end(function (err, score) {
                             if(err) throw err;
-                              console.log('new avg: '+score.body)
+                            console.log('new avg: '+score.body)
                               // PUT call to update bit scoreAvg
                               // -------------------------------------------
                               superagent
@@ -435,6 +423,15 @@ var AddBitForm = React.createClass({
                                 .end(function (err, result) {
                                   if(err) throw err;
                                   console.log('updated scoreAvg. score obj: '+JSON.stringify(result))
+                                // PUT call to get/set/cache new bit image
+                                // -------------------------------------------
+                                superagent
+                                  .put('/api/bit/id/'+id+'/img')
+                                  .send({"name": name})
+                                  .end(function (err, result) {
+                                    if(err) throw err;
+                                    console.log('added image to bit')
+                                  }); // end id/bit_id/img
                                 }); // end id/id
                           }); // end avg/id
                 }.bind(this)); // end api/score
