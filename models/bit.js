@@ -6,16 +6,15 @@
 // - try to use IP to limit the same user from voting multiple times on one bit
 // - if i delete a bit, i'll need to delete all scores as well
 
-// @todo separate vote schema to diff model?
-
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
 var BitSchema   = new Schema({
-    name: { type: String },
-    created: { type: Date, default: Date.now },
-    ip: { type: String },
-    scoreAvg: { type: Number }
+    name:       { type: String },
+    created:    { type: Date, default: Date.now },
+    ip:         { type: String },
+    scoreAvg:   { type: Number },
+    image:      { type: String }
 });
 
 module.exports = mongoose.model('Bit', BitSchema);
