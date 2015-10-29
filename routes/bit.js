@@ -1,4 +1,19 @@
-// API routes for Parefull bits
+/*
+***************************************
+
+API routes for Parefull Bits
+
+Routes definition
+  /api/bit
+    /               GET all bits 
+                    POST new bit
+    rand            GET a random bit
+    id/:id          GET bit by id 
+                    DELETE bit by id
+    name/:name      GET bit by name
+
+***************************************
+*/
 
 var express    = require('express');
 var router     = express.Router();
@@ -7,16 +22,54 @@ var Score      = require('../models/score');
 var mongoose   = require('mongoose');        // needed for working with ObjectId field type
 var superagent = require('superagent');
 var google     = require('google-images');
-// var request    = require('request'); // replace w/superagent call...for image exist check below
+var pareUtils  = require('../lib/utils.js');
+var imgUtils   = require('../lib/imgUtils.js');
+var fs         = require('fs');
+var rimraf     = require('rimraf');
+var config     = require('../config');
 
-/*
-Routes definition
-  /api/bit
-    /               GET all bits, POST new bit
-    rand            GET a random bit
-    id/:id          GET bit by id, DELETE bit by id
-    name/:name      GET bit by name
-*/
+
+// =============================================================================
+
+// for testing
+
+router.route('/test')
+
+    // GET path for testing code
+    .get(function(req, res) {
+      var test = {message: 'just testing /api/bit/test' }
+      res.json(test)
+    })
+
+// =============================================================================
+
+// for testing
+
+router.route('/flush')
+
+    // GET path running an image cache flush
+    .get(function(req, res) {
+      // rm all files/dirs under config.bitFilePath
+      // add * to keep the 'bit' dir
+      rimraf(config.bitFilePath+'*', function(err, res){
+        if(err) throw err;
+        console.log('deleted image cache dir contents at '+config.bitFilePath)
+        // empty image field from all bit db documents
+        // first get all fields 
+        Bit.aggregate({ $match: { image: { $ne: null }}}, function(err, bits) {
+          if (err) throw err;
+          // loop through and update
+          for(var i=0; i<bits.length; i++){
+            // console.log('bits[i]._id '+bits[i]._id)
+            Bit.update({_id: bits[i]._id}, { image: null }, function(err, result) {
+              if (err) throw err;
+            });
+          } // end for
+          console.log('updated bit collection to remove image field values')
+        });
+      }); // end rimraf
+      res.json({message: 'Image file and db cache flushed'})
+    })
 
 // =============================================================================
 
@@ -38,8 +91,24 @@ router.route('/')
         var bit   = new Bit()
         bit.name  = name
         bit.ip    = ip
+
         // basic validation
         if(name.length > 2) {
+
+/*
+          // Figure out bit image
+          // @todo, if upsert below - skip this image stuff? 
+          //        otherwise will just get new img for existing bit
+          var imgUrl   = imgUtils.getGoogleImage(name)        // get rand google image url
+          var imgName  = imgUtils.getImageFileName(imgUrl)    // get filename off end of url
+          var savePath = imgUtils.getCachedImagePath(imgName) // get local save path for image
+          // pass url to cache the image locally
+          // if true update bit document
+          if(imgUtils.cacheGoogleImage(url)) {
+            bit.image  = imgName
+          }
+*/
+          // Add to db
           Bit.findOneAndUpdate(
               { "name" : { $regex : new RegExp(name, "i") } }, // case insensitive
               { $setOnInsert: bit },  // pass bit object, just passing field:value didn't work
@@ -59,11 +128,6 @@ router.route('/')
 
 // =============================================================================
 
-// dupe from parefullUtils.js - prob have to bundle this method for front end output
-function randomNumber(min, max) {
-  return Math.floor(Math.random()*(max-min+1)+min);
-}
-
 router.route('/rand/?:skip_id?')
 
     // get one random bit 
@@ -77,73 +141,40 @@ router.route('/rand/?:skip_id?')
           // var random = Math.floor(Math.random() * count);
           var min    = 0
           var max    = count-2
-          var random = randomNumber(min, max)
+          var random = pareUtils.randomNumber(min, max)
           var skipId = ''
           if(req.params.skip_id){
             skipId = { _id: { $ne: req.params.skip_id}}
           }
+          // just for testing locally, force one specific bit to return
           Bit.findOne(skipId).skip(random).exec(
+          // Bit.findById('5627d6a934bd98360d614a8c').exec( // gym shorts
             function(err, bits) {
             if (err) throw err;
-                getImage(bits.name, function(err, img){
-                  if(err) throw err;
-                  var bitsObj      = {}
-                  bitsObj.img      = img
-                  bitsObj.name     = bits.name
-                  bitsObj._id      = bits._id
-                  bitsObj.ip       = bits.ip
-                  bitsObj.__v      = bits.__v
-                  bitsObj.scoreAvg = bits.scoreAvg
-                  bitsObj.created  = bits.created
-                  res.json(bitsObj);
-                }); // end getImage cb
+            // ------------------- NEW METHOD?? ------------------
+            var bitImg = ''
+            if(bits.image!=null){
+                  // if image exists in document, pass along full img path
+                  var savePath = imgUtils.getCachedImagePath(bits.image, true)
+                  bits.image   = savePath+bits.image
+                    console.log('returned current bit: '+JSON.stringify(bits))
+                    res.json(bits)
+            } else {
+                  // if no image field in document, get one
+                  imgUtils.getSetCache(bits.name, bits._id, function(err, imgName){
+                    if(err) throw err;
+                    var savePath = imgUtils.getCachedImagePath(imgName, true)
+                    bits.image   = savePath+imgName 
+
+                    console.log('returned updated bit: '+JSON.stringify(bits))
+                    res.json(bits)
+                  });
+            }
+            // ------------------- /NEW METHOD?? ------------------
           }); //end findOne
+
         });
     });
-
-
-    // @todo move to app/lib/file?? and include here?
-    function getImage(name, cb) {
-        // get rand google image
-        // setup options to pass, start with search term then append &name=value pairs
-        var imgOptions = name+'&imgsz=small&safe=active' // restrict=cc_attribute'
-        google.search(imgOptions, function (err, images) {
-            var small = ''
-            var temp  = ''
-            // loop through and get smallest img by width
-            // make sure at least one result
-            if(images.length>0) {
-              temp = images[0]['width']
-              small = images[0]['url']
-              console.log('inside images. temp: '+temp)
-              for (var img in images) {
-                  if(images[img]['width']<temp){
-                    temp  = images[img]['width']
-                    small = images[img]['url']
-                  }
-              }
-              // console.log('----- sm '+small.length+' temp: '+temp)
-              // make sure above logic worked, if not just use shrug image
-              if(small.length<1 || temp>400){
-                // console.log('set shrug')
-                small = '/assets/images/shrug.jpg'
-              }
-              // // make sure file exists - not working yet, uncomment fs require up top to test
-              // var derp = 'http://vignette4.wikia.nocookie.net/farmville/images/d/d3/S_mores-icon.png/revision/latest%3Fcb%3D20111118184105'
-              // request(derp, function (err, resp) {
-              //   console.log('derp '+JSON.stringify(resp))
-              //    if (resp.statusCode != 200) {
-              //     console.log('set to derp')
-              //     small = '/assets/images/derp.jpg'
-              //    } 
-              // });
-            } else {
-              small = '/assets/images/shrug.jpg'
-            }
-            console.log('return small: '+small)
-          return cb(null, small)
-        });
-    }
 
 // =============================================================================
 
@@ -152,8 +183,7 @@ router.route('/id/?:bit_id?')
     // search bit by id
     .get(function(req, res) {
         Bit.findById(req.params.bit_id, function(err, bit) {
-            if (err)
-                res.send(err);
+            if (err) res.send(err);
             res.json(bit);
         });
     })
@@ -162,15 +192,24 @@ router.route('/id/?:bit_id?')
     // if a PUT request is sent to /api/bit/id/ w/form vars
     .put(function(req, res) {
         console.log('inside put id/:id req.params: '+JSON.stringify(req.params))
+        console.log('req.body '+JSON.stringify(req.body))
         if(req.params.bit_id) { 
-          var updateFields = new Object()
+          var updateFields = new Object();
           if(req.body.scoreAvg) {
+              console.log('added scoreAvg to obj')
               updateFields.scoreAvg = req.body.scoreAvg
           }
           if(req.body.name) {
+              console.log('added name to obj')
               updateFields.name = req.body.name
           }
+          // Image Updates
+          if(req.body.image) {
+            updateFields.image = req.body.image
+            console.log('added image to obj '+updateFields.image)
+          }
           var bitId = mongoose.Types.ObjectId(req.params.bit_id)
+          console.log('updateFields '+updateFields)
           Bit.findByIdAndUpdate(bitId, updateFields, function(err, result){
             if (err) throw err;
             res.json(result)
@@ -188,6 +227,19 @@ router.route('/id/?:bit_id?')
         }, function(err, bit) {
             if (err) throw err;
             res.json({ message: 'Successfully deleted bit.' });
+        });
+    });
+
+// =============================================================================
+
+router.route('/id/:bit_id/img')
+
+    // UPDATE A BIT with new image
+    // pass name in send field, and bitId in url
+    .put(function(req, res) {
+        imgUtils.getSetCache(req.body.name, req.params.bit_id, function(err, imgName){
+          if(err) throw err;
+          console.log('New image saved for new bit.')
         });
     });
 

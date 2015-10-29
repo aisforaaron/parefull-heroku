@@ -1,4 +1,23 @@
-// API routes for Parefull bits
+/*
+***************************************
+
+API routes for Parefull Scores
+
+Routes definition
+  /api/score/
+    /               GET all scores 
+                    POST new score, update avg score in bit model
+    id/:score_id    GET score by score_id
+                    PUT to update a score -- NOT USED YET
+                    DELETE score by score_id
+    avg/:_bitId     GET average score for one bit by _bitId
+    pb/:_bitId      GET amount of times a (parent) bit was scored
+                    DELETE all scores related to a bitId
+
+    * no need to update a score??
+
+***************************************
+*/
 
 var express    = require('express');
 var router     = express.Router();
@@ -7,28 +26,17 @@ var Score      = require('../models/score');
 var mongoose   = require('mongoose');        // needed for working with ObjectId field type
 var superagent = require('superagent');
 
-/*
-Routes definition
-  /api/score/
-    /               GET all scores, 
-                    POST new score, update avg score in bit model
-    id/:score_id    GET score by score_id,
-                    PUT to update a score -- NOT USED YET,
-                    DELETE score by score_id
-    avg/:_bitId     GET average score for one bit by _bitId
-    pb/:_bitId      GET amount of times a (parent) bit was scored, 
-                    DELETE all scores related to a bitId
-    * no need to update a score??
-*/
+// =============================================================================
 
-/*
-  // test route - uncomment as needed
-  router
-      // api/score/test
-      .get('/test', function (req, res) {
-          res.send('Parefull scores.');
+// for testing
+
+router.route('/test')
+
+      .get(function (req, res) {
+          var test = {message: 'just testing /api/score/test' }
+          res.json(test)
+          // res.send('Parefull scores.');
       });
-*/
 
 // =============================================================================
 
