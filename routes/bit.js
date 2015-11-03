@@ -10,6 +10,7 @@ Routes definition
     rand            GET a random bit
     id/:id          GET bit by id 
                     DELETE bit by id
+    /id/:bit_id/img PUT a new image to a bit
     name/:name      GET bit by name
 
 ***************************************
