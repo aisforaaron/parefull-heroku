@@ -4,5 +4,6 @@ _test
 node_modules
 paredeploy
 
-# skip cached bit images
+# skip cached bit image dirs and subdir files
 docroot/assets/images/bits/*
+!docroot/assets/images/bits/Readme.md
