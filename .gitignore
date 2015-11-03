@@ -5,4 +5,4 @@ node_modules
 paredeploy
 
 # skip cached bit images
-docroot/assets/images/bits/
+docroot/assets/images/bits/*
