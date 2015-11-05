@@ -50,6 +50,7 @@ router.route('/flush')
 
     // GET path running an image cache flush
     .get(function(req, res) {
+      /* hiding locally stored img cache code
       // rm all files/dirs under config.bitFilePath
       // add * to keep the 'bit' dir
       rimraf(config.bitFilePath+'*', function(err, res){
@@ -69,8 +70,25 @@ router.route('/flush')
           console.log('updated bit collection to remove image field values')
         });
       }); // end rimraf
+      */
+
+      // empty image field from all bit db documents
+      // @todo figure out how to delete img files from S3
+      // first get all fields 
+      Bit.aggregate({ $match: { image: { $ne: null }}}, function(err, bits) {
+        if (err) throw err;
+        // loop through and update
+        for(var i=0; i<bits.length; i++){
+          // console.log('bits[i]._id '+bits[i]._id)
+          Bit.update({_id: bits[i]._id}, { image: null }, function(err, result) {
+            if (err) throw err;
+          });
+        } // end for
+        console.log('updated bit collection to remove image field values')
+      });
+
       res.json({message: 'Image file and db cache flushed'})
-    })
+    });
 
 // =============================================================================
 
