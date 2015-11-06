@@ -40,6 +40,31 @@ router.route('/test')
     .get(function(req, res) {
       var test = {message: 'just testing /api/bit/test' }
 
+
+/*
+
+
+      var imgUrl  = 'http://www.aarond.com/images/lg-umbrella.jpg'
+      var imgName = 'lg-umbrella-testing.jpg'
+      var id      = '563beabfaebc3d10000514a1' //whales bit
+
+      // Save to S3 instead of caching locally
+      imgUtils.streamToBucket(imgUrl, imgName, function(err, res){
+        if(err) throw err;
+        // PUT call to update bit image in db
+        // -------------------------------------------
+        console.log('right before update image in db, '+imgName)
+        superagent
+          .put('/api/bit/id/'+id)
+          .send({"image": imgName})
+          .end(function (err, result) {
+            if(err) throw err;
+            return imgName // return image name
+        }); // end id/id
+      }); // end cacheGoogleImage - streamtoBucket now
+
+
+
       // test write a remote file to S3 bucket
       var request = require('request');
       var AWS     = require('aws-sdk');
@@ -63,6 +88,7 @@ router.route('/test')
             });
           }
         });
+*/
 
 
       res.json(test)
