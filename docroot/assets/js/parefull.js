@@ -439,6 +439,8 @@ var AddBitForm = React.createClass({
                                       React.findDOMNode(this.refs.name).value = ''; 
                                       React.findDOMNode(document.getElementById('scoreDisplay')).textContent = sliderText(5) 
                                       React.findDOMNode(document.forms[0].score).value = 5; 
+                                      
+                                      res.json(result); // some return?
 
                                     }.bind(this)); // end id/bit_id/img
                                 }.bind(this)); // end id/id
