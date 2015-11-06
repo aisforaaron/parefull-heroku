@@ -233,13 +233,27 @@ router.route('/rand/?:skip_id?')
             } else {
               // if no image field in document, get one
               console.log('no image exists, get new one')
+
               imgUtils.getSetCache(bits.name, bits._id, function(err, imgName){
                 if(err) throw err;
-                // var savePath = imgUtils.getCachedImagePath(imgName, true)
-                console.log('getSetCache callback')
-                bits.image = config.bitFilePath+imgName 
-                console.log('returned updated bit: '+JSON.stringify(bits))
-                res.json(bits)
+
+                // moved from getSetCache to here for testing
+                superagent
+                  .put('/api/bit/id/'+bits._id)
+                  .send({"image": imgName})
+                  .end(function (err, result) {
+                    if(err) throw err;
+                    //return cb(null, imgName) // return image name
+
+                    // var savePath = imgUtils.getCachedImagePath(imgName, true)
+                    bits.image = config.bitFilePath+imgName 
+                    console.log('returned updated bit: '+JSON.stringify(bits))
+                    res.json(bits)
+
+                }); // end id/id
+
+
+                  // moved from here to inside put call .end
               });
             }
             // ------------------- /NEW METHOD?? ------------------
