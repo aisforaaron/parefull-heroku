@@ -180,9 +180,11 @@ router.route('/rand/?:skip_id?')
               res.json(bits)
             } else {
               // if no image field in document, get one
+              console.log('no image exists, get new one')
               imgUtils.getSetCache(bits.name, bits._id, function(err, imgName){
                 if(err) throw err;
                 // var savePath = imgUtils.getCachedImagePath(imgName, true)
+                console.log('getSetCache callback')
                 bits.image = config.bitFilePath+imgName 
                 console.log('returned updated bit: '+JSON.stringify(bits))
                 res.json(bits)
