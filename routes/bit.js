@@ -173,21 +173,20 @@ router.route('/rand/?:skip_id?')
             // ------------------- NEW METHOD?? ------------------
             var bitImg = ''
             if(bits.image!=null){
-                  // if image exists in document, pass along full img path
-                  var savePath = imgUtils.getCachedImagePath(bits.image, true)
-                  bits.image   = savePath+bits.image
-                    console.log('returned current bit: '+JSON.stringify(bits))
-                    res.json(bits)
+              // if image exists in document, pass along full img path
+              // var savePath = imgUtils.getCachedImagePath(bits.image, true)
+              bits.image = config.bitFilePath+bits.image
+              console.log('returned current bit: '+JSON.stringify(bits))
+              res.json(bits)
             } else {
-                  // if no image field in document, get one
-                  imgUtils.getSetCache(bits.name, bits._id, function(err, imgName){
-                    if(err) throw err;
-                    var savePath = imgUtils.getCachedImagePath(imgName, true)
-                    bits.image   = savePath+imgName 
-
-                    console.log('returned updated bit: '+JSON.stringify(bits))
-                    res.json(bits)
-                  });
+              // if no image field in document, get one
+              imgUtils.getSetCache(bits.name, bits._id, function(err, imgName){
+                if(err) throw err;
+                // var savePath = imgUtils.getCachedImagePath(imgName, true)
+                bits.image = config.bitFilePath+imgName 
+                console.log('returned updated bit: '+JSON.stringify(bits))
+                res.json(bits)
+              });
             }
             // ------------------- /NEW METHOD?? ------------------
           }); //end findOne
