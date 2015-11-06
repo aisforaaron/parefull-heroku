@@ -234,9 +234,38 @@ router.route('/rand/?:skip_id?')
               // if no image field in document, get one
               console.log('no image exists, get new one')
 
+              // test moving imgUtils methods right here
+              // get rand google image url
+              imgUtils.getGoogleImage(bits.name, function(err, imgUrl){
+                if(err) throw err;
+                // var imgUrl = res
+                // get filename from end of url
+                imgUtils.getImageFileName(imgUrl, function(err, imgName){
+                    if(err) throw err;
+                    // var imgName = res
+                    // Save to S3 instead of caching locally
+                    imgUtils.streamToBucket(imgUrl, imgName, function(err, res){
+                      if(err) throw err;
+                      // PUT call to update bit image in db
+                      superagent
+                        .put('/api/bit/id/'+bits._id)
+                        .send({"image": imgName})
+                        .end(function (err, result) {
+                          if(err) throw err;
+                          bits.image = config.bitFilePath+imgName 
+                          res.json(bits)
+                      }.bind(this)); // end id/id
+                    }.bind(this)); // end streamtoBucket
+                }.bind(this)); // end getImageFileName
+              }); // end getGoogleImage
+
+
+
+
+
+/*
               imgUtils.getSetCache(bits.name, bits._id, function(err, imgName){
                 if(err) throw err;
-
                 // moved from getSetCache to here for testing
                 superagent
                   .put('/api/bit/id/'+bits._id)
@@ -244,18 +273,19 @@ router.route('/rand/?:skip_id?')
                   .end(function (err, result) {
                     if(err) throw err;
                     //return cb(null, imgName) // return image name
-
-                    // var savePath = imgUtils.getCachedImagePath(imgName, true)
-                    bits.image = config.bitFilePath+imgName 
-                    console.log('returned updated bit: '+JSON.stringify(bits))
-                    res.json(bits)
-
                 }); // end id/id
+*/
 
 
-                  // moved from here to inside put call .end
-              });
-            }
+
+                  // // var savePath = imgUtils.getCachedImagePath(imgName, true)
+                  // bits.image = config.bitFilePath+imgName 
+                  // console.log('returned updated bit: '+JSON.stringify(bits))
+                  // res.json(bits)
+              // });
+
+
+            } // end else
             // ------------------- /NEW METHOD?? ------------------
           }); //end findOne
 
