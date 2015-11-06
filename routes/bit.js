@@ -42,6 +42,8 @@ router.route('/test')
 
       // test write a remote file to S3 bucket
       var request = require('request');
+      var AWS     = require('aws-sdk');
+      var mime    = require('mime');
       var s3      = new AWS.S3();
       var img     = 'http://www.aarond.com/images/lg-umbrella.jpg'
       var imgFile = 'lg-umbrella-test.jpg'
