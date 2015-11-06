@@ -39,6 +39,30 @@ router.route('/test')
     // GET path for testing code
     .get(function(req, res) {
       var test = {message: 'just testing /api/bit/test' }
+
+      // test write a remote file to S3 bucket
+      var request = require('request');
+      var s3      = new AWS.S3();
+      var img     = 'http://www.aarond.com/images/lg-umbrella.jpg'
+      var imgFile = 'lg-umbrella-test.jpg'
+      var options = {'uri': img, 'encoding': null}
+      request
+        .get(options, function (error, response, body) {
+          if (!error && response.statusCode == 200) {
+            var params = {
+              Bucket:      'parebits', 
+              Body:         body, 
+              Key:          'bits/staging/'+imgFile,
+              ContentType:  mime.lookup(imgFile),
+              ACL:         'public-read'
+            }
+            s3.upload(params, function(err, data) {
+              console.log(err, data);
+            });
+          }
+        });
+
+
       res.json(test)
     })
 
