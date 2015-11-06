@@ -353,10 +353,43 @@ router.route('/id/:bit_id/img')
     // UPDATE A BIT with new image
     // pass name in send field, and bitId in url
     .put(function(req, res) {
-        imgUtils.getSetCache(req.body.name, req.params.bit_id, function(err, imgName){
-          if(err) throw err;
-          console.log('New image saved for new bit.')
-        });
+        // imgUtils.getSetCache(req.body.name, req.params.bit_id, function(err, imgName){
+        //   if(err) throw err;
+        //   console.log('New image saved for new bit.')
+        // });
+
+          console.log('img-1')
+              // temp replace getSetCache
+              // test moving imgUtils methods right here
+              // get rand google image url
+              imgUtils.getGoogleImage(req.body.name, function(err, imgUrl){
+                if(err) throw err;
+                          console.log('img-2')
+                // get filename from end of url
+                imgUtils.getImageFileName(imgUrl, function(err, imgName){
+                    if(err) throw err;
+                              console.log('img-3')
+                    // Save to S3 instead of caching locally
+                    imgUtils.streamToBucket(imgUrl, imgName, function(err, result){
+                      if(err) throw err;
+                                console.log('img-4')
+                      // PUT call to update bit image in db
+                      superagent
+                        .put('/api/bit/id/'+req.params.bit_id)
+                        .send({"image": imgName})
+                        .end(function (err, bitImg) {
+                          if(err) throw err;
+                          // res.json({message: 'image updated'})
+                          console.log('img-5 updated api/bit/id/# result: '+JSON.stringify(bitImg))
+                          res.json(bitImg)
+
+                        }.bind(this)); // end id/id
+                    }.bind(this)); // end streamtoBucket
+                }.bind(this)); // end getImageFileName
+              }.bind(this)); // end getGoogleImage
+
+
+
     });
 
 // =============================================================================

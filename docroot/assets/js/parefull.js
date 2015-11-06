@@ -388,6 +388,7 @@ var AddBitForm = React.createClass({
       e.preventDefault();
       var name  = React.findDOMNode(this.refs.name).value.trim();
       var score = React.findDOMNode(document.forms[0].score).value.trim();
+      this.setState({ message: 'Saving new Bit...' });
       // basic form validation, typeof score returns string
       if((name.length > 2) && (score > 0) && (score < 11)) {
         // POST new bit
@@ -407,14 +408,14 @@ var AddBitForm = React.createClass({
                 .send({ "_bitId": id, "score": score })
                 .end(function (err, result) {
                   if(err) throw err;
-                  console.log('new score posted '+JSON.stringify(result))
+                  console.log('1-new score posted '+JSON.stringify(result))
                         // GET new bit score avg
                         // -------------------------------------------
                         superagent
                           .get('/api/score/avg/'+id)
                           .end(function (err, score) {
                             if(err) throw err;
-                            console.log('new avg: '+score.body)
+                            console.log('2-new avg: '+score.body)
                               // PUT call to update bit scoreAvg
                               // -------------------------------------------
                               superagent
@@ -422,26 +423,30 @@ var AddBitForm = React.createClass({
                                 .send({"scoreAvg": score.body})
                                 .end(function (err, result) {
                                   if(err) throw err;
-                                  console.log('updated scoreAvg. score obj: '+JSON.stringify(result))
-                                // PUT call to get/set/cache new bit image
-                                // -------------------------------------------
-                                superagent
-                                  .put('/api/bit/id/'+id+'/img')
-                                  .send({"name": name})
-                                  .end(function (err, result) {
-                                    if(err) throw err;
-                                    console.log('added image to bit')
-                                  }); // end id/bit_id/img
-                                }); // end id/id
-                          }); // end avg/id
+                                  console.log('3-updated scoreAvg. score obj: '+JSON.stringify(result))
+                                  // PUT call to get/set/cache new bit image
+                                  // -------------------------------------------
+                                  superagent
+                                    .put('/api/bit/id/'+id+'/img')
+                                    .send({"name": name})
+                                    .end(function (err, result) {
+                                      if(err) throw err;
+                                      console.log('4-added image to bit')
+
+                                      console.log('---api/bit/ POST res.body: '+JSON.stringify(res.body))
+                                      this.setState({ message: 'Bit saved. Add another?' });
+                                      // clear form
+                                      React.findDOMNode(this.refs.name).value = ''; 
+                                      React.findDOMNode(document.getElementById('scoreDisplay')).textContent = sliderText(5) 
+                                      React.findDOMNode(document.forms[0].score).value = 5; 
+
+                                    }.bind(this)); // end id/bit_id/img
+                                }.bind(this)); // end id/id
+                          }.bind(this)); // end avg/id
                 }.bind(this)); // end api/score
 
-              console.log('---api/bit/ POST res.body: '+JSON.stringify(res.body))
-              this.setState({ message: 'Bit saved. Add another?' });
-              // clear form
-              React.findDOMNode(this.refs.name).value = ''; 
-              React.findDOMNode(document.getElementById('scoreDisplay')).textContent = sliderText(5) 
-              React.findDOMNode(document.forms[0].score).value = 5; 
+      // setStates were here first... //
+
           }.bind(this)); // end api/bit
         } else {
           this.setState({"message": "Please enter something (at least two characters) and give it a rating. Thx!"})
