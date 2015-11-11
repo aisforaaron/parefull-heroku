@@ -3,6 +3,7 @@
 _test
 node_modules
 paredeploy
+.eslintrc
 
 # skip cached bit image dirs and subdir files
 docroot/assets/images/bits/*
