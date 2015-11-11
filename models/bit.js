@@ -14,7 +14,9 @@ var BitSchema   = new Schema({
     created:    { type: Date, default: Date.now },
     ip:         { type: String },
     scoreAvg:   { type: Number },
-    image:      { type: String }
+    image:      { type: String },
+    show:       { type: Boolean, default: false },
+    queue:      { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model('Bit', BitSchema);

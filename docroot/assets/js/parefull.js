@@ -2,7 +2,6 @@
 
 var superagent   = require('superagent');
 
-
 // Sub-components
 // =============================================================================
 
@@ -192,7 +191,6 @@ var BitBox = React.createClass({
     render: function () {
         return (
             <div className="bitbox-outer">
-
               <div className="row bitbox">
                 <div className="col-md-12 text-center bit-img">
                   <img width="100" height="100" src={this.props.bitImg} />
@@ -201,21 +199,18 @@ var BitBox = React.createClass({
                   {this.props.bitName}
                 </div>
               </div>
-
               <div className="row">
                 <div className="col-md-12 text-center bit-avg">
                   {this.props.bitAvg}
                 </div>
               </div>
-
               <div className="row hidden">
                 <div className="col-md-12 text-center sliderbox-outer">
                   <SliderBox />
                 </div>
               </div>
-
             </div>
-        ); 
+        );
     }
 });
 
@@ -240,41 +235,10 @@ var SliderBox = React.createClass({
   }
 });
 
-/* // not used anywhere yet
-// get data for one random bit
-var BitBoxRand = React.createClass({
-    loadBitFromServer: function () {
-      superagent
-        .get('/api/bit/rand')
-        .end(function (err, res) {
-          if(err) throw err;
-          this.setState({bitName: res.body.name});
-          this.setState({bitAvg: res.body.scoreAvg});
-        }.bind(this));
-    },
-    componentDidMount: function() {
-      this.loadBitFromServer();
-    },
-    getInitialState: function() {
-      return {
-        bitNname: [],
-        bitAvg: [],
-        bitKey: []
-      };
-    },
-    render: function () {
-        return (
-            <div>
-              <BitBox bitName={this.state.bitName} bitAvg={this.state.bitAvg} bitKey='single' />
-            </div>
-        );
-    }
-});
-*/
-
 // get a random bit, show score slider form, update db on form submit
 var ScoreBitForm = React.createClass({
     loadBitFromServer: function () {
+      // this.setState({bitName: 'loading..'}) // loading text before new bit is shown
       // get random bit to score
       // if bit doesn't have a cached image, this will getSetCache one and update db
       // @todo - keep session list of ids to skip so user doesn't get them twice?
@@ -282,13 +246,13 @@ var ScoreBitForm = React.createClass({
         .get('/api/bit/rand')
         .end(function (err, res) {
           if(err) throw err;
-          this.setState({bitName: res.body.name});
-          this.setState({bitId: res.body._id});
+          this.setState({bitName: res.body.name})
+          this.setState({bitId: res.body._id})
           this.setState({bitImg: res.body.image})
-        }.bind(this));
+        }.bind(this))
     },
     componentDidMount: function() {
-      this.loadBitFromServer();
+      this.loadBitFromServer()
     },
     getInitialState: function() {
       return {
@@ -302,41 +266,34 @@ var ScoreBitForm = React.createClass({
       e.preventDefault();
       var score = React.findDOMNode(document.forms[0].score).value.trim();
       var id    = this.refs.bitId.getDOMNode().value
-      // basic form validation
       if( (score > 0) && (score < 11) && (id.length > 0) ) {
         // POST new score
-        // -------------------------------------------
         superagent
           .post('/api/score')
           .send({ "_bitId": id, "score": score})
           .end(function (err, res) {
-            if(err) throw err;
-                 // GET new bit score avg
-                 // -------------------------------------------
-                  superagent
-                    .get('/api/score/avg/'+id)
-                    .end(function (err, score) {
-                      if(err) throw err;
-                        // PUT call to update bit scoreAvg
-                        // -------------------------------------------
-                        superagent
-                          .put('/api/bit/id/'+id)
-                          .send({"scoreAvg": score.body})
-                          .end(function (err, result) {
-                            if(err) throw err;
-                            console.log('updated scoreAvg')
-                        }); // end id/id
-                    }); // end avg/id
-          }); // end api/score
-          // updates successful
-          this.setState({ message: 'Score another right meow?' });
-          // get new bit to score
+            if(err) throw err
+            // GET new bit score avg
+            superagent
+              .get('/api/score/avg/'+id)
+              .end(function (err, score) {
+                if(err) throw err
+                // PUT call to update bit scoreAvg
+                superagent
+                  .put('/api/bit/id/'+id)
+                  .send({"scoreAvg": score.body})
+                  .end(function (err, result) {
+                    if(err) throw err
+                })
+              })
+          })
+          this.setState({message: 'Score another right meow?'})
+          // get new bit to score and reset slider score/text
           this.loadBitFromServer();
-          React.findDOMNode(document.forms[0].score).value = 5; // set to center, default slider value
-          // set label back to text that relates to 5
+          React.findDOMNode(document.forms[0].score).value = 5; 
           React.findDOMNode(document.getElementById('scoreDisplay')).textContent = sliderText(5)
       } else {
-        this.setState({ message: "Please score bit properly"})
+        this.setState({message: "Please score bit properly"})
       }
     },
     render: function () {
@@ -389,69 +346,42 @@ var AddBitForm = React.createClass({
       var name  = React.findDOMNode(this.refs.name).value.trim();
       var score = React.findDOMNode(document.forms[0].score).value.trim();
       this.setState({ message: 'Saving new Bit...' });
-      // basic form validation, typeof score returns string
       if((name.length > 2) && (score > 0) && (score < 11)) {
-        // POST new bit
-        // -------------------------------------------
+        // POST new bit 
+        // - if bit doesn't exist, add to db and queue
         superagent
           .post('/api/bit')
           .send({"name": name})
           .end(function (err, res) {
-            if(err) throw err;
-              // POST new score
-              // -------------------------------------------
-              var id = res.body._id
-              console.log('res from /api/bit: '+JSON.stringify(res))
-              console.log('new bit id: '+id+' score: '+score)
-              superagent
-                .post('/api/score')
-                .send({ "_bitId": id, "score": score })
-                .end(function (err, result) {
-                  if(err) throw err;
-                  console.log('1-new score posted '+JSON.stringify(result))
-                        // GET new bit score avg
-                        // -------------------------------------------
-                        superagent
-                          .get('/api/score/avg/'+id)
-                          .end(function (err, score) {
-                            if(err) throw err;
-                            console.log('2-new avg: '+score.body)
-                              // PUT call to update bit scoreAvg
-                              // -------------------------------------------
-                              superagent
-                                .put('/api/bit/id/'+id)
-                                .send({"scoreAvg": score.body})
-                                .end(function (err, result) {
-                                  if(err) throw err;
-                                  console.log('3-updated scoreAvg. score obj: '+JSON.stringify(result))
-                                  // PUT call to get/set/cache new bit image
-                                  // -------------------------------------------
-                                  superagent
-                                    .put('/api/bit/id/'+id+'/img')
-                                    .send({"name": name})
-                                    .end(function (err, result) {
-                                      if(err) throw err;
-                                      console.log('4-added image to bit')
-
-                                      console.log('---api/bit/ POST res.body: '+JSON.stringify(res.body))
-                                      this.setState({ message: 'Bit saved. Add another?' });
-                                      // clear form
-                                      React.findDOMNode(this.refs.name).value = ''; 
-                                      React.findDOMNode(document.getElementById('scoreDisplay')).textContent = sliderText(5) 
-                                      React.findDOMNode(document.forms[0].score).value = 5; 
-                                      
-                                      res.json(result); // some return?
-
-                                    }.bind(this)); // end id/bit_id/img
-                                }.bind(this)); // end id/id
-                          }.bind(this)); // end avg/id
-                }.bind(this)); // end api/score
-
-      // setStates were here first... //
-
-          }.bind(this)); // end api/bit
+            if(err) throw err
+            var id = res.body._id
+            // POST new score
+            superagent
+              .post('/api/score')
+              .send({ "_bitId": id, "score": score })
+              .end(function (err, result) {
+                if(err) throw err
+                // GET new bit score avg
+                superagent
+                  .get('/api/score/avg/'+id)
+                  .end(function (err, score) {
+                    if(err) throw err
+                    // PUT call to update bit scoreAvg
+                    superagent
+                      .put('/api/bit/id/'+id)
+                      .send({"scoreAvg": score.body})
+                      .end(function (err, result) {
+                        if(err) throw err
+                        this.setState({message: 'New Bit Saved! (＾▽＾)'});
+                        React.findDOMNode(this.refs.name).value = ''
+                        React.findDOMNode(document.forms[0].score).value = 5; 
+                        React.findDOMNode(document.getElementById('scoreDisplay')).textContent = sliderText(5)
+                      }.bind(this))
+                  }.bind(this))
+              }.bind(this))
+          }.bind(this))
         } else {
-          this.setState({"message": "Please enter something (at least two characters) and give it a rating. Thx!"})
+            this.setState({message: 'Please enter something (at least two characters) and give it a rating. Thx!'})
         }
     },
     render: function () {
@@ -502,7 +432,6 @@ var TestBootstrap = React.createClass({
    );
   }
 });
-
 
 // Main Components to load sub-components
 // =============================================================================
