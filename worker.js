@@ -17,11 +17,14 @@ setInterval(function (){
         // get new img, save to S3
         imgUtils.getSetCache(job.data.name, job.data.id, function(err, imgObj){
             if(err) throw err
-              console.log('imgObj', imgObj)
+              console.log('Worker.js', 'imgObj', imgObj)
+              console.log('Worker.js', 'id', job.data.id)
+              var bitObj = {'image': imgObj.name, 'queue': 'false', 'imageSourceUrl': imgObj.source}
+              console.log('Worker.js', 'bitObj', bitObj)
             // PUT call to update bit
             superagent
               .put('/api/bit/id/'+job.data.id)
-              .send({'image': imgObj.name, 'queue': 'false', 'imageSourceUrl': imgObj.source})
+              .send(bitObj)
               .end(function (err, result) {
                 if(err) throw err
               })
