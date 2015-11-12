@@ -5,6 +5,9 @@ module.exports = {
     secret : "Your secret here",
     bitFilePath: 'https://s3-us-west-2.amazonaws.com/parebits/bits/staging/',
     db : {
-      url : 'mongodb://parestageuser:54UQYsjXP8vL@ds049094.mongolab.com:49094/parefull-stage'
+      url : process.env.MONGO_URL
+    },
+    redis : {
+        url: process.env.REDIS_URL
     }
 };
