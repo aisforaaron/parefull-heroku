@@ -4,7 +4,8 @@ var superagent = require('superagent');
 var imgUtils   = require('./lib/imgUtils.js');
 var google     = require('google-images')
 var kue        = require('kue')
-var queue      = kue.createQueue()
+var config     = require('./config');
+var queue      = kue.createQueue({redis: config.redis.url});
 
 console.log('Worker.js')
 
@@ -14,12 +15,13 @@ setInterval(function (){
     queue.process('googleImage', function (job, done){
         console.log('Worker.js', 'Processing', job.data.name)
         // get new img, save to S3
-        imgUtils.getSetCache(job.data.name, function(err, imgName){
+        imgUtils.getSetCache(job.data.name, job.data.id, function(err, imgObj){
             if(err) throw err
+              console.log('imgObj', imgObj)
             // PUT call to update bit
             superagent
               .put('/api/bit/id/'+job.data.id)
-              .send({'image': imgName, 'queue': false})
+              .send({'image': imgObj.name, 'queue': 'false', 'imageSourceUrl': imgObj.source})
               .end(function (err, result) {
                 if(err) throw err
               })
