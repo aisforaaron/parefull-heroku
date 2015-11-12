@@ -26,14 +26,6 @@ var pareUtils  = require('../lib/utils.js');
 var imgUtils   = require('../lib/imgUtils.js');
 var fs         = require('fs');
 var config     = require('../config');
-// logging setup
-var bunyan     = require('bunyan');
-var log        = bunyan.createLogger({
-    name: 'webapp',
-    streams: [{
-        path: '/home/vagrant/webapp.log',
-    }]
-});
 
 // =============================================================================
 
@@ -59,7 +51,7 @@ router.route('/')
     // Add new bit (if doesn't exist already)
     // @return json obj of bit 
     .post(function (req, res) {
-        log.info('POST /api/bit')
+        console.log('POST /api/bit')
         var name   = req.body.name
         var newBit = false 
         if(name.length > 2) {
@@ -69,12 +61,12 @@ router.route('/')
                   if (err) throw err
                   if(result!=null) { 
                       // update score and scoreAvg outside of this method
-                      log.info('POST /api/bit', 'Bit already in db')
+                      console.log('POST /api/bit', 'Bit already in db')
                       res.json(result)
                   } else { 
                       newBit = true
                       // no bit found, add new one
-                      log.info('POST /api/bit', 'Adding new bit to db')
+                      console.log('POST /api/bit', 'Adding new bit to db')
                       var bit   = new Bit()
                       bit.name  = name
                       bit.ip    = req.headers['x-forwarded-for']
@@ -83,7 +75,7 @@ router.route('/')
                       bit.show  = true
                       bit.save(function(err, result) {
                           if (err) throw err
-                          log.info('POST /api/bit', 'Bit saved, adding', bit.name, result._id, 'to googleImage queue')
+                          console.log('POST /api/bit', 'Bit saved, adding', bit.name, result._id, 'to googleImage queue')
                           imgUtils.newJob(result._id, bit.name)
                           res.json(result)
                       })
