@@ -141,6 +141,8 @@ router.route('/id/?:bit_id?')
     // UPDATE A BIT
     // if a PUT request is sent to /api/bit/id/ w/form vars
     .put(function(req, res) {
+        console.log('PUT /api/bit start -------- /////////')
+        console.log('PUT /api/bit', 'req.params', req.params)
         if(req.params.bit_id) { 
           var updateFields = new Object();
           if(req.body.scoreAvg) {
