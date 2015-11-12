@@ -15,6 +15,7 @@ var BitSchema   = new Schema({
     ip:         { type: String },
     scoreAvg:   { type: Number },
     image:      { type: String },
+    imageSourceUrl:  { type: String },
     show:       { type: Boolean, default: false },
     queue:      { type: Boolean, default: false }
 });
