@@ -143,6 +143,7 @@ router.route('/id/?:bit_id?')
     .put(function(req, res) {
         console.log('PUT /api/bit start -------- /////////')
         console.log('PUT /api/bit', 'req.params', req.params)
+        console.log('PUT /api/bit', 'req.body', req.body)
         if(req.params.bit_id) { 
           var updateFields = new Object();
           if(req.body.scoreAvg) {

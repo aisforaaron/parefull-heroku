@@ -18,7 +18,7 @@ setInterval(function (){
         imgUtils.getSetCache(job.data.name, job.data.id, function(err, imgObj){
             if(err) throw err
               // console.log('Worker.js', 'imgObj', imgObj)
-              console.log('Worker.js', 'id', job.data.id)
+              // console.log('Worker.js', 'id', job.data.id)
               var bitObj = {'image': imgObj.name, 'queue': 'false', 'imageSourceUrl': imgObj.source}
               // console.log('Worker.js', 'bitObj', bitObj)
             // PUT call to update bit
@@ -27,8 +27,9 @@ setInterval(function (){
               .send(bitObj)
               .end(function (err, result) {
                 if(err) throw err
+                done && done()
               })
         })
-        done && done()
+        // done was here
     })
 }, 5000)
