@@ -170,8 +170,10 @@ router.route('/id/?:bit_id?')
             }
           }
           var bitId = mongoose.Types.ObjectId(req.params.bit_id)
+          console.log('PUT /api/bit', 'bitId', bitId)
+          console.log('PUT /api/bit', 'updateFields', updateFields)
           Bit.findByIdAndUpdate(bitId, updateFields, function(err, result){
-            if (err) throw err;
+            if (err) throw err
             res.json(result) // returns bit before updated values
           });
         } else {
