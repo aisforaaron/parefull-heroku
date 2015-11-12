@@ -157,8 +157,18 @@ router.route('/id/?:bit_id?')
           if(req.body.name) {
               updateFields.name = req.body.name
           }
+          if(req.body.queue) {
+              if(req.body.queue=='false') {
+                  updateFields.queue = false
+              } else if(req.body.queue=='true') {
+                  updateFields.queue = true
+              }
+          }
           if(req.body.show) {
-              updateFields.name = req.body.show
+              updateFields.show = req.body.show
+          }
+          if(req.body.imageSourceUrl) {
+              updateFields.imageSourceUrl = req.body.imageSourceUrl
           }
           if(req.body.image) {
             if(req.body.image=='null') {
