@@ -7,7 +7,6 @@
 var express      = require('express');
 var path         = require('path');
 var bodyParser   = require('body-parser');      // work with POST
-var superagent   = require('superagent');       // api layer
 var mongoose     = require('mongoose');         // db layer
 var bit          = require('./models/bit');     // custom schema for parefull items (bits)
 var fs           = require('fs');
