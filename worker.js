@@ -31,4 +31,4 @@ setInterval(function (){
             done && done()
         })
     })
-}, 5000)
+}, 900000) //900000ms = 15min
