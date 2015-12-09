@@ -2,7 +2,6 @@
 // This will grab items already on the queue and process them. 
 var superagent = require('superagent');
 var imgUtils   = require('./lib/imgUtils.js');
-var google     = require('google-images')
 var kue        = require('kue')
 var config     = require('./config');
 var queue      = kue.createQueue({redis: config.redis.url});
@@ -17,11 +16,11 @@ setInterval(function (){
         // get new img, save to S3
         imgUtils.getSetCache(job.data.name, job.data.id, function(err, imgObj){
             if(err) throw err
-            // console.log('Worker.js', 'imgObj', imgObj)
+            console.log('Worker.js', 'getSetCache completed', imgObj)
             // console.log('Worker.js', 'id', job.data.id)
             // var bitObj = {'image': imgObj.name, 'queue': 'false', 'imageSourceUrl': imgObj.source}
             // console.log('Worker.js', 'bitObj', bitObj)
-            // PUT call to update bit
+            // PUT call to update bit - moved to getSetCache for now
             // superagent
             //   .put('/api/bit/id/'+job.data.id)
             //   .send(bitObj)
@@ -31,6 +30,5 @@ setInterval(function (){
             //   })
             done && done()
         })
-        // done was here
     })
 }, 5000)
