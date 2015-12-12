@@ -9,5 +9,11 @@ module.exports = {
     },
     redis : {
         url: process.env.REDIS_URL
+    },
+    workerInterval: process.env.APP_WORKER_INTERVAL || 900000, // 15min default
+    googleSearchAPI : {
+        url: process.env.GOOGLE_API_URL,
+        key: process.env.GOOGLE_API_KEY,
+        cx:  process.env.GOOGLE_API_CX
     }
 };
