@@ -5,8 +5,10 @@ var imgUtils   = require('./lib/imgUtils.js');
 var config     = require('./config');
 
 function tStamp(){
-    var d      = new Date()
-    return d.getHours()+':'+d.getMinutes()
+    var d   = new Date()
+    var min = d.getMinutes()
+    min     = min < 10 ? '0'+min : min // zerofill 
+    return d.getHours()+':'+min
 }
 
 console.log('Worker.js')
