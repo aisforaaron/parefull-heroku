@@ -1,34 +1,43 @@
-// Worker script for Kue
-// This will grab items already on the queue and process them. 
+// Process records in img collection
+// This will grab documents from mongo and process to stream images to S3
 var superagent = require('superagent');
 var imgUtils   = require('./lib/imgUtils.js');
-var kue        = require('kue')
 var config     = require('./config');
-var queue      = kue.createQueue({redis: config.redis.url});
+
+function tStamp(){
+    var d      = new Date()
+    return d.getHours()+':'+d.getMinutes()
+}
 
 console.log('Worker.js')
 
+// every 15min, process one record
 setInterval(function (){
-    console.log('Worker.js', 'Polling queue', new Date().getTime())
-    // process jobs in que in the consumer
-    queue.process('googleImage', function (job, done){
-        console.log('Worker.js', 'Processing', job.data.name)
-        // get new img, save to S3
-        imgUtils.getSetCache(job.data.name, job.data.id, function(err, imgObj){
-            if(err) throw err
-            console.log('Worker.js', 'getSetCache completed', imgObj)
-            // console.log('Worker.js', 'id', job.data.id)
-            // var bitObj = {'image': imgObj.name, 'queue': 'false', 'imageSourceUrl': imgObj.source}
-            // console.log('Worker.js', 'bitObj', bitObj)
-            // PUT call to update bit - moved to getSetCache for now
-            // superagent
-            //   .put('/api/bit/id/'+job.data.id)
-            //   .send(bitObj)
-            //   .end(function (err, result) {
-            //     if(err) throw err
-            //     done && done()
-            //   })
-            done && done()
-        })
+    console.log('Worker.js', 'Polling mongo collection for images', tStamp())
+    // 1 - API call for mongo query to get one document, status=pending, sort asc (oldest first)
+    superagent
+      .get('/api/pareque/next') // get next item to process 
+      .end(function (err, result) {
+        if(err) throw err
+        if(result.body.name) {
+            console.log('Next pareque item:', result.body.name)
+            // 2 - send document to getSetCache
+            imgUtils.getSetCache(result.body.name, result.body._bitId, function(err, imgObj){
+                if(err) throw err
+                // 3 - on success, update document 
+                if(imgObj){
+                    console.log('worker.js update pareque document', result.body._id)
+                    superagent
+                      .put('/api/pareque/id/'+result.body._id) // get next item to process 
+                      .send({'status': 'done'})
+                      .end(function (err, result) {
+                        if(err) throw err
+                        console.log('Worker.js', 'getSetCache completed')
+                      })
+                }
+            })
+        } else {
+            console.log('Worker.js', 'No pending pareque documents.', tStamp())
+        }
     })
-}, 900000) //900000ms = 15min
+}, process.env.APP_WORKER_INTERVAL)
