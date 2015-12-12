@@ -1,11 +1,5 @@
 // Bit schema
 
-// Schema strategy is to relate votes to a bit using  _bitID == Bit._id 
-// - group votes by item
-// - get avg of vote scores
-// - try to use IP to limit the same user from voting multiple times on one bit
-// - if i delete a bit, i'll need to delete all scores as well
-
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
@@ -17,7 +11,6 @@ var BitSchema   = new Schema({
     image:      { type: String },
     imageSourceUrl:  { type: String },
     show:       { type: Boolean, default: false },
-    queue:      { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model('Bit', BitSchema);

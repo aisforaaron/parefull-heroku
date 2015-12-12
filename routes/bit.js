@@ -69,11 +69,10 @@ router.route('/')
                       bit.name  = name
                       bit.ip    = req.headers['x-forwarded-for']
                       bit.image = null
-                      bit.queue = true  // ?? this is actually added the queue in another step ??
-                      bit.show  = true
+                      bit.show  = false // set to false until google image is processed 
                       bit.save(function(err, result) {
                           if (err) throw err
-                          console.log('POST /api/bit', 'Bit saved, adding', bit.name, result._id, 'to googleImage queue')
+                          console.log('POST /api/bit', 'Bit saved, adding', bit.name, result._id, 'to pareque')
                           imgUtils.newJob(result._id, bit.name)
                           res.json(result)
                       })
@@ -112,8 +111,8 @@ router.route('/rand/?:skip_id?')
                   console.log('returned current bit', JSON.stringify(bitObj))
                   res.json(bitObj)
                 } else {
-                  // add to googleImage queue if queue=false
-                  if(bit.queue==false){
+                  // add to pareque if bit is showing with broken/null image field
+                  if(bit.show==true){
                       imgUtils.newJob(bit._id, bit.name)
                   }
                   // return bit w/shrug img
