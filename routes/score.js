@@ -24,7 +24,6 @@ var router     = express.Router();
 var Bit        = require('../models/bit');
 var Score      = require('../models/score');
 var mongoose   = require('mongoose');        // needed for working with ObjectId field type
-// var superagent = require('superagent'); // not used here yet
 
 // =============================================================================
 
