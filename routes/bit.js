@@ -29,8 +29,7 @@ var config     = require('../config');
 
 router.route('/test')
 
-    // GET path for testing code
-    .get(function(req, res) {
+    .get(pareUtils.protectRoute, function(req, res) {
         res.json({message: 'Testing /api/bit/test'})
     })
 
@@ -38,8 +37,8 @@ router.route('/test')
 
 router.route('/')
 
-    // get all the bits (accessed at GET /api/bits)
-    .get(function(req, res) {
+    // get all the bits (accessed at GET /api/bits) 
+    .get(pareUtils.protectRoute, function(req, res) {
         Bit.find(function(err, bits) {
             if (err) throw err;
             res.json(bits);
@@ -182,7 +181,7 @@ router.route('/id/?:bit_id?')
     })
 
     // DELETE the bit
-    .delete(function(req, res) {
+    .delete(pareUtils.protectRoute, function(req, res) {
         Bit.remove({
             _id: req.params.bit_id
         }, function(err, bit) {

@@ -24,17 +24,15 @@ var router     = express.Router();
 var Bit        = require('../models/bit');
 var Score      = require('../models/score');
 var mongoose   = require('mongoose');        // needed for working with ObjectId field type
+var pareUtils  = require('../lib/utils.js');
 
 // =============================================================================
 
-// for testing
-
 router.route('/test')
 
-      .get(function (req, res) {
-          var test = {message: 'just testing /api/score/test' }
+      .get(pareUtils.protectRoute, function (req, res) {
+          var test = {message: 'Testing /api/score/test' }
           res.json(test)
-          // res.send('Parefull scores.');
       });
 
 // =============================================================================
@@ -110,7 +108,7 @@ router.route('/id/:score_id')
     })
 */
     // delete the score - /api/score/:score_id
-    .delete(function(req, res) {
+    .delete(pareUtils.protectRoute, function(req, res) {
         Score.remove({
             _id: req.params.score_id
         }, function(err, bit) {
@@ -163,7 +161,7 @@ router.route('/pb/:score_bitId')
     })
 
     // DELETE all scores related to a bitId
-    .delete(function(req, res) {
+    .delete(pareUtils.protectRoute, function(req, res) {
         var bitId = mongoose.Types.ObjectId(req.params.score_bitId)  // objectId type conversion for aggregation
         Score.remove({
             _bitId: bitId

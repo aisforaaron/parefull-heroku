@@ -19,13 +19,14 @@ var router     = express.Router();
 var Pareque    = require('../models/pareque');
 var mongoose   = require('mongoose');        // needed for working with ObjectId field type
 var imgUtils   = require('../lib/imgUtils.js');
+var pareUtils  = require('../lib/utils.js');
 
 // =============================================================================
 
 router.route('/test')
 
     // GET path for testing code
-    .get(function(req, res) {
+    .get(pareUtils.protectRoute, function(req, res) {
         res.json({message: 'Testing /api/pareque/test'})
     })
 
@@ -112,8 +113,8 @@ router.route('/id/?:bit_id?')
         }
     })
 
-    // DELETE the item
-    .delete(function(req, res) {
+    // DELETE the item 
+    .delete(pareUtils.protectRoute, function(req, res) {
         Pareque.remove({
             _id: req.params.bit_id
         }, function(err, item) {
