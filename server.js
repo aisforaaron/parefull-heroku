@@ -18,6 +18,7 @@ var config       = require('./config');
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.set('superSecret', config.apiSecret);
 app.enable('trust proxy');  // so i can capture user IP when they add/rate bits
 
 // connect to mongoLab using mongoose
