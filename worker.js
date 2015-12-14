@@ -12,21 +12,6 @@ function tStamp(){
 }
 
 console.log('Worker.js')
-// testing
-superagent
-.get('parefull-staging.herokuapp.com/api/bit/count')
-.end(function (err, res) {
-   if(err) throw err
-   console.log('Worker.js count test', res)
-})
-/*
-// testing pareque api
-superagent
-  .get('/api/pareque/test') // get next item to process 
-  .end(function (err, result) {
-    if(err) throw err
-    console.log('Worker.js /test path result', result)
-  })
 
 // every interval, process one record
 setInterval(function (){
@@ -45,7 +30,7 @@ setInterval(function (){
                 if(imgObj){
                     console.log('worker.js update pareque document', result.body._id)
                     superagent
-                      .put('/api/pareque/id/'+result.body._id) // get next item to process 
+                      .put(config.host+'/api/pareque/id/'+result.body._id) // get next item to process 
                       .send({'status': 'done'})
                       .end(function (err, result) {
                         if(err) throw err
@@ -58,4 +43,3 @@ setInterval(function (){
         }
     })
 }, process.env.APP_WORKER_INTERVAL)
-*/
