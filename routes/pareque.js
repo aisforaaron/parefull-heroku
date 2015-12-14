@@ -46,18 +46,16 @@ router.route('/')
     // @return json obj of item
     .post(function (req, res) {
         console.log('POST /api/pareque')
-        console.log('req.params', req.params)
-        // add item, no check if exists (not sure if that is needed)
+        console.log('req.body', req.body)
         var pareque    = new Pareque()
         var id         = req.body._bitId
-        var mid        = mongoose.Types.ObjectId(id)
-        pareque._bitId =  mid // this adding properly? maybe don't need mongoose method?
-        console.log('id', id, 'mid', mid)
+        // var mid        = mongoose.Types.ObjectId(id)
+        pareque._bitId = id 
         pareque.name   = req.body.name
         pareque.status = req.body.status // new items get 'pending'
         pareque.save(function(err, result) {
             if (err) throw err
-            console.log('New item added to pareque', mid, req.body.name)
+            console.log('New item added to pareque', id, req.body.name)
             res.json(result) 
         });
     });
