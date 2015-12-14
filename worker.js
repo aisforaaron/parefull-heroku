@@ -14,7 +14,7 @@ function tStamp(){
 console.log('Worker.js')
 // testing
 superagent
-.get('/api/bit/count')
+.get('parefull-staging.herokuapp.com/api/bit/count')
 .end(function (err, res) {
    if(err) throw err
    console.log('Worker.js count test', res)
