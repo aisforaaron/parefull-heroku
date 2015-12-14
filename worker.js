@@ -11,14 +11,14 @@ function tStamp(){
     return d.getHours()+':'+min
 }
 
-console.log('Worker.js')
+console.log('Worker.js on host', config.host)
 
 // every interval, process one record
 setInterval(function (){
     console.log('Worker.js', 'Polling mongo collection for images', tStamp())
     // 1 - API call for mongo query to get one document, status=pending, sort asc (oldest first)
     superagent
-      .get('/api/pareque/next') // get next item to process 
+      .get(config.host+'/api/pareque/next') // get next item to process 
       .end(function (err, result) {
         if(err) throw err
         if(result.body.name) {
