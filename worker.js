@@ -12,6 +12,14 @@ function tStamp(){
 }
 
 console.log('Worker.js')
+// testing
+superagent
+.get('/api/bit/count')
+.end(function (err, res) {
+   if(err) throw err
+   console.log('Worker.js count test', res)
+})
+/*
 // testing pareque api
 superagent
   .get('/api/pareque/test') // get next item to process 
@@ -50,3 +58,4 @@ setInterval(function (){
         }
     })
 }, process.env.APP_WORKER_INTERVAL)
+*/
