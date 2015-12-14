@@ -145,6 +145,15 @@ var CompareBox = React.createClass({
                this.setState({bitImg2: res.body.image})
                this.setState({bitAvg2: sliderText(res.body.scoreAvg)})
                this.setState({arrow: getArrow(A,res.body.scoreAvg)})
+
+                // testing pareque api
+                superagent
+                  .get('/api/pareque/test') // get next item to process 
+                  .end(function (err, result) {
+                    if(err) throw err
+                    console.log('parefull.js pareque/test path result', result)
+                  })
+
            }.bind(this));
         }.bind(this));
     },
