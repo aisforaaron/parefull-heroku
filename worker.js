@@ -12,8 +12,15 @@ function tStamp(){
 }
 
 console.log('Worker.js')
+// testing pareque api
+superagent
+  .get('/api/pareque/test') // get next item to process 
+  .end(function (err, result) {
+    if(err) throw err
+    console.log('Worker.js /test path result', result)
+  })
 
-// every 15min, process one record
+// every interval, process one record
 setInterval(function (){
     console.log('Worker.js', 'Polling mongo collection for images', tStamp())
     // 1 - API call for mongo query to get one document, status=pending, sort asc (oldest first)

@@ -26,7 +26,7 @@ var pareUtils  = require('../lib/utils.js');
 router.route('/test')
 
     // GET path for testing code
-    .get(pareUtils.protectRoute, function(req, res) {
+    .get(function(req, res) {
         res.json({message: 'Testing /api/pareque/test'})
     })
 
