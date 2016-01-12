@@ -104,7 +104,7 @@ router.route('/rand/?:skip_id?')
             Bit.findOne(query).skip(random).exec(function(err, bit) {
                 if(err) throw err
                 var bitObj = bit.toObject();
-                if(bit.image!=null){
+                if(bit.image!=null && bit.image!='null'){
                   // if image exists in document, pass along full img path
                   bitObj.image = config.bitFilePath+bit.image
                   console.log('returned current bit', JSON.stringify(bitObj))
