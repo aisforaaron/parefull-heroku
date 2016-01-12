@@ -47,3 +47,8 @@ function getArrow(A,C) {
    // fill in full string with replacement
    return msg[0].replace("*", msg[rand]); 
 }
+
+// when the browser can't load a bit img, just show shrug
+function imgError (id) {
+  document.getElementById(id).src="assets/images/shrug.jpg";
+}
