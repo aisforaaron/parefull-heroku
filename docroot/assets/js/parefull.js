@@ -135,6 +135,7 @@ var CompareBox = React.createClass({
            this.setState({bitName: res.body.name})
            this.setState({bitImg: res.body.image})
            this.setState({bitAvg: sliderText(res.body.scoreAvg)})
+           this.setState({bitId: res.body._id})
            var A = res.body.scoreAvg
            var skipId = res.body._id
           // call for second unique bit
@@ -145,6 +146,7 @@ var CompareBox = React.createClass({
                this.setState({bitImg2: res.body.image})
                this.setState({bitAvg2: sliderText(res.body.scoreAvg)})
                this.setState({arrow: getArrow(A,res.body.scoreAvg)})
+               this.setState({bitId2: res.body._id})
            }.bind(this));
         }.bind(this));
     },
@@ -172,13 +174,13 @@ var CompareBox = React.createClass({
                 </div>
                 <div className="row bits-and-arrow">
                   <div className="col-md-4 text-center">
-                    <BitBox bitName={this.state.bitName} bitAvg={this.state.bitAvg} bitImg={this.state.bitImg} bitKey="left" />
+                    <BitBox bitName={this.state.bitName} bitAvg={this.state.bitAvg} bitImg={this.state.bitImg} bitId={this.state.bitId} bitKey="left" />
                   </div>
                   <div className="col-md-4 text-center arrow-text">
                     <div className="arrow">{this.state.arrow}</div>
                   </div>
                   <div className="col-md-4 text-center">
-                    <BitBox bitName={this.state.bitName2} bitAvg={this.state.bitAvg2} bitImg={this.state.bitImg2} bitKey="right" />
+                    <BitBox bitName={this.state.bitName2} bitAvg={this.state.bitAvg2} bitImg={this.state.bitImg2} bitId={this.state.bitId2} bitKey="right" />
                 </div>
               </div>
             </div>
@@ -188,12 +190,15 @@ var CompareBox = React.createClass({
 
 // format output for a bit
 var BitBox = React.createClass({
+    swapImgOnError: function () {
+      imgError(this.props.bitKey)
+    },
     render: function () {
         return (
             <div className="bitbox-outer">
               <div className="row bitbox">
                 <div className="col-md-12 text-center bit-img">
-                  <img width="100" height="100" src={this.props.bitImg} />
+                  <img width="100" height="100" onError={this.swapImgOnError} id={this.props.bitKey} src={this.props.bitImg} />
                 </div>
                 <div className="col-md-12 text-center bit-name">
                   {this.props.bitName}
