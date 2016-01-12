@@ -42,22 +42,33 @@ router.route('/')
         });
     })
 
-    // Add new item (if doesn't exist already???)
+    // Add new item (if doesn't exist already)
     // @return json obj of item
     .post(function (req, res) {
         console.log('POST /api/pareque')
         console.log('req.body', req.body)
-        var pareque    = new Pareque()
-        var id         = req.body._bitId
-        // var mid        = mongoose.Types.ObjectId(id)
-        pareque._bitId = id 
-        pareque.name   = req.body.name
-        pareque.status = req.body.status // new items get 'pending'
-        pareque.save(function(err, result) {
-            if (err) throw err
-            console.log('New item added to pareque', id, req.body.name)
-            res.json(result) 
-        });
+        var id = req.body._bitId
+        // add one if doesn't exist already, search by bitId
+        Pareque.findOne(
+          { _bitId: id },
+          function(err, result) {
+              if (err) throw err
+              if(result!=null) {
+                  console.log('POST /api/pareque', 'Bit already in pareque')
+                  res.json(result)
+              } else { 
+                // add bit to pareque
+                var pareque    = new Pareque()
+                pareque._bitId = id 
+                pareque.name   = req.body.name
+                pareque.status = req.body.status // new items get 'pending'
+                pareque.save(function(err, result) {
+                    if (err) throw err
+                    console.log('New item added to pareque', id, req.body.name)
+                    res.json(result) 
+                });
+              }
+          })
     });
 
 
