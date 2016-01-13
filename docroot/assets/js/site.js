@@ -1,3 +1,6 @@
+var d    = new Date();
+var year = d.getFullYear();
+
 var aboutText = `
 ## Howdy!
 Thanks for stopping by to checkout my Node.js app.
@@ -5,7 +8,7 @@ This is just a test project to work with the Expressjs/Node.js framework.
 
 All images for bits are found from public Google image searches and are not the property of this site.
 
-Otherwise Copyright &copy; 2015 Aaron D LLC 
+Otherwise Copyright &copy; `+year+` Aaron D LLC 
 
 
 #### Application Info
@@ -16,6 +19,9 @@ Otherwise Copyright &copy; 2015 Aaron D LLC
 * [MongoDB](https://www.mongodb.org) - Databsae
 * [React](https://facebook.github.io/react) - Front-end rendering 
 * [Bootstrap](http://getbootstrap.com) - Templating
+* [Heroku](http://heroku.com) - Hosting
+
+My site [Aarond.com](http://aarond.com)
 
 Email me if you have any feedback: [aarondllc@gmail.com](mailto:aarondllc@gmail.com)`;
 
@@ -70,5 +76,5 @@ If you feel that we are not abiding by this privacy policy, you should contact u
 * Your use of our services is at your sole risk. We provide these services on an "as is" and "as available" basis, and we expressly disclaim all express or implied warranties of all kinds, including but not limited to the implied warranties of merchantability, fitness for a particular purpose, and non-infringement. We make no warranty that our services will meet your requirements, be safe, secure, uninterrupted, timely, accurate, or error-free, or that your information will be secure.
 * Limitation on liability. In no event will Aaron D LLC, its affiliates or their licensors, service providers, employees, agents, officers, or directors be liable for damages of any kind, under any legal theory, arising out of or in connection with your use, or inability to use, the Website, any websites linked to it, any content on the Website or such other websites or any services or items obtained through the Website or such other websites, including any direct, indirect, special, incidental, consequential or punitive damages, including but not limited to, personal injury, pain and suffering, emotional distress, loss of revenue, loss of profits, loss of business or anticipated savings, loss of use, loss of goodwill, loss of data, and whether caused by tort (including negligence), breach of contract or otherwise, even if foreseeable. The foregoing does not affect any liability which cannot be excluded or limited under applicable law. 
 
-Copyright &copy; 2015 Aaron D LLC 
+Copyright &copy; `+year+` Aaron D LLC 
 `;
