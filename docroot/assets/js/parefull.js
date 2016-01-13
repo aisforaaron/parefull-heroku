@@ -243,18 +243,18 @@ var SliderBox = React.createClass({
 // get a random bit, show score slider form, update db on form submit
 var ScoreBitForm = React.createClass({
     loadBitFromServer: function () {
-      // this.setState({bitName: 'loading..'}) // loading text before new bit is shown
-      // get random bit to score
-      // if bit doesn't have a cached image, this will getSetCache one and update db
-      // @todo - keep session list of ids to skip so user doesn't get them twice?
       superagent
         .get('/api/bit/rand')
         .end(function (err, res) {
-          if(err) throw err;
+          if(err) throw err
           this.setState({bitName: res.body.name})
           this.setState({bitId: res.body._id})
           this.setState({bitImg: res.body.image})
         }.bind(this))
+    },
+    loadNewBit: function () {
+      this.loadBitFromServer()
+      this.setState({message: ''})
     },
     componentDidMount: function() {
       this.loadBitFromServer()
@@ -310,9 +310,9 @@ var ScoreBitForm = React.createClass({
                   <div className="col-md-4"></div>
                   <div className="col-md-4">
                       <div className="refresh-btn">
-                        <input type="button" value="Score a different bit" onClick={this.loadBitFromServer} />
+                        <input type="button" value="Score a different bit" onClick={this.loadNewBit} />
                       </div>
-                      <div className="row text-left message" ref="message">
+                      <div className="row text-left message" id="message" ref="message">
                           {this.state.message}
                       </div>
                       <div className="sliderbox-img-name">
