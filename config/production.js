@@ -4,7 +4,7 @@ module.exports = {
     address : '127.0.0.1',
     port : 4000,
     secret : "Your secret here",
-    imgPath : '/assets/images/bits/',
+    imgPath : '/app/docroot/assets/images/bits/',
     bitFilePath: 'https://s3-us-west-2.amazonaws.com/parebits/bits/production/',
     db : {
       url : process.env.MONGO_URL
