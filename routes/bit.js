@@ -84,6 +84,24 @@ router.route('/')
 
 // =============================================================================
 
+router.route('/import')
+
+    // Add new bits (if doesn't exist already) from JSON list
+    // Example: importBits = [{"name":"apples", "score":"6"}, {...}]
+    // @return bool 
+    .post(function (req, res) {
+        console.log('POST /api/bit/import')
+        var importBits = JSON.parse(req.body.importBits);
+
+        pareUtils.importBits(importBits, 0, function(err, result){
+          if(err) throw err
+          console.log('pareUtils returned ok')
+          res.end('done with import')
+        })
+    });
+
+// =============================================================================
+
 router.route('/rand/?:skip_id?')
 
     // get one random bit 
