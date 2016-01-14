@@ -89,7 +89,7 @@ router.route('/import')
     // Add new bits (if doesn't exist already) from JSON list
     // Example: importBits = [{"name":"apples", "score":"6"}, {...}]
     // @return bool 
-    .post(function (req, res) {
+    .post(pareUtils.protectRoute, function (req, res) {
         console.log('POST /api/bit/import')
         var importBits = JSON.parse(req.body.importBits);
 
