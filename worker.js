@@ -18,7 +18,7 @@ setInterval(function (){
     console.log('Worker.js', 'Polling mongo collection for images', tStamp())
     // 1 - API call for mongo query to get one document, status=pending, sort asc (oldest first)
     superagent
-      .get(config.host+'/api/pareque/next') // get next item to process 
+      .get(config.host+'/api/pareque/next')
       .end(function (err, result) {
         if(err) throw err
         if(result.body.name) {
@@ -26,11 +26,11 @@ setInterval(function (){
             // 2 - send document to getSetCache
             imgUtils.getSetCache(result.body.name, result.body._bitId, function(err, imgObj){
                 if(err) throw err
-                // 3 - on success, update document 
+                // 3 - on success, update pareque document 
                 if(imgObj){
                     console.log('worker.js update pareque document', result.body._id)
                     superagent
-                      .put(config.host+'/api/pareque/id/'+result.body._id) // get next item to process 
+                      .put(config.host+'/api/pareque/id/'+result.body._id)
                       .send({'status': 'done'})
                       .end(function (err, result) {
                         if(err) throw err
