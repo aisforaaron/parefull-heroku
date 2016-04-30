@@ -11,11 +11,11 @@ function tStamp(){
     return d.getHours()+':'+min
 }
 
-console.log('Worker.js on host', config.host)
+console.log('Worker.js on host', config.host, 'check every ms', config.workerInterval)
 
 // every interval, process one record
 setInterval(function (){
-    console.log('Worker.js', 'Polling mongo collection for images', tStamp())
+    console.log('Worker.js', 'Polling mongo collection for images - commented out for testing', tStamp())
     // 1 - API call for mongo query to get one document, status=pending, sort asc (oldest first)
     superagent
       .get(config.host+'/api/pareque/next')
@@ -42,4 +42,4 @@ setInterval(function (){
             console.log('Worker.js', 'No pending pareque documents.', tStamp())
         }
     })
-}, process.env.APP_WORKER_INTERVAL)
+}, config.workerInterval)
