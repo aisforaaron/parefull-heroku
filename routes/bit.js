@@ -108,6 +108,7 @@ router.route('/rand/?:skip_id?')
     .get(function(req, res) {
         // random number strategy based on http://stackoverflow.com/a/28331323/4079771
         Bit.count({show: true}).exec(function(err, count){
+            // @todo add error check if no bits are returned
             // make sure count var is within range
             // skipping one doc moves count down one
             // zero key moves count down another one
