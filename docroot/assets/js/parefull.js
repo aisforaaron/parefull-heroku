@@ -132,6 +132,10 @@ var CompareBox = React.createClass({
        superagent
         .get('/api/bit/rand')
         .end(function (err, res) {
+           if(err) {
+               window.location.href='error.html'
+               throw new Error("/api/bit/rand returned error. Check to see if Node process is running.")
+           }
            this.setState({bitName: res.body.name})
            this.setState({bitImg: res.body.image})
            this.setState({bitAvg: sliderText(res.body.scoreAvg)})
