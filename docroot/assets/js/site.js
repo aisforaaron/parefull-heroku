@@ -21,6 +21,10 @@ Otherwise Copyright &copy; `+year+` Aaron D LLC
 * [Bootstrap](http://getbootstrap.com) - Templating
 * [Heroku](http://heroku.com) - Hosting
 
+#### Parefull API
+
+* [View API docs](docs/api/index.html)
+
 My site [Aarond.com](http://aarond.com)
 
 Email me if you have any feedback: [aarondllc@gmail.com](mailto:aarondllc@gmail.com)`;

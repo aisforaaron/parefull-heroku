@@ -24,5 +24,20 @@
   "main": "server.js",
   "devDependencies": {},
   "author": "Aaron Deutsch",
-  "license": "ISC"
+  "license": "ISC",
+  "apidoc": {
+    "name": "Parefull App API",
+    "version": "0.1.0",
+    "description": "Parefull REST Endpoints.",
+    "title": "Parefull API",
+    "url" : "http://parefull.aarond.com",
+    "header": {
+      "title": "General Notes",
+      "filename": "docroot/docs/config/header.md"
+    },
+    "footer": {
+      "title": "",
+      "filename": "docroot/docs/config/footer.md"
+    }
+  }
 }

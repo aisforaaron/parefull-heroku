@@ -1,0 +1,1 @@
+All rights reserved and such and so forth.
