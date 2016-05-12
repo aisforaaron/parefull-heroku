@@ -1,5 +1,4 @@
 // API routes for Parefull Bits.
-// @todo figure out how to best use apiDefine and apiError w/user groups
 
 var express   = require('express');
 var router    = express.Router();
@@ -9,25 +8,6 @@ var pareUtils = require('../lib/utils.js');
 var imgUtils  = require('../lib/imgUtils.js');
 var config    = require('../config');
 
-router.route('/test/?:test_number?')
-
-    /**
-     * @api {get} /api/bit/test/?:test_number? Test path for bit
-     * @apiName GetBitTest
-     * @apiGroup Bit
-     * @apiDescription JWT token protected route.
-     * @apiParam {number} [test_number] Any number to test parameters
-     * @apiSuccess {string} message Successful testing of /api/bit/test/?:test_number?
-     * @apiError {string} message Param test_number must be a number
-     */
-    .get(pareUtils.protectRoute, function (req, res) {
-        if (!isNumber(req.body.test_number)) {
-            res.json({message: 'Param test_number must be a number.'});
-        } else {
-            res.json({message: 'Successful testing of /api/bit/test/?:test_number?'});
-        }
-    });
-
 router.route('/')
 
     /**
@@ -35,16 +15,16 @@ router.route('/')
      * @apiName GetBits
      * @apiGroup Bit
      * @apiDescription JWT token protected route.
-     * @apiSuccess {string} - json bits returned from mongo find
+     * @apiSuccess {string} - json bits returned from Mongo find
      * @apiError {object} - Mongo find error
      */
     .get(pareUtils.protectRoute, function (req, res) {
         bit.find(function (err, bits) {
-            // @todo decide if throw err is better than custom res.end/send w/message
             if (err) {
                 throw err;
+            } else {
+                res.json(bits);
             }
-            res.json(bits);
         });
     })
 
@@ -52,7 +32,8 @@ router.route('/')
      * @api {post} /api/bit Post a new bit
      * @apiName PostBits
      * @apiGroup Bit
-     * @apiSuccess {object} - obj result mongo of bit.save
+     * @apiParam {string} name Name of bit
+     * @apiSuccess {object} - obj result Mongo of bit.save
      * @apiError {string} message Validation error on name, ip or score.
      */
     .post(function (req, res) {
@@ -85,8 +66,8 @@ router.route('/')
                                 if (err) {
                                     throw err;
                                 } else {
-                                    console.log('POST /api/bit', 'Bit saved, adding', bit.name, result._id, 'to pareque');
-                                    imgUtils.newJob(result._id, bit.name);
+                                    console.log('POST /api/bit', 'Bit saved, adding', bitAdd.name, result._id, 'to pareque');
+                                    imgUtils.newJob(result._id, bitAdd.name);
                                     res.json(result);
                                 }
                             });
@@ -104,7 +85,8 @@ router.route('/import')
      * @api {post} /api/import Post to add new bits
      * @apiName ImportBits
      * @apiGroup Bit
-     * @apiExample {js} Example json setup:
+     * @apiParam {string} importBits JSON data of bits
+     * @apiExample {js} Example JSON setup:
      *     importBits = [{"name":"apples", "score":"6"}, {...}]
      * @apiSuccess {string} message Done with import.
      * @apiError {object} - pareUtils.importBits error returned
@@ -128,6 +110,7 @@ router.route('/rand/?:skip_id?')
      * @api {get} /api/bit/rand/?:skip_id? Get a random bit
      * @apiName GetRandBit
      * @apiGroup Bit
+     * @apiParam {string} [skip_id] If used, method will avoid returning this bit id
      * @apiSuccess {object} - bit object from mongo
      * @apiError {object} - Mongo findOne throw err
      */
@@ -138,7 +121,7 @@ router.route('/rand/?:skip_id?')
             // make sure count var is within range
             // skipping one doc moves count down one
             // zero key moves count down another one
-            // just need to be sure we don't subtract to a negative
+            // don't subtract to a negative
             var min    = 0;
             var max    = count - 2;
             var random = pareUtils.randomNumber(min, max);
@@ -171,13 +154,13 @@ router.route('/rand/?:skip_id?')
     });
 
 
-router.route('/id/?:bit_id?')
+router.route('/id/:bit_id')
 
     /**
-     * @api {get} /api/bit/id/?:bit_id? Get bit by id
+     * @api {get} /api/bit/id/:bit_id Get bit by id
      * @apiName GetBitById
      * @apiGroup Bit
-     * @apiParam {number} [bit_id] bit id to search for
+     * @apiParam {string} bit_id bit id to search for
      * @apiSuccess {string} - Mongo findById return json string
      * @apiError {object} - Mongo findById error
      */
@@ -192,15 +175,20 @@ router.route('/id/?:bit_id?')
     })
 
     /**
-     * @api {put} /api/bit/id/?:bit_id? Update bit by id
+     * @api {put} /api/bit/id/:bit_id Update bit by id
      * @apiName UpdateBitById
      * @apiGroup Bit
-     * @apiParam {number} [bit_id] bit id to update
+     * @apiParam {string} bit_id url param for bit id to update
+     * @apiParam {number} [scoreAvg] req.body var
+     * @apiParam {string} [name] req.body var
+     * @apiParam {boolean} [queue] flag to add bit to pareque if true
+     * @apiParam {boolean} [show] flag to show/hide bit in public results
+     * @apiParam {string} [imageSourceUrl] url of image source before S3 upload
+     * @apiParam {string} [image] filename of image
      * @apiSuccess {string} - Mongo result json
      * @apiError {object} - Mongo findByIdAndUpdate error
      */
     .put(function (req, res) {
-        console.log('PUT /api/bit start -------- /////////');
         console.log('PUT /api/bit', 'req.params', req.params);
         console.log('PUT /api/bit', 'req.body', req.body);
         if (req.params.bit_id) {
@@ -247,11 +235,11 @@ router.route('/id/?:bit_id?')
     })
 
     /**
-     * @api {delete} /api/bit/id/?:bit_id? Update bit by id
+     * @api {delete} /api/bit/id/:bit_id Delete bit by id
      * @apiName DeleteBitById
      * @apiGroup Bit
      * @apiDescription JWT token protected route.
-     * @apiParam {number} [bit_id] bit id to search for
+     * @apiParam {string} bit_id bit id to search for
      * @apiSuccess {string} message Successfully deleted bit.
      * @apiError {object} - Mongo remove error
      */
@@ -273,7 +261,7 @@ router.route('/name/:bit_name')
      * @api {get} /api/bit/name/:bit_name Get bit by name
      * @apiName GetBitByName
      * @apiGroup Bit
-     * @apiParam {string} [bit_name] bit name to search for
+     * @apiParam {string} bit_name bit name to search for
      * @apiSuccess {string} - Mongo find result json
      * @apiError {object} - Mongo find error
      */
@@ -291,12 +279,11 @@ router.route('/name/:bit_name')
 router.route('/count')
 
     /**
-     * @api {get} /api/bit/count Get count of total bits in db
+     * @api {get} /api/bit/count Get count of bits
      * @apiName GetBitByName
      * @apiGroup Bit
-     * @apiParam {string} bit name
      * @apiSuccess {string} - Mongo collection.count result
-     * @apiError {object} - Mongo find error
+     * @apiError {object} - Mongo collection.count error
      */
     .get(function (req, res) {
         bit.collection.count({show: true}, function (err, bitGet) {

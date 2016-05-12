@@ -1,6 +1,5 @@
 // Process records in img collection
 
-
 // This will grab documents from mongo and process to stream images to S3
 var superagent = require('superagent');
 var imgUtils   = require('./lib/imgUtils.js');

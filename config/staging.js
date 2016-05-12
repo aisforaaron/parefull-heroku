@@ -6,6 +6,8 @@ module.exports = {
     secret: "Your secret here",
     imgPath: '/app/docroot/assets/images/bits/',
     bitFilePath: 'https://s3-us-west-2.amazonaws.com/parebits/bits/staging/',
+    bitBucketName: 'parebits',
+    bitImgAllowedExt: ['jpeg', 'png', 'jpg'],
     db: {
         url: process.env.MONGO_URL
     },

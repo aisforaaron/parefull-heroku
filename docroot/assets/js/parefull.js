@@ -1,6 +1,5 @@
 // Parefull React JS UI
 
-
 var superagent = require('superagent');
 
 // Sub-components

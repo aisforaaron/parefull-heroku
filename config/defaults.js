@@ -6,6 +6,8 @@ module.exports = {
     secret: "Your secret here",
     imgPath: 'assets/images/bits',
     bitFilePath: 'docroot/assets/images/bits/',
+    bitBucketName: 'parebits',
+    bitImgAllowedExt: ['jpeg', 'png', 'jpg'],
     db: {
         url: 'mongodb://localhost/local'
     },
