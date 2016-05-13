@@ -3,7 +3,7 @@ module.exports = {
     host: '',
     address: '127.0.0.1',
     port: 4000,
-    secret: "Your secret here",
+    secret: 'Your secret here',
     imgPath: 'assets/images/bits',
     bitFilePath: 'docroot/assets/images/bits/',
     bitBucketName: 'parebits',
@@ -18,4 +18,8 @@ module.exports = {
         cx: process.env.GOOGLE_API_CX
     },
     apiSecret: process.env.APP_API_SECRET,
+    apiUser: {
+        name: 'pare',
+        password: 'full'
+    }
 };

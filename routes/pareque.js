@@ -164,7 +164,7 @@ router.route('/count')
 
     /**
      * @api {get} /api/pareque/count Get count of bits
-     * @apiName DeleteParequeBit
+     * @apiName CountParequeBit
      * @apiGroup Pareque
      * @apiSuccess {string} - json result from Mongo collection.count
      * @apiError {object} - Mongo collection.count error
