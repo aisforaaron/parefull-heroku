@@ -1,9 +1,10 @@
 // API routes for Parefull Users.
 
-var express   = require('express');
-var router    = express.Router();
-var pareUtils = require('../lib/utils.js');
-var config    = require('../config');
+var express = require('express');
+var router  = express.Router();
+// var pareUtils = require('../lib/utils.js');
+var jwt     = require('jsonwebtoken');
+var config  = require('../config');
 
 router.route('/token')
 
@@ -20,10 +21,12 @@ router.route('/token')
      */
     .post(function (req, res) {
         var user = config.apiUser;
-        if ( (user.password !== req.body.password) || (user.name !== req.body.name) ) {
+        if ((user.password !== req.body.password) || (user.name !== req.body.name)) {
             res.json({message: 'Authentication failed.'});
         } else {
-            var token = pareUtils.generateToken(user);
+            // var token = pareUtils.generateToken(user);
+            var claims = {name: 'parefullAPI', time: Date.now()};
+            var token  = jwt.sign(claims, config.apiSecret, {expiresIn: '1d'});
             res.json({token: token});
         }
     });
