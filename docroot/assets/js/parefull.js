@@ -131,6 +131,9 @@ var PrivacyText = React.createClass({
 
 var CompareBox = React.createClass({
     loadBitFromServer: function () {
+        // set img to blank while waiting for new img to load 
+        this.setState({bitImg: 'assets/images/clear.png'});
+        this.setState({bitImg2: 'assets/images/clear.png'});
         // get first random bit
         superagent
             .get('/api/bit/rand')
