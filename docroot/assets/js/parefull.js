@@ -131,33 +131,34 @@ var PrivacyText = React.createClass({
 
 var CompareBox = React.createClass({
     loadBitFromServer: function () {
-        // set img to blank while waiting for new img to load 
+        // set img to blank while waiting for new img to load
         this.setState({bitImg: 'assets/images/clear.png'});
         this.setState({bitImg2: 'assets/images/clear.png'});
         // get first random bit
         superagent
             .get('/api/bit/rand')
             .end(function (err, res) {
-                if (err) {
-                    window.location.href = 'error.html'
-                    throw new Error("/api/bit/rand returned error. Check to see if Node process is running.")
+                if (err || res.status === 404) {
+                    window.location.href = 'error.html';
+                    throw new Error("/api/bit/rand returned error. Check to see if Node process is running.");
+                } else {
+                    this.setState({bitName: res.body.name});
+                    this.setState({bitImg: res.body.image});
+                    this.setState({bitAvg: sliderText(res.body.scoreAvg)});
+                    this.setState({bitId: res.body._id});
+                    var A      = res.body.scoreAvg;
+                    var skipId = res.body._id;
+                    // call for second unique bit
+                    superagent
+                        .get('/api/bit/rand/' + skipId)
+                        .end(function (err, res) {
+                            this.setState({bitName2: res.body.name});
+                            this.setState({bitImg2: res.body.image});
+                            this.setState({bitAvg2: sliderText(res.body.scoreAvg)});
+                            this.setState({arrow: getArrow(A, res.body.scoreAvg)});
+                            this.setState({bitId2: res.body._id});
+                        }.bind(this));
                 }
-                this.setState({bitName: res.body.name})
-                this.setState({bitImg: res.body.image})
-                this.setState({bitAvg: sliderText(res.body.scoreAvg)})
-                this.setState({bitId: res.body._id})
-                var A      = res.body.scoreAvg
-                var skipId = res.body._id
-                // call for second unique bit
-                superagent
-                    .get('/api/bit/rand/' + skipId)
-                    .end(function (err, res) {
-                        this.setState({bitName2: res.body.name})
-                        this.setState({bitImg2: res.body.image})
-                        this.setState({bitAvg2: sliderText(res.body.scoreAvg)})
-                        this.setState({arrow: getArrow(A, res.body.scoreAvg)})
-                        this.setState({bitId2: res.body._id})
-                    }.bind(this));
             }.bind(this));
     },
     componentDidMount: function () {

@@ -116,40 +116,46 @@ router.route('/rand/?:skip_id?')
      */
     .get(function (req, res) {
         // random number strategy based on http://stackoverflow.com/a/28331323/4079771
-        bit.count({show: true}).exec(function (err, count) {
-            // @todo add error check if no bits are returned
-            // make sure count var is within range
-            // skipping one doc moves count down one
-            // zero key moves count down another one
-            // don't subtract to a negative
-            var min    = 0;
-            var max    = count - 2;
-            var random = pareUtils.randomNumber(min, max);
-            var query  = {show: true};
-            if (req.params.skip_id) {
-                query = {_id: {$ne: req.params.skip_id}, show: true};
-            }
-            bit.findOne(query).skip(random).exec(function (err, bitRand) {
-                if (err) {
-                    throw err;
-                } else {
-                    var bitObj = bitRand.toObject();
-                    if (bitRand.image !== null && bitRand.image !== 'null') {
-                        // if image exists in document, pass along full img path
-                        bitObj.image = config.bitFilePath + bitRand.image;
-                        console.log('returned current bit', JSON.stringify(bitObj));
-                        res.json(bitObj);
-                    } else {
-                        // add to pareque if bit is showing with broken/null image field
-                        if (bitRand.show === true) {
-                            imgUtils.newJob(bitRand._id, bitRand.name);
-                        }
-                        // return bitRand w/shrug img
-                        bitObj.image = 'assets/images/shrug.jpg';
-                        res.json(bitObj);
-                    }
+        bit.count({show: true}).exec(function (err, result) {
+            if (err) {
+                throw err;
+            } else if (result < 1) {
+                console.log('No bits in db!!!');
+                res.sendStatus(404);
+            } else {
+                // make sure count var is within range
+                // skipping one doc moves count down one
+                // zero key moves count down another one
+                // don't subtract to a negative
+                var min    = 0;
+                var max    = result - 2;
+                var random = pareUtils.randomNumber(min, max);
+                var query  = {show: true};
+                if (req.params.skip_id) {
+                    query = {_id: {$ne: req.params.skip_id}, show: true};
                 }
-            });
+                bit.findOne(query).skip(random).exec(function (err, bitRand) {
+                    if (err) {
+                        throw err;
+                    } else {
+                        var bitObj = bitRand.toObject();
+                        if (bitRand.image !== null && bitRand.image !== 'null') {
+                            // if image exists in document, pass along full img path
+                            bitObj.image = config.bitFilePath + bitRand.image;
+                            console.log('returned current bit', JSON.stringify(bitObj));
+                            res.json(bitObj);
+                        } else {
+                            // add to pareque if bit is showing with broken/null image field
+                            if (bitRand.show === true) {
+                                imgUtils.newJob(bitRand._id, bitRand.name);
+                            }
+                            // return bitRand w/shrug img
+                            bitObj.image = 'assets/images/shrug.jpg';
+                            res.json(bitObj);
+                        }
+                    }
+                });
+            }
         });
     });
 
