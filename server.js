@@ -26,7 +26,6 @@ mongoose.set('debug', true);
 fs.openSync('/tmp/app-initialized', 'w');
 
 /** Routes */
-var router = express.Router();
 app.use(require('./routes'));
 
 /** Error Handling */
@@ -36,7 +35,6 @@ app.use(function (req, res, next) {
     next(err);
 });
 if (app.get('env') === 'development') {
-    // app.use(express.errorHandler());
     app.use(function (err, req, res) {
         res.status(err.status || 500);
         res.render('error', {
