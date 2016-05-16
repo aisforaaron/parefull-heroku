@@ -260,25 +260,26 @@ var ScoreBitForm = React.createClass({
         superagent
             .get('/api/bit/rand')
             .end(function (err, res) {
-                if (err) throw err
-                this.setState({bitName: res.body.name})
-                this.setState({bitId: res.body._id})
-                this.setState({bitImg: res.body.image})
-            }.bind(this))
+                if (err) throw err;
+                this.setState({bitName: res.body.name});
+                this.setState({bitId: res.body._id});
+                this.setState({bitImg: res.body.image});
+            }.bind(this));
     },
     loadNewBit: function () {
-        this.loadBitFromServer()
-        this.setState({message: ''})
+        this.loadBitFromServer();
+        this.setState({message: ''});
     },
     componentDidMount: function () {
-        this.loadBitFromServer()
+        this.loadBitFromServer();
     },
     getInitialState: function () {
         return {
             bitId: '',
             bitNname: '',
             bitImg: '',
-            message: ''
+            message: '',
+            timestamp: new Date().toString()
         };
     },
     handleSubmit: function (e) {
@@ -291,28 +292,28 @@ var ScoreBitForm = React.createClass({
                 .post('/api/score')
                 .send({"_bitId": id, "score": score})
                 .end(function (err, res) {
-                    if (err) throw err
+                    if (err) throw err;
                     // GET new bit score avg
                     superagent
                         .get('/api/score/avg/' + id)
                         .end(function (err, score) {
-                            if (err) throw err
+                            if (err) throw err;
                             // PUT call to update bit scoreAvg
                             superagent
                                 .put('/api/bit/id/' + id)
                                 .send({"scoreAvg": score.body})
                                 .end(function (err, result) {
-                                    if (err) throw err
-                                })
-                        })
-                })
-            this.setState({message: 'Score another right meow?'})
-            // get new bit to score and reset slider score/text
+                                    if (err) throw err;
+                                });
+                        });
+                });
+            this.setState({message: 'Score another right meow?'});
+            // get new bit to score and reset slider score/text by updating outer div key
+            // @todo figure out cleaner way to reset component values than using timestamp
             this.loadBitFromServer();
-            React.findDOMNode(document.forms[0].score).value                       = 5;
-            React.findDOMNode(document.getElementById('scoreDisplay')).textContent = sliderText(5)
+            this.setState({timestamp: new Date().toString()});
         } else {
-            this.setState({message: "Please score bit properly"})
+            this.setState({message: "Please score bit properly"});
         }
     },
     render: function () {
@@ -340,7 +341,7 @@ var ScoreBitForm = React.createClass({
                         </div>
                         <div className="col-md-4"></div>
                     </div>
-                    <div className="row text-center sliderbox-parent">
+                    <div className="row text-center sliderbox-parent" key={this.state.timestamp}>
                         <SliderBox />
                     </div>
                     <div className="row text-center submit-btn">
@@ -392,13 +393,12 @@ var AddBitForm = React.createClass({
                                         .end(function (err, result) {
                                             if (err) throw err
                                             this.setState({message: 'New Bit Saved! (＾▽＾)'});
-                                            React.findDOMNode(this.refs.name).value                                = ''
-                                            React.findDOMNode(document.forms[0].score).value                       = 5;
-                                            React.findDOMNode(document.getElementById('scoreDisplay')).textContent = sliderText(5)
-                                        }.bind(this))
-                                }.bind(this))
-                        }.bind(this))
-                }.bind(this))
+                                            this.setState({timestamp: new Date().toString()}); // @todo reset form better
+                                            React.findDOMNode(this.refs.name).value = '';
+                                        }.bind(this));
+                                }.bind(this));
+                        }.bind(this));
+                }.bind(this));
         } else {
             this.setState({message: 'Please enter something (at least two characters) and give it a rating. Thx!'})
         }
@@ -426,7 +426,7 @@ var AddBitForm = React.createClass({
                         <div className="row col-md-12 text-left slider-label">
                             <label>Give it a score!</label>
                         </div>
-                        <div className="row col-md-12">
+                        <div className="row col-md-12" key={this.state.timestamp}>
                             <SliderBox />
                         </div>
                         <div className="row col-md-12 text-center">
