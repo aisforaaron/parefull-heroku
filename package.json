@@ -8,6 +8,7 @@
   "dependencies": {
     "aws-sdk": "^2.2.15",
     "body-parser": "~1.13.2",
+    "debug": "^2.2.0",
     "express": "~4.13.1",
     "gm": "^1.21.1",
     "google-search": "0.0.3",
