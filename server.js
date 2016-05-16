@@ -1,6 +1,4 @@
-/**
- * Parefull ExpressJS API Server
- */
+// Parefull ExpressJS API Server
 
 var express    = require('express');
 var bodyParser = require('body-parser');
@@ -16,7 +14,7 @@ app.set('superSecret', config.apiSecret);
 app.enable('trust proxy');
 mongoose.connect(config.db.url, function (err) {
     if (err) {
-        console.log('Could not connect to database', config.db.url, ' due to error', err);
+        console.log('Could not connect to database.', err);
         process.exit(1);
     }
 });
