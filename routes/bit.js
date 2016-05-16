@@ -115,7 +115,6 @@ router.route('/rand/?:skip_id?')
      * @apiError {object} - Mongo findOne throw err
      */
     .get(function (req, res) {
-        // random number strategy based on http://stackoverflow.com/a/28331323/4079771
         bit.count({show: true}).exec(function (err, result) {
             if (err) {
                 throw err;
@@ -130,9 +129,13 @@ router.route('/rand/?:skip_id?')
                 var min    = 0;
                 var max    = result - 2;
                 var random = pareUtils.randomNumber(min, max);
-                var query  = {show: true};
+                var query  = {show: true, scoreAvg: {$ne: null}};
                 if (req.params.skip_id) {
-                    query = {_id: {$ne: req.params.skip_id}, show: true};
+                    query = {
+                        _id: {$ne: req.params.skip_id},
+                        show: true,
+                        scoreAvg: {$ne: null}
+                    };
                 }
                 bit.findOne(query).skip(random).exec(function (err, bitRand) {
                     if (err) {
