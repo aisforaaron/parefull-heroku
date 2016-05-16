@@ -10,10 +10,12 @@
 			"description": "",
 			"order": [
 				"06407397-f69a-31f8-8c68-d26fec523120",
+				"972233cd-c7bb-b6dc-219d-2de58f91c794",
 				"ea31455f-0940-8c96-6eff-923f2f9bfed6",
 				"c371fc52-0d00-db6b-8d8d-9cf3095b1248",
 				"ad367175-eded-290c-2c9d-24c19d34ce74",
 				"52ffa69f-2927-8699-b710-2de7159fd0f3",
+				"1c550a7e-9a1f-1e12-a66e-3abfb7860325",
 				"17f3e27e-ccba-123b-2fad-cf5ac1c97369",
 				"4f9a6182-87c2-7c2f-5b8b-79e4d127aa4a"
 			],
@@ -199,6 +201,38 @@
 			"helperAttributes": {},
 			"time": 1463164487165,
 			"name": "add item",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "1c550a7e-9a1f-1e12-a66e-3abfb7860325",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/bit/id/**bit-id-here**",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "PUT",
+			"data": [
+				{
+					"key": "name",
+					"value": "",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "scoreAvg",
+					"value": "",
+					"type": "text",
+					"enabled": false
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463192550335,
+			"name": "put bit",
 			"description": "",
 			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
 			"responses": []
@@ -445,7 +479,7 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1463165217284,
+			"time": 1463166007053,
 			"name": "Post to return token",
 			"description": "",
 			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
@@ -487,7 +521,7 @@
 					"enabled": false
 				},
 				{
-					"key": "updateAvg",
+					"key": "scoreAvg",
 					"value": "",
 					"type": "text",
 					"enabled": false
@@ -498,7 +532,7 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1463165303321,
+			"time": 1463192462738,
 			"name": "put bit",
 			"description": "",
 			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
@@ -540,6 +574,25 @@
 			"helperAttributes": {},
 			"time": 1463164924314,
 			"name": "pb amount of times scored",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "972233cd-c7bb-b6dc-219d-2de58f91c794",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/bit/id/**bit-id-here**",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463192381756,
+			"name": "bit by id",
 			"description": "",
 			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
 			"responses": []
