@@ -30,6 +30,7 @@
 				"85f6f4ad-9530-7df0-e62b-cb1f00a4565a",
 				"78f4d2d8-ca16-1375-91df-ad2c99096782",
 				"109cd93d-0ac7-4746-c70b-9c55a14827f2",
+				"4e1cb21f-617e-f4cf-d846-fcc46aeab77b",
 				"18719d1c-30c1-e427-c02b-933e6d82c25e",
 				"b2c9ff0a-837b-6704-7fe4-684f8f21a2e0",
 				"4cb43a35-95e0-b643-cc05-3a4a7fedd5df"
@@ -78,7 +79,8 @@
 			"name": "Staging-Pareque",
 			"description": "",
 			"order": [
-				"cfd5c4d2-3769-bb44-1e76-8e39badf6cf2"
+				"cfd5c4d2-3769-bb44-1e76-8e39badf6cf2",
+				"2c88bb33-bb5e-202d-c0b3-e3f749b2c163"
 			],
 			"owner": ""
 		},
@@ -238,6 +240,25 @@
 			"responses": []
 		},
 		{
+			"id": "2c88bb33-bb5e-202d-c0b3-e3f749b2c163",
+			"headers": "",
+			"url": "https://parefull-staging.herokuapp.com/api/pareque/flush",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463450167529,
+			"name": "Get call to delete all done",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
 			"id": "31a2b923-2cb1-ccfd-4f01-70d342668ade",
 			"headers": "",
 			"url": "http://parefull-staging.herokuapp.com/api/bit/id/**bit-id-here**",
@@ -332,6 +353,25 @@
 			"responses": []
 		},
 		{
+			"id": "4e1cb21f-617e-f4cf-d846-fcc46aeab77b",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/pareque/flush",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463449830246,
+			"name": "Get call to delete all done",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
 			"id": "4e9b4d44-e0d8-c211-4729-ff02326f4bda",
 			"headers": "",
 			"url": "https://parefull-staging.herokuapp.com/api/bit/rand",
@@ -391,7 +431,7 @@
 		},
 		{
 			"id": "52ffa69f-2927-8699-b710-2de7159fd0f3",
-			"headers": "",
+			"headers": "x-access-token: \n",
 			"url": "http://local.pfl-webapp/api/bit/import",
 			"preRequestScript": "",
 			"pathVariables": {},
@@ -409,7 +449,7 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1463164309975,
+			"time": 1463451879185,
 			"name": "import bits",
 			"description": "",
 			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
