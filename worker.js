@@ -16,7 +16,17 @@ console.log('Worker.js on host', config.host, 'check every ms', config.workerInt
 
 // every interval, process one record
 setInterval(function () {
-    console.log('Worker.js', 'Polling mongo collection for images', tStamp());
+    console.log('Worker.js', 'Polling mongo collection for images, flush done items', tStamp());
+    // Remove any pareque items with status=done
+    superagent
+        .get(config.host + '/api/pareque/flush')
+        .end(function (err, result) {
+            if (err) {
+                throw err;
+            } else {
+                console.log('Worker.js', 'Removed done pareque items', result.ok);
+            }
+        });
     // 1 - API call for mongo to get one status=pending doc, oldest first
     superagent
         .get(config.host + '/api/pareque/next')

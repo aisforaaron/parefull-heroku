@@ -171,7 +171,27 @@ router.route('/count')
      */
     .get(function (req, res) {
         // case insensitive searches use regex
-        pareQue.collection.count({show: true}, function (err, result) {
+        pareQue.count({show: true}, function (err, result) {
+            if (err) {
+                throw err;
+            } else {
+                res.json(result);
+            }
+        });
+    });
+
+router.route('/flush')
+
+    /**
+     * @api {get} /api/pareque/flush Get call to remove done items
+     * @apiName FlushParequeBits
+     * @apiGroup Pareque
+     * @apiSuccess {string} - json result from Mongo collection.count
+     * @apiError {object} - Mongo collection.count error
+     */
+    .get(function (req, res) {
+        // case insensitive searches use regex
+        pareQue.remove({status: 'done'}, function (err, result) {
             if (err) {
                 throw err;
             } else {
