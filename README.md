@@ -1,23 +1,10 @@
 # Parefull App
 
-This is the Node.js web app part of the Parefull project. 
-
-Demo can be found here: 
-[Parefull.aarond.com](http://parefull.aarond.com)
-
-
-## To setup locally
-
-* Create local folder structure like so
-```
-parefull/           // main folder to hold app and devops
-  parefull-heroku   // project codebase which communicates to Heroku
-  parefull-devops   // vagrant and ansible provisioners, run vagrant up here
-                    //   this also sets NFS share from ../parefull-app to VM
-```
+- This is the Node.js web app part of the Parefull project.
+- Demo can be found here: [Parefull.aarond.com](http://parefull.aarond.com)
+- Read the parefull-devops project ReadMe for local setup steps.
 
 ## Request Flow
-
 
 ### General
 
