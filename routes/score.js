@@ -4,7 +4,10 @@ var express   = require('express');
 var router    = express.Router();
 var score     = require('../models/score');
 var mongoose  = require('mongoose');
+var config    = require('../config');
 var pareUtils = require('../lib/utils.js');
+var bunyan    = require('bunyan');
+var log       = pareUtils.setupLogging('parefull', true, config.logging.parefull);
 
 router.route('/')
 
@@ -18,6 +21,7 @@ router.route('/')
     .get(function (req, res) {
         score.find(function (err, scores) {
             if (err) {
+                log.err('Get /api/score err', {err: err});
                 throw err;
             } else {
                 res.json(scores);
@@ -45,13 +49,14 @@ router.route('/')
         } else {
             ip = req.headers['x-forwarded-for'];
         }
-        var scoreNew = new score();
+        var scoreNew    = new score();
         scoreNew.ip     = ip;
         scoreNew.score  = scoreVal;
         scoreNew._bitId = bitId;
         if ((scoreVal > 0) && (scoreVal < 11) && (bitId.length > 0)) {
             scoreNew.save(function (err, result) {
                 if (err) {
+                    log.err('Post /api/score save score err', {err: err});
                     throw err;
                 } else {
                     res.json(result);
@@ -75,6 +80,7 @@ router.route('/id/:score_id')
     .get(function (req, res) {
         score.findById(req.params.score_id, function (err, result) {
             if (err) {
+                log.err('Get /api/score/id/:score_id find err', {err: err});
                 throw err;
             } else {
                 res.json(result);
@@ -93,6 +99,7 @@ router.route('/id/:score_id')
     .delete(pareUtils.protectRoute, function (req, res) {
         score.remove({_id: req.params.score_id}, function (err) {
             if (err) {
+                log.err('Delete /api/score remove err', {err: err});
                 throw err;
             } else {
                 res.json({message: 'Successfully deleted score.'});
@@ -119,6 +126,7 @@ router.route('/avg/:score_bitId')
             ],
             function (err, result) {
                 if (err) {
+                    log.err('Get /api/score/avg/:score_bitId aggregate err', {err: err});
                     throw err;
                 } else if (result[0]) {
                     var roundAvg = Math.round(result[0].avg);
@@ -143,6 +151,7 @@ router.route('/pb/:score_bitId')
         var bitId = mongoose.Types.ObjectId(req.params.score_bitId);
         var count = score.count({"_bitId": bitId}, function (err, result) {
             if (err) {
+                log.err('Get /api/score/pb/:score_bitId count err', {err: err});
                 next(err);
             } else {
                 res.json(result);
@@ -159,10 +168,10 @@ router.route('/pb/:score_bitId')
      * @apiError {object} - Mongo remove error
      */
     .delete(pareUtils.protectRoute, function (req, res) {
-        // objectId type conversion for aggregation
         var bitId = mongoose.Types.ObjectId(req.params.score_bitId);
-        score.remove({_bitId: bitId}, function (err, bit) {
+        score.remove({_bitId: bitId}, function (err) {
             if (err) {
+                log.err('Get /api/score/pb/:score_bitId remove err', {err: err});
                 throw err;
             } else {
                 res.json({message: 'Successfully deleted all scores with bid id.'});

@@ -21,5 +21,10 @@ module.exports = {
     apiUser: {
         name: 'pare',
         password: 'full'
+    },
+    logging: {
+        enable: true,
+        cursePurse: '_log/parefull-cursepurse.log',
+        parefull: '_log/parefull-app.log'
     }
 };

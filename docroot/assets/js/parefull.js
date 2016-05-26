@@ -373,31 +373,43 @@ var AddBitForm = React.createClass({
                 .post('/api/bit')
                 .send({"name": name})
                 .end(function (err, res) {
-                    if (err) throw err
-                    var id = res.body._id
-                    // POST new score
-                    superagent
-                        .post('/api/score')
-                        .send({"_bitId": id, "score": score})
-                        .end(function (err, result) {
-                            if (err) throw err
-                            // GET new bit score avg
-                            superagent
-                                .get('/api/score/avg/' + id)
-                                .end(function (err, score) {
-                                    if (err) throw err
-                                    // PUT call to update bit scoreAvg
-                                    superagent
-                                        .put('/api/bit/id/' + id)
-                                        .send({"scoreAvg": score.body})
-                                        .end(function (err, result) {
-                                            if (err) throw err
-                                            this.setState({message: 'New Bit Saved! (＾▽＾)'});
-                                            this.setState({timestamp: new Date().toString()}); // @todo reset form better
-                                            React.findDOMNode(this.refs.name).value = '';
-                                        }.bind(this));
-                                }.bind(this));
-                        }.bind(this));
+                    if (err) throw err;
+                    // make sure bit was saved, not a curse word
+                    console.log('/api/bit res', res);
+                    if (res.body.cword === false) {
+                        var id = res.body._id;
+                        var bitExists = res.body.bitExists; // if bit was already in db, just added new score
+                        // POST new score
+                        console.log('post new score');
+                        superagent
+                            .post('/api/score')
+                            .send({"_bitId": id, "score": score})
+                            .end(function (err, result) {
+                                if (err) throw err;
+                                // GET new bit score avg
+                                superagent
+                                    .get('/api/score/avg/' + id)
+                                    .end(function (err, score) {
+                                        if (err) throw err;
+                                        // PUT call to update bit scoreAvg
+                                        superagent
+                                            .put('/api/bit/id/' + id)
+                                            .send({"scoreAvg": score.body})
+                                            .end(function (err, result) {
+                                                if (err) throw err;
+                                                if (bitExists === true) {
+                                                    this.setState({message: 'Bit Score Saved - was already in here! (＾o＾)'});
+                                                } else {
+                                                    this.setState({message: 'New Bit Saved! (＾▽＾)'});
+                                                }
+                                                this.setState({timestamp: new Date().toString()}); // @todo reset form better
+                                                React.findDOMNode(this.refs.name).value = '';
+                                            }.bind(this));
+                                    }.bind(this));
+                            }.bind(this));
+                    } else {
+                        this.setState({message: 'Hey now, dirty bird!'})
+                    }
                 }.bind(this));
         } else {
             this.setState({message: 'Please enter something (at least two characters) and give it a rating. Thx!'})

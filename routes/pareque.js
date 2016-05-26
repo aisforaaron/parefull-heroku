@@ -4,7 +4,11 @@ var express   = require('express');
 var router    = express.Router();
 var pareQue   = require('../models/pareque');
 var mongoose  = require('mongoose');
+var config    = require('../config');
 var pareUtils = require('../lib/utils.js');
+var bunyan    = require('bunyan');
+var log       = pareUtils.setupLogging('parefull', true, config.logging.parefull);
+
 
 router.route('/')
 
@@ -36,7 +40,7 @@ router.route('/')
      * @apiError {object} - Mongo findOne or save error
      */
     .post(function (req, res) {
-        console.log('POST /api/pareque req.body', req.body);
+        log.info('POST /api/pareque req.body', {reqBody: req.body});
         var id = req.body._bitId;
         pareQue.findOne({_bitId: id}, function (err, result) {
             if (err) {
@@ -53,7 +57,7 @@ router.route('/')
                         if (err) {
                             throw err;
                         } else {
-                            console.log('New item added to pareque', id, req.body.name);
+                            log.info('New item added to pareque ' + id + ' ' + req.body.name);
                             res.json(result);
                         }
                     });

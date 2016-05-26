@@ -5,6 +5,9 @@ var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
 var fs         = require('fs');
 var config     = require('./config');
+var pareUtils  = require('./lib/utils.js');
+var bunyan     = require('bunyan');
+var log        = pareUtils.setupLogging('parefull', true, config.logging.parefull);
 var port       = config.port;
 var listen     = config.address;
 var app        = express();
@@ -12,13 +15,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('superSecret', config.apiSecret);
 app.enable('trust proxy');
+
+/** Start Mongo DB and Mongo logging to Bunyan **/
 mongoose.connect(config.db.url, function (err) {
     if (err) {
-        console.log('Could not connect to database.', err);
+        log.info('Could not connect to database.', {err: err});
         process.exit(1);
     }
 });
-mongoose.set('debug', true);
+if (config.logging.enable === true) {
+    mongoose.set('debug', function (collectionName, method, query, doc) {
+        log.info('Mongoose debug', {'collectionName': collectionName, 'method': method, 'query': query, 'doc': doc});
+    });
+}
 
 /** Heroku Config - tell nginx to start listening */
 fs.openSync('/tmp/app-initialized', 'w');
@@ -53,4 +62,4 @@ module.exports = app;
 
 /** Start the server */
 app.listen(port, listen);
-console.log('API listening on ' + listen + ':' + port);
+log.info('API listening on ' + listen + ':' + port);

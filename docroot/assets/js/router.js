@@ -1,13 +1,12 @@
 // Manage #hashtag routes
-// based on https://github.com/jritsema/react-bootstrap-starter/blob/master/src/router.jsx 
+// based on https://github.com/jritsema/react-bootstrap-starter/blob/master/src/router.jsx
 var router = (function () {
 
-    "use strict";
+    'use strict';
 
     var routes = [];
 
     function addRoute(route, handler) {
-
         routes.push({parts: route.split('/'), handler: handler});
     }
 
@@ -16,11 +15,9 @@ var router = (function () {
     }
 
     function start() {
-
         var path = window.location.hash.substr(1),
             parts = path.split('/'),
             partsLength = parts.length;
-
         for (var i = 0; i < routes.length; i++) {
             var route = routes[i];
             if (route.parts.length === partsLength) {

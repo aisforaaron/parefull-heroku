@@ -2,8 +2,11 @@
 
 // This will grab documents from mongo and process to stream images to S3
 var superagent = require('superagent');
-var imgUtils   = require('./lib/imgUtils.js');
 var config     = require('./config');
+var imgUtils   = require('./lib/imgUtils.js');
+var pareUtils  = require('./lib/utils.js');
+var bunyan     = require('bunyan');
+var log        = pareUtils.setupLogging('parefull', true, config.logging.parefull);
 
 function tStamp() {
     var d   = new Date();
@@ -12,11 +15,11 @@ function tStamp() {
     return d.getHours() + ':' + min;
 }
 
-console.log('Worker.js on host', config.host, 'check every ms', config.workerInterval);
+log.info('Worker.js on host '+config.host+' check every ms '+config.workerInterval);
 
 // every interval, process one record
 setInterval(function () {
-    console.log('Worker.js', 'Polling mongo collection for images, flush done items', tStamp());
+    log.info('Worker.js - Polling mongo collection for images, flush done items '+tStamp());
     // Remove any pareque items with status=done
     superagent
         .get(config.host + '/api/pareque/flush')
@@ -24,7 +27,7 @@ setInterval(function () {
             if (err) {
                 throw err;
             } else {
-                console.log('Worker.js', 'Removed done pareque items', result.ok);
+                log.info('Worker.js - Removed done pareque items '+result.ok);
             }
         });
     // 1 - API call for mongo to get one status=pending doc, oldest first
@@ -35,7 +38,7 @@ setInterval(function () {
                 throw err;
             }
             if (result.body.name) {
-                console.log('Next pareque item:', result.body.name);
+                log.info('Next pareque item: '+result.body.name);
                 // 2 - send document to getSetCache
                 imgUtils.getSetCache(result.body.name, result.body._bitId, function (err, imgObj) {
                     if (err) {
@@ -43,20 +46,20 @@ setInterval(function () {
                     }
                     // 3 - on success, update pareque document
                     if (imgObj) {
-                        console.log('worker.js update pareque document', result.body._id);
+                        log.info('Worker.js update pareque document '+result.body._id);
                         superagent
-                            .put(config.host + '/api/pareque/id/' + result.body._id)
+                            .put(config.host+'/api/pareque/id/'+result.body._id)
                             .send({'status': 'done'})
                             .end(function (err) {
                                 if (err) {
                                     throw err;
                                 }
-                                console.log('Worker.js', 'getSetCache completed');
+                                log.info('Worker.js - getSetCache completed');
                             });
                     }
                 });
             } else {
-                console.log('Worker.js', 'No pending pareque documents.', tStamp());
+                log.info('Worker.js - No pending pareque documents. '+tStamp());
             }
         });
 }, config.workerInterval);

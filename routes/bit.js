@@ -1,12 +1,23 @@
 // API routes for Parefull Bits.
 
-var express   = require('express');
-var router    = express.Router();
-var bit       = require('../models/bit');
-var mongoose  = require('mongoose');
-var pareUtils = require('../lib/utils.js');
-var imgUtils  = require('../lib/imgUtils.js');
-var config    = require('../config');
+var express    = require('express');
+var router     = express.Router();
+var bit        = require('../models/bit');
+var mongoose   = require('mongoose');
+var pareUtils  = require('../lib/utils.js');
+var imgUtils   = require('../lib/imgUtils.js');
+var config     = require('../config');
+var bunyan     = require('bunyan');
+var log        = pareUtils.setupLogging('parefull', true, config.logging.parefull);
+var cursePurse = require('cursepurse');
+cursePurse.dbConnect(config.db.url, function (err, res) {
+  if (err) {
+      log.err('error connecting to cursepurse db');
+  }
+});
+
+// this should work off parefull bunyan
+log.info('just testing bunyan in log file now');
 
 router.route('/')
 
@@ -37,43 +48,58 @@ router.route('/')
      * @apiError {string} message Validation error on name, ip or score.
      */
     .post(function (req, res) {
-        console.log('POST /api/bit');
+        log.info('POST /api/bit');
         var name   = req.body.name;
         var newBit = false;
         if (name.length > 2) {
-            bit.findOne(
-                // case insensitive, anchors used so Pizz won't match Pizza
-                {name: new RegExp('^' + name + '$', "i")},
-                function (err, result) {
-                    if (err) {
-                        throw err;
-                    } else {
-                        // @todo check the != to see if !== is better
-                        if (result != null) {
-                            // update score and scoreAvg outside of this method
-                            console.log('POST /api/bit', 'Bit already in db');
-                            res.json(result);
-                        } else {
-                            newBit = true;
-                            // no bit found, add new one
-                            console.log('POST /api/bit', 'Adding new bit to db');
-                            var bitAdd   = new bit();
-                            bitAdd.name  = name;
-                            bitAdd.ip    = req.headers['x-forwarded-for'];
-                            bitAdd.image = null;
-                            bitAdd.show  = false; // set to false until google image is processed
-                            bitAdd.save(function (err, result) {
-                                if (err) {
-                                    throw err;
+            cursePurse.isCurse(name, function (err, result) {
+                log.info('isCurse call result', {result: result});
+                if (result === true) {
+                    // banned word, don't add bit
+                    log.info('return true as res.body.cword, it is a curse');
+                    res.send({cword: true});
+                } else {
+                    // ok to proceed with word
+                    bit.findOne(
+                        // case insensitive, anchors used so Pizz won't match Pizza
+                        {name: new RegExp('^' + name + '$', "i")},
+                        function (err, result) {
+                            if (err) {
+                                throw err;
+                            } else {
+                                if (result != null) {
+                                    // update score and scoreAvg outside of this method
+                                    log.info('POST /api/bit - Bit already in db');
+                                    var resultObj       = result.toObject();
+                                    resultObj.cword     = false;
+                                    resultObj.bitExists = true;
+                                    res.send(resultObj);
                                 } else {
-                                    console.log('POST /api/bit', 'Bit saved, adding', bitAdd.name, result._id, 'to pareque');
-                                    imgUtils.newJob(result._id, bitAdd.name);
-                                    res.json(result);
+                                    newBit = true;
+                                    // no bit found, add new one
+                                    log.info('POST /api/bit - Adding new bit to db');
+                                    var bitAdd   = new bit();
+                                    bitAdd.name  = name;
+                                    bitAdd.ip    = req.headers['x-forwarded-for'];
+                                    bitAdd.image = null;
+                                    bitAdd.show  = false; // set to false until google image is processed
+                                    bitAdd.save(function (err, result) {
+                                        if (err) {
+                                            throw err;
+                                        } else {
+                                            log.info('POST /api/bit - Bit saved, adding '+bitAdd.name+' '+result._id+' to pareque');
+                                            imgUtils.newJob(result._id, bitAdd.name);
+                                            var resultObj       = result.toObject();
+                                            resultObj.cword     = false;
+                                            resultObj.bitExists = false;
+                                            res.send(resultObj);
+                                        }
+                                    });
                                 }
-                            });
-                        }
-                    }
-                });
+                            }
+                        });
+                }
+            });
         } else {
             res.json({message: 'Validation error on name, ip or score.'});
         }
@@ -92,13 +118,13 @@ router.route('/import')
      * @apiError {object} - pareUtils.importBits error returned
      */
     .post(pareUtils.protectRoute, function (req, res) {
-        console.log('POST /api/bit/import');
+        log.info('POST /api/bit/import');
         var importBits = JSON.parse(req.body.importBits);
         pareUtils.importBits(importBits, 0, function (err) {
             if (err) {
                 throw err;
             } else {
-                console.log('pareUtils returned ok - done with import');
+                log.info('pareUtils returned ok - done with import');
                 res.json({message: 'Done with import.'});
             }
         });
@@ -119,7 +145,7 @@ router.route('/rand/?:skip_id?')
             if (err) {
                 throw err;
             } else if (result < 1) {
-                console.log('No bits in db!!!');
+                log.info('No bits in db!!!');
                 res.sendStatus(404);
             } else {
                 // make sure count var is within range
@@ -142,10 +168,10 @@ router.route('/rand/?:skip_id?')
                         throw err;
                     } else {
                         var bitObj = bitRand.toObject();
-                        if (bitRand.image !== null && bitRand.image !== 'null') {
+                        if ((typeof bitRand.image != 'undefined') && (bitRand.image !== null) && (bitRand.image !== 'null')) {
                             // if image exists in document, pass along full img path
                             bitObj.image = config.bitFilePath + bitRand.image;
-                            console.log('returned current bit', JSON.stringify(bitObj));
+                            log.info('returned current bit', {bitObj: bitObj});
                             res.json(bitObj);
                         } else {
                             // add to pareque if bit is showing with broken/null image field
@@ -198,15 +224,23 @@ router.route('/id/:bit_id')
      * @apiError {object} - Mongo findByIdAndUpdate error
      */
     .put(function (req, res) {
-        console.log('PUT /api/bit', 'req.params', req.params);
-        console.log('PUT /api/bit', 'req.body', req.body);
+        log.info('PUT /api/bit - req.params', {reqParams: req.params});
+        log.info('PUT /api/bit - req.body', {reqBody: req.body});
         if (req.params.bit_id) {
             var updateFields = {};
             if (req.body.scoreAvg) {
                 updateFields.scoreAvg = req.body.scoreAvg;
             }
             if (req.body.name) {
-                updateFields.name = req.body.name;
+                cursePurse.isCurse(name, function (res) {
+                    if (res) {
+                        log.info('Updated bit name is a curse word. Skip updating bit.');
+                        res.json({message: 'Bit name is banned.'});
+                    } else {
+                        log.info('Updated bit name is NOT a curse. Continue to bit update.');
+                        updateFields.name = req.body.name;
+                    }
+                });
             }
             if (req.body.queue) {
                 if (req.body.queue === 'false') {
@@ -229,8 +263,8 @@ router.route('/id/:bit_id')
                 }
             }
             var bitId = mongoose.Types.ObjectId(req.params.bit_id);
-            console.log('PUT /api/bit', 'bitId', bitId);
-            console.log('PUT /api/bit', 'updateFields', updateFields);
+            log.info('PUT /api/bit - bitId', {bitId: bitId});
+            log.info('PUT /api/bit - updateFields', {updateFields: updateFields});
             bit.findByIdAndUpdate(bitId, updateFields, function (err, result) {
                 if (err) {
                     throw err;
