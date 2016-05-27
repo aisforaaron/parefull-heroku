@@ -21,5 +21,8 @@ module.exports = {
     apiUser: {
         name: process.env.APP_API_USER,
         password: process.env.APP_API_PASSWORD
+    },
+    logging: {
+        enable: false
     }
 };
