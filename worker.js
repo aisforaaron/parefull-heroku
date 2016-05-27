@@ -4,7 +4,7 @@
 var superagent = require('superagent');
 var config     = require('./config');
 var imgUtils   = require('./lib/imgUtils.js');
-var pareUtils  = require('./lib/utils.js');
+var pareUtils  = require('./lib/pareUtils.js');
 var bunyan     = require('bunyan');
 var log        = pareUtils.setupLogging('parefull', true, config.logging.parefull);
 
