@@ -16,6 +16,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set('superSecret', config.apiSecret);
 app.enable('trust proxy');
 
+log.info('Parefull config ENV: ' + config.env);
+
 /** Start Mongo DB and Mongo logging to Bunyan **/
 mongoose.connect(config.db.url, function (err) {
     if (err) {
@@ -50,11 +52,11 @@ if (app.get('env') === 'development') {
         });
     });
 } else {
-    app.use(function (err, req, res, next) {
+    app.use(function (err, req, res) {
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,
-            error: {}  // only diff from above?
+            error: {}
         });
     });
 }
@@ -62,4 +64,4 @@ module.exports = app;
 
 /** Start the server */
 app.listen(port, listen);
-log.info('API listening on ' + listen + ':' + port);
+log.info('Parefull API listening on ' + listen + ':' + port);
