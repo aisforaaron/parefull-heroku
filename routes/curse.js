@@ -17,16 +17,17 @@ cursePurse.dbConnect(mongoose, function (err) {
 
 router.route('/import')
 
-/**
- * @api {post} /api/curse/import Post to add curses to purse
- * @apiName ImportCurses
- * @apiGroup Bit
- * @apiParam {string} importCurses array list of text
- * @apiExample {js} Example array:
- *     importCurses = ["something", "more stuff", "another phrase", "words"]
- * @apiSuccess {string} message Done with import.
- * @apiError {object} - cursePurse.importCurses error returned
- */
+    /**
+     * @api {post} /api/curse/import Post to add curses to purse
+     * @apiName ImportCurses
+     * @apiGroup Curse
+     * @apiDescription JWT token protected route.
+     * @apiParam {string} importCurses array list of text
+     * @apiExample {js} Example array:
+     *     importCurses = ["something", "more stuff", "another phrase", "words"]
+     * @apiSuccess {string} message Done with import.
+     * @apiError {object} - cursePurse.importCurses error returned
+     */
     .post(pareUtils.protectRoute, function (req, res) {
         log.info('POST /api/curse/import');
         cursePurse.importCurses(req.body.importCurses, function (err) {

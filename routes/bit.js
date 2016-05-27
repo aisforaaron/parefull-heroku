@@ -108,6 +108,7 @@ router.route('/import')
      * @api {post} /api/bit/import Post to add new bits
      * @apiName ImportBits
      * @apiGroup Bit
+     * @apiDescription JWT token protected route.
      * @apiParam {string} importBits JSON data of bits
      * @apiExample {js} Example JSON setup:
      *     importBits = [{"name":"apples", "score":"6"}, {...}]

@@ -151,6 +151,7 @@ router.route('/id/:bit_id')
      * @api {delete} /api/pareque/id/:bit_id Delete bit
      * @apiName DeleteParequeBit
      * @apiGroup Pareque
+     * @apiDescription JWT token protected route.
      * @apiParam {string} bit_id bit id to delete from pareque
      * @apiSuccess {string} message Successfully deleted item in pareque.
      * @apiError {object} - Mongo remove error
