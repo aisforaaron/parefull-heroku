@@ -6,18 +6,16 @@ var bit        = require('../models/bit');
 var mongoose   = require('mongoose');
 var pareUtils  = require('../lib/utils.js');
 var imgUtils   = require('../lib/imgUtils.js');
+var logUtils   = require('../lib/logUtils.js');
 var config     = require('../config');
 var bunyan     = require('bunyan');
-var log        = pareUtils.setupLogging('parefull', true, config.logging.parefull);
+var log        = logUtils.setupLogging('parefull', true, config.logging.parefull);
 var cursePurse = require('cursepurse');
 cursePurse.dbConnect(config.db.url, function (err, res) {
   if (err) {
       log.err('error connecting to cursepurse db');
   }
 });
-
-// this should work off parefull bunyan
-log.info('just testing bunyan in log file now');
 
 router.route('/')
 
@@ -56,7 +54,6 @@ router.route('/')
                 log.info('isCurse call result', {result: result});
                 if (result === true) {
                     // banned word, don't add bit
-                    log.info('return true as res.body.cword, it is a curse');
                     res.send({cword: true});
                 } else {
                     // ok to proceed with word
