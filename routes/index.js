@@ -10,5 +10,6 @@ router.use('/api/user', require('./user'));
 router.use('/api/bit', require('./bit'));
 router.use('/api/score', require('./score'));
 router.use('/api/pareque', require('./pareque'));
+router.use('/api/curse', require('./curse'));
 
 module.exports = router;

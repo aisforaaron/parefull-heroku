@@ -1,0 +1,882 @@
+{
+	"id": "d7392c17-7718-c871-2751-41f3d33bf77e",
+	"name": "Parefull",
+	"description": "",
+	"order": [],
+	"folders": [
+		{
+			"id": "4783bdb4-cf04-3fe8-1ea4-140d3404773c",
+			"name": "Local-Bits",
+			"description": "",
+			"order": [
+				"ab76c505-ae13-5f23-1079-d0ec3fb8e7e9",
+				"06407397-f69a-31f8-8c68-d26fec523120",
+				"972233cd-c7bb-b6dc-219d-2de58f91c794",
+				"ea31455f-0940-8c96-6eff-923f2f9bfed6",
+				"c371fc52-0d00-db6b-8d8d-9cf3095b1248",
+				"ad367175-eded-290c-2c9d-24c19d34ce74",
+				"52ffa69f-2927-8699-b710-2de7159fd0f3",
+				"1c550a7e-9a1f-1e12-a66e-3abfb7860325",
+				"17f3e27e-ccba-123b-2fad-cf5ac1c97369",
+				"4f9a6182-87c2-7c2f-5b8b-79e4d127aa4a"
+			],
+			"owner": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e"
+		},
+		{
+			"id": "b173c792-79ef-29b5-ad02-d306328f4c55",
+			"name": "Local-Curses",
+			"description": "",
+			"order": [
+				"1b399f40-136d-f707-bbbf-963701addca6"
+			],
+			"owner": 0
+		},
+		{
+			"id": "544940d3-a3da-1581-b082-69c6c7a37723",
+			"name": "Local-Pareque",
+			"description": "",
+			"order": [
+				"85f6f4ad-9530-7df0-e62b-cb1f00a4565a",
+				"78f4d2d8-ca16-1375-91df-ad2c99096782",
+				"109cd93d-0ac7-4746-c70b-9c55a14827f2",
+				"4e1cb21f-617e-f4cf-d846-fcc46aeab77b",
+				"18719d1c-30c1-e427-c02b-933e6d82c25e",
+				"b2c9ff0a-837b-6704-7fe4-684f8f21a2e0",
+				"4cb43a35-95e0-b643-cc05-3a4a7fedd5df",
+				"4928054a-2aa3-01c8-afc1-4f4569bc9e8d"
+			],
+			"owner": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e"
+		},
+		{
+			"id": "f0af7630-2ad7-52e6-8e9d-4c448474b6d3",
+			"name": "Local-Scores",
+			"description": "",
+			"order": [
+				"51082afc-7693-30fd-5b55-8a00652059b7",
+				"f37460ea-e386-823d-e2ce-ec58dc355dcb",
+				"86fd5276-d7d7-9f11-3aaf-3cf53f6b92bf",
+				"0e82fa3b-ab57-ae39-a1a1-a91c7e7f4318",
+				"54f31408-e2cf-1474-c03e-9444821b7264"
+			],
+			"owner": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e"
+		},
+		{
+			"id": "e9e15c19-b720-d9b6-3e00-7beba023e1ae",
+			"name": "Local-User",
+			"description": "",
+			"order": [
+				"6da841c4-d104-91b1-884e-68c5882cecbd"
+			],
+			"owner": 0
+		},
+		{
+			"id": "3bf4ab14-0b16-f685-4e32-894e690730c8",
+			"name": "Staging-Bits",
+			"description": "",
+			"order": [
+				"3b7dd44a-8429-3a05-7082-f3d24f2f2346",
+				"4e9b4d44-e0d8-c211-4729-ff02326f4bda",
+				"7c66779c-2f41-34d6-44f4-676104a67fc5",
+				"31a2b923-2cb1-ccfd-4f01-70d342668ade"
+			],
+			"owner": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e"
+		},
+		{
+			"id": "3712a029-16c4-8c48-fd33-e481bb16a651",
+			"name": "Staging-Pareque",
+			"description": "",
+			"order": [
+				"cfd5c4d2-3769-bb44-1e76-8e39badf6cf2",
+				"2c88bb33-bb5e-202d-c0b3-e3f749b2c163"
+			],
+			"owner": ""
+		},
+		{
+			"id": "02f15f28-d3ff-ebbf-c064-43d30b989df9",
+			"name": "Staging-Scores",
+			"description": "",
+			"order": [],
+			"owner": ""
+		}
+	],
+	"timestamp": 1444592409086,
+	"owner": 0,
+	"remoteLink": "",
+	"public": false,
+	"requests": [
+		{
+			"id": "06407397-f69a-31f8-8c68-d26fec523120",
+			"headers": "x-access-token: \n",
+			"url": "http://local.pfl-webapp/api/bit",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463164176604,
+			"name": "get bits",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "0e82fa3b-ab57-ae39-a1a1-a91c7e7f4318",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/score/pb/**bit-id-here**",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463164934764,
+			"name": "pb times scored",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "109cd93d-0ac7-4746-c70b-9c55a14827f2",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/pareque/count",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"data": [],
+			"dataMode": "params",
+			"name": "count  items",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1449772071700,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "544940d3-a3da-1581-b082-69c6c7a37723"
+		},
+		{
+			"id": "17f3e27e-ccba-123b-2fad-cf5ac1c97369",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/score/pb/**bit-id-here**",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463164347298,
+			"name": "pb delete all by bitId",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "18719d1c-30c1-e427-c02b-933e6d82c25e",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/pareque/",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "name",
+					"value": "",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "score",
+					"value": "",
+					"type": "text",
+					"enabled": false
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463164487165,
+			"name": "add item",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "1b399f40-136d-f707-bbbf-963701addca6",
+			"headers": "x-access-token: \n",
+			"url": "http://local.pfl-webapp/api/curse/import",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "importCurses",
+					"value": "[\"something\", \"more stuff\", \"another phrase\", \"words\"]",
+					"type": "text",
+					"enabled": false
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1464363673882,
+			"name": "import curses",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "1c550a7e-9a1f-1e12-a66e-3abfb7860325",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/bit/id/**bit-id-here**",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "PUT",
+			"data": [
+				{
+					"key": "name",
+					"value": "",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "scoreAvg",
+					"value": "",
+					"type": "text",
+					"enabled": false
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463192550335,
+			"name": "put bit",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "2c88bb33-bb5e-202d-c0b3-e3f749b2c163",
+			"headers": "",
+			"url": "https://parefull-staging.herokuapp.com/api/pareque/flush",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463450167529,
+			"name": "Get call to delete all done",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "31a2b923-2cb1-ccfd-4f01-70d342668ade",
+			"headers": "",
+			"url": "http://parefull-staging.herokuapp.com/api/bit/id/**bit-id-here**",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "PUT",
+			"data": [
+				{
+					"key": "name",
+					"value": "",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "updateAvg",
+					"value": "",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "image",
+					"value": "",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "queue",
+					"value": "",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "show",
+					"value": "",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "imageSourceUrl",
+					"value": "",
+					"type": "text",
+					"enabled": false
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463165341277,
+			"name": "put bit",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "3b7dd44a-8429-3a05-7082-f3d24f2f2346",
+			"headers": "x-access-token: \n",
+			"url": "https://parefull-staging.herokuapp.com/api/bit",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463165270050,
+			"name": "bits",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "4928054a-2aa3-01c8-afc1-4f4569bc9e8d",
+			"headers": "x-access-token: \n",
+			"url": "http://local.pfl-webapp/api/bit/import",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "POST",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"data": [
+				{
+					"key": "importBits",
+					"value": "[{\"name\":\"new-bit-name\", \"score\":\"6\"}, {...}]",
+					"type": "text",
+					"enabled": false
+				}
+			],
+			"dataMode": "urlencoded",
+			"name": "import curses",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1464363573088,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "544940d3-a3da-1581-b082-69c6c7a37723"
+		},
+		{
+			"id": "4cb43a35-95e0-b643-cc05-3a4a7fedd5df",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/pareque/id/**bit-id-here**",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463164879921,
+			"name": "delete item",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "4e1cb21f-617e-f4cf-d846-fcc46aeab77b",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/pareque/flush",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463449830246,
+			"name": "Get call to delete all done",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "4e9b4d44-e0d8-c211-4729-ff02326f4bda",
+			"headers": "",
+			"url": "https://parefull-staging.herokuapp.com/api/bit/rand",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1447356644751,
+			"name": "rand bit",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "4f9a6182-87c2-7c2f-5b8b-79e4d127aa4a",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/score/pb/**bit-id-here**",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463164370283,
+			"name": "pb delete by bitId",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "51082afc-7693-30fd-5b55-8a00652059b7",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/score",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1444592453118,
+			"name": "get scores",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": [],
+			"folder": "f0af7630-2ad7-52e6-8e9d-4c448474b6d3"
+		},
+		{
+			"id": "52ffa69f-2927-8699-b710-2de7159fd0f3",
+			"headers": "x-access-token: \n",
+			"url": "http://local.pfl-webapp/api/bit/import",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "importBits",
+					"value": "[{\"name\":\"new-bit-name\", \"score\":\"6\"}, {...}]",
+					"type": "text",
+					"enabled": false
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463451879185,
+			"name": "import bits",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "54f31408-e2cf-1474-c03e-9444821b7264",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/score",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "score",
+					"value": "",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "_bitId",
+					"value": null,
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "ip",
+					"value": "",
+					"type": "text",
+					"enabled": false
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463164952749,
+			"name": "post score",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "6da841c4-d104-91b1-884e-68c5882cecbd",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/user/token",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "name",
+					"value": "pare",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "full",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463166007053,
+			"name": "Post to return token",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "78f4d2d8-ca16-1375-91df-ad2c99096782",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/pareque/next",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"data": [],
+			"dataMode": "params",
+			"name": "next item",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1449770562887,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "544940d3-a3da-1581-b082-69c6c7a37723"
+		},
+		{
+			"id": "7c66779c-2f41-34d6-44f4-676104a67fc5",
+			"headers": "",
+			"url": "http://parefull-staging.herokuapp.com/api/bit/id/**bit-id-here**",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "PUT",
+			"data": [
+				{
+					"key": "name",
+					"value": "",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "scoreAvg",
+					"value": "",
+					"type": "text",
+					"enabled": false
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463192462738,
+			"name": "put bit",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "85f6f4ad-9530-7df0-e62b-cb1f00a4565a",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/pareque",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"data": [],
+			"dataMode": "params",
+			"name": "get pareque items",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1449768318985,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "544940d3-a3da-1581-b082-69c6c7a37723"
+		},
+		{
+			"id": "86fd5276-d7d7-9f11-3aaf-3cf53f6b92bf",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/score/pb/**bit-id-here**",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463164924314,
+			"name": "pb amount of times scored",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "972233cd-c7bb-b6dc-219d-2de58f91c794",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/bit/id/**bit-id-here**",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463192381756,
+			"name": "bit by id",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "ab76c505-ae13-5f23-1079-d0ec3fb8e7e9",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/bit/",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "POST",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"data": [
+				{
+					"key": "name",
+					"value": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "scoreAvg",
+					"value": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"name": "post bit curse test",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1463928645362,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "4783bdb4-cf04-3fe8-1ea4-140d3404773c"
+		},
+		{
+			"id": "ad367175-eded-290c-2c9d-24c19d34ce74",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/bit/",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "name",
+					"value": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "scoreAvg",
+					"value": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463164212148,
+			"name": "post bit",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "b2c9ff0a-837b-6704-7fe4-684f8f21a2e0",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/pareque/id/**bit-id-here**",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "PUT",
+			"data": [
+				{
+					"key": "name",
+					"value": "Pizza",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "status",
+					"value": "pending",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463164556551,
+			"name": "update item",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "c371fc52-0d00-db6b-8d8d-9cf3095b1248",
+			"headers": "x-access-token: \n",
+			"url": "http://local.pfl-webapp/api/bit/flush",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463164198412,
+			"name": "flush bits",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "cfd5c4d2-3769-bb44-1e76-8e39badf6cf2",
+			"headers": "//x-access-token: \n",
+			"url": "https://parefull-staging.herokuapp.com/api/pareque",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463165367849,
+			"name": "get all",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		},
+		{
+			"id": "ea31455f-0940-8c96-6eff-923f2f9bfed6",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/bit/rand",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"data": [],
+			"dataMode": "params",
+			"name": "rand bit",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1444800399760,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "4783bdb4-cf04-3fe8-1ea4-140d3404773c"
+		},
+		{
+			"id": "f37460ea-e386-823d-e2ce-ec58dc355dcb",
+			"headers": "",
+			"url": "http://local.pfl-webapp/api/score/avg/**bit-id-here**",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1463164912181,
+			"name": "get score avg",
+			"description": "",
+			"collectionId": "d7392c17-7718-c871-2751-41f3d33bf77e",
+			"responses": []
+		}
+	]
+}

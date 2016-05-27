@@ -105,7 +105,7 @@ router.route('/')
 router.route('/import')
 
     /**
-     * @api {post} /api/import Post to add new bits
+     * @api {post} /api/bit/import Post to add new bits
      * @apiName ImportBits
      * @apiGroup Bit
      * @apiParam {string} importBits JSON data of bits
