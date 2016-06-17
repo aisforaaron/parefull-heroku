@@ -9,7 +9,7 @@
     "aws-sdk": "^2.2.15",
     "body-parser": "~1.13.2",
     "bunyan": "^1.8.1",
-    "cursepurse": "^0.1.2",
+    "cursepurse": "^0.1.5",
     "debug": "^2.2.0",
     "express": "~4.13.1",
     "gm": "^1.21.1",
