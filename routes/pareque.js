@@ -7,7 +7,6 @@ var mongoose  = require('mongoose');
 var config    = require('../config');
 var pareUtils = require('../lib/pareUtils.js');
 var logUtils  = require('../lib/logUtils.js');
-var bunyan    = require('bunyan');
 var log       = logUtils.setupLogging('parefull', true, config.logging.parefull);
 
 

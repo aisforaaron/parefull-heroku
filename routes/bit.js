@@ -8,12 +8,11 @@ var pareUtils  = require('../lib/pareUtils.js');
 var imgUtils   = require('../lib/imgUtils.js');
 var logUtils   = require('../lib/logUtils.js');
 var config     = require('../config');
-var bunyan     = require('bunyan');
 var log        = logUtils.setupLogging('parefull', true, config.logging.parefull);
 var cursePurse = require('cursepurse');
 cursePurse.dbConnect(config.db.url, function (err, res) {
   if (err) {
-      log.err('error connecting to cursepurse db');
+      log.error('error connecting to cursepurse db');
   }
 });
 

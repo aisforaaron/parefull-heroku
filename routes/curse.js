@@ -5,7 +5,6 @@ var router     = express.Router();
 var config     = require('../config');
 var mongoose   = require('mongoose');
 var cursePurse = require('cursepurse');
-var bunyan     = require('bunyan');
 var logUtils   = require('../lib/logUtils.js');
 var pareUtils  = require('../lib/pareUtils.js');
 var log        = logUtils.setupLogging('parefull', true, config.logging.parefull);
