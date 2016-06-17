@@ -6,7 +6,6 @@ var mongoose   = require('mongoose');
 var fs         = require('fs');
 var config     = require('./config');
 var logUtils   = require('./lib/logUtils.js');
-var bunyan     = require('bunyan');
 var log        = logUtils.setupLogging('parefull', true, config.logging.parefull);
 var port       = config.port;
 var listen     = config.address;

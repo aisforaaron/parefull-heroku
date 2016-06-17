@@ -5,7 +5,6 @@ var superagent = require('superagent');
 var config     = require('./config');
 var imgUtils   = require('./lib/imgUtils.js');
 var logUtils   = require('./lib/logUtils.js');
-var bunyan     = require('bunyan');
 var log        = logUtils.setupLogging('parefull', true, config.logging.parefull);
 
 function tStamp() {
