@@ -23,8 +23,8 @@ router.route('/import')
      * @apiGroup Curse
      * @apiDescription JWT token protected route.
      * @apiParam {string} importCurses array list of text
-     * @apiExample {js} Example array:
-     *     importCurses = ["something", "more stuff", "another phrase", "words"]
+     * @apiExample {js} Example csv string:
+     *     importCurses = something, more stuff, another phrase, words
      * @apiSuccess {string} message Done with import.
      * @apiError {object} - cursePurse.importCurses error returned
      */
